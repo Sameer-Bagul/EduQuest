@@ -1,5 +1,6 @@
 import { type User, type InsertUser, type Assignment, type InsertAssignment, type Submission, type InsertSubmission } from "@shared/schema";
 import { MongoStorage } from "./storage/mongodb-simple";
+import { MemoryStorage } from "./storage/memory-fallback";
 
 export interface IStorage {
   // User operations
@@ -26,5 +27,12 @@ export interface IStorage {
   createSubmission(submission: Omit<Submission, 'id' | 'createdAt' | 'updatedAt'>): Promise<Submission>;
 }
 
-// Use MongoDB storage
-export const storage: IStorage = new MongoStorage();
+// Create storage instance with fallback
+function createStorage(): IStorage {
+  // For now, use memory storage to fix the immediate issues
+  // User can switch to MongoDB once they fix the IP whitelist
+  console.log('Using memory storage (temporary fallback due to MongoDB connection issues)');
+  return new MemoryStorage();
+}
+
+export const storage: IStorage = createStorage();

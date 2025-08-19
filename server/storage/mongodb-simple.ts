@@ -87,7 +87,10 @@ export class MongoStorage implements IStorage {
     if (this.connected) return;
     
     try {
-      await mongoose.connect(process.env.MONGODB_URI!);
+      await mongoose.connect(process.env.MONGODB_URI!, {
+        connectTimeoutMS: 5000,
+        serverSelectionTimeoutMS: 5000,
+      });
       this.connected = true;
       console.log('Connected to MongoDB');
     } catch (error) {
