@@ -106,7 +106,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ 
       user: { 
         id: req.user!.id, 
-        name: req.user!.name, 
+        name: req.user!.email, // Using email as name fallback 
         email: req.user!.email, 
         role: req.user!.role 
       } 
