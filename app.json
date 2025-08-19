@@ -1,0 +1,34 @@
+{
+  "name": "Digital Assignment Platform",
+  "description": "A full-stack educational assignment platform with voice-to-text and NLP evaluation",
+  "keywords": ["node", "express", "react", "education", "nlp"],
+  "website": "https://github.com/your-username/digital-assignment-platform",
+  "repository": "https://github.com/your-username/digital-assignment-platform",
+  "logo": "https://cdn.iconscout.com/icon/free/png-256/education-2103091-1769302.png",
+  "success_url": "/",
+  "stack": "heroku-22",
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment mode",
+      "value": "production"
+    },
+    "JWT_SECRET": {
+      "description": "Secret key for JWT tokens",
+      "generator": "secret"
+    },
+    "CORS_ORIGIN": {
+      "description": "CORS allowed origins",
+      "value": "*"
+    },
+    "USE_CRON_FALLBACK": {
+      "description": "Enable cron job fallback",
+      "value": "true"
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

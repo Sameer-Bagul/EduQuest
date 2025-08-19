@@ -6,7 +6,11 @@ This is a full-stack digital assignment platform built for educational instituti
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language.
+- Preferred communication style: Simple, everyday language
+- Server architecture: Must use MVC pattern for easier future editing
+- Deployment target: Render or Heroku compatible
+- Assignment features: Must include faculty name, college name, subject name, subject code, start & end dates
+- Auto-cleanup: Expired assignments should auto-delete after end date
 
 ## System Architecture
 
@@ -19,9 +23,13 @@ Preferred communication style: Simple, everyday language.
 - **Form Handling**: React Hook Form with Zod validation
 - **Voice Integration**: Web Speech API for client-side speech-to-text functionality
 
-### Backend Architecture
+### Backend Architecture (MVC Pattern)
 - **Runtime**: Node.js with Express.js framework
 - **Language**: TypeScript with ES modules
+- **Architecture**: Model-View-Controller (MVC) pattern for maintainability
+- **Controllers**: Handle HTTP requests and responses (`server/controllers/`)
+- **Services**: Business logic and data processing (`server/services/`)
+- **Models**: Data schemas and storage interface (`shared/schema.ts`, `server/storage.ts`)
 - **API Design**: RESTful API with structured error handling
 - **Authentication**: JWT tokens stored in HTTP-only cookies with bcrypt password hashing
 - **Validation**: Zod schemas shared between client and server
@@ -54,6 +62,7 @@ Preferred communication style: Simple, everyday language.
 - **Development**: Hot module replacement with Vite middleware integration
 - **TypeScript**: Strict type checking across the entire codebase
 - **Path Aliases**: Organized imports with @ aliases for client code and @shared for common modules
+- **Deployment**: Ready for Render and Heroku with proper build scripts and configuration files
 
 ## External Dependencies
 

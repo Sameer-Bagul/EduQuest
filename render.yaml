@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: digital-assignment-platform
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: USE_CRON_FALLBACK
+        value: "true"
+    disk:
+      name: uploads
+      mountPath: /app/uploads
+      sizeGB: 1
