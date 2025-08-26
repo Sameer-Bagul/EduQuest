@@ -2,7 +2,7 @@ import { storage } from '../storage';
 import type { Assignment, InsertAssignment } from '@shared/schema';
 
 export class AssignmentService {
-  async createAssignment(assignmentData: InsertAssignment): Promise<Assignment> {
+  async createAssignment(assignmentData: InsertAssignment & { teacherId: string }): Promise<Assignment> {
     // Generate unique 6-digit code
     const code = this.generateAssignmentCode();
     

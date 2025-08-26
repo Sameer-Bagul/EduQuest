@@ -1,0 +1,514 @@
+
+D:\Projects\Github\EduQuest>npm run check 
+
+> rest-express@1.0.0 check
+> tsc
+
+client/src/pages/login-old.tsx:50:16 - error TS2304: Cannot find name 'Form'.
+
+50               <Form {...loginForm}>
+                  ~~~~
+
+client/src/pages/login-old.tsx:50:25 - error TS2552: Cannot find name 'loginForm'. Did you mean 'LoginForm'?
+
+50               <Form {...loginForm}>
+                           ~~~~~~~~~
+
+client/src/pages/login-old.tsx:51:33 - error TS2552: Cannot find name 'loginForm'. Did you mean 'LoginForm'?
+
+51                 <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-6">
+                                   ~~~~~~~~~
+
+client/src/pages/login-old.tsx:51:56 - error TS2304: Cannot find name 'onLoginSubmit'.
+
+51                 <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-6">
+                                                          ~~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:52:20 - error TS2304: Cannot find name 'FormField'.
+
+52                   <FormField
+                      ~~~~~~~~~
+
+client/src/pages/login-old.tsx:53:30 - error TS2304: Cannot find name 'loginForm'.
+
+53                     control={loginForm.control}
+                                ~~~~~~~~~
+
+client/src/pages/login-old.tsx:55:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+55                     render={({ field }) => (
+                                  ~~~~~
+
+client/src/pages/login-old.tsx:56:24 - error TS2304: Cannot find name 'FormItem'.
+
+56                       <FormItem>
+                          ~~~~~~~~
+
+client/src/pages/login-old.tsx:57:26 - error TS2304: Cannot find name 'FormLabel'.
+
+57                         <FormLabel>Email Address</FormLabel>
+                            ~~~~~~~~~
+
+client/src/pages/login-old.tsx:57:51 - error TS2304: Cannot find name 'FormLabel'.
+
+57                         <FormLabel>Email Address</FormLabel>
+                                                     ~~~~~~~~~
+
+client/src/pages/login-old.tsx:58:26 - error TS2304: Cannot find name 'FormControl'.
+
+58                         <FormControl>
+                            ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:59:28 - error TS2304: Cannot find name 'Input'.
+
+59                           <Input
+                              ~~~~~
+
+client/src/pages/login-old.tsx:64:27 - error TS2304: Cannot find name 'FormControl'.
+
+64                         </FormControl>
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:65:26 - error TS2304: Cannot find name 'FormMessage'.
+
+65                         <FormMessage />
+                            ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:66:25 - error TS2304: Cannot find name 'FormItem'.
+
+66                       </FormItem>
+                           ~~~~~~~~
+
+client/src/pages/login-old.tsx:70:20 - error TS2304: Cannot find name 'FormField'.
+
+70                   <FormField
+                      ~~~~~~~~~
+
+client/src/pages/login-old.tsx:71:30 - error TS2304: Cannot find name 'loginForm'.
+
+71                     control={loginForm.control}
+                                ~~~~~~~~~
+
+client/src/pages/login-old.tsx:73:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+73                     render={({ field }) => (
+                                  ~~~~~
+
+client/src/pages/login-old.tsx:74:24 - error TS2304: Cannot find name 'FormItem'.
+
+74                       <FormItem>
+                          ~~~~~~~~
+
+client/src/pages/login-old.tsx:75:26 - error TS2304: Cannot find name 'FormLabel'.
+
+75                         <FormLabel>Password</FormLabel>
+                            ~~~~~~~~~
+
+client/src/pages/login-old.tsx:75:46 - error TS2304: Cannot find name 'FormLabel'.
+
+75                         <FormLabel>Password</FormLabel>
+                                                ~~~~~~~~~
+
+client/src/pages/login-old.tsx:76:26 - error TS2304: Cannot find name 'FormControl'.
+
+76                         <FormControl>
+                            ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:77:28 - error TS2304: Cannot find name 'Input'.
+
+77                           <Input
+                              ~~~~~
+
+client/src/pages/login-old.tsx:82:27 - error TS2304: Cannot find name 'FormControl'.
+
+82                         </FormControl>
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:83:26 - error TS2304: Cannot find name 'FormMessage'.
+
+83                         <FormMessage />
+                            ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:84:25 - error TS2304: Cannot find name 'FormItem'.
+
+84                       </FormItem>
+                           ~~~~~~~~
+
+client/src/pages/login-old.tsx:88:20 - error TS2304: Cannot find name 'Button'.
+
+88                   <Button
+                      ~~~~~~
+
+client/src/pages/login-old.tsx:94:21 - error TS2304: Cannot find name 'Button'.
+
+94                   </Button>
+                       ~~~~~~
+
+client/src/pages/login-old.tsx:96:17 - error TS2304: Cannot find name 'Form'.
+
+96               </Form>
+                   ~~~~
+
+client/src/pages/login-old.tsx:98:16 - error TS2304: Cannot find name 'Form'.
+
+98               <Form {...registerForm}>
+                  ~~~~
+
+client/src/pages/login-old.tsx:98:25 - error TS2552: Cannot find name 'registerForm'. Did you mean 'register'?
+
+98               <Form {...registerForm}>
+                           ~~~~~~~~~~~~
+
+  client/src/pages/login-old.tsx:12:41
+    12   const { user, isAuthenticated, login, register, isLoggingIn, isRegistering } = useAuthContext();
+                                               ~~~~~~~~
+    'register' is declared here.
+
+client/src/pages/login-old.tsx:99:33 - error TS2304: Cannot find name 'registerForm'.
+
+99                 <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-6">
+                                   ~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:99:59 - error TS2304: Cannot find name 'onRegisterSubmit'.
+
+99                 <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-6">
+                                                             ~~~~~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:100:20 - error TS2304: Cannot find name 'FormField'.
+
+100                   <FormField
+                       ~~~~~~~~~
+
+client/src/pages/login-old.tsx:101:30 - error TS2304: Cannot find name 'registerForm'.
+
+101                     control={registerForm.control}
+                                 ~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:103:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+103                     render={({ field }) => (
+                                   ~~~~~
+
+client/src/pages/login-old.tsx:104:24 - error TS2304: Cannot find name 'FormItem'.
+
+104                       <FormItem>
+                           ~~~~~~~~
+
+client/src/pages/login-old.tsx:105:26 - error TS2304: Cannot find name 'FormLabel'.
+
+105                         <FormLabel>Full Name</FormLabel>
+                             ~~~~~~~~~
+
+client/src/pages/login-old.tsx:105:47 - error TS2304: Cannot find name 'FormLabel'.
+
+105                         <FormLabel>Full Name</FormLabel>
+                                                  ~~~~~~~~~
+
+client/src/pages/login-old.tsx:106:26 - error TS2304: Cannot find name 'FormControl'.
+
+106                         <FormControl>
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:107:28 - error TS2304: Cannot find name 'Input'.
+
+107                           <Input
+                               ~~~~~
+
+client/src/pages/login-old.tsx:111:27 - error TS2304: Cannot find name 'FormControl'.
+
+111                         </FormControl>
+                              ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:112:26 - error TS2304: Cannot find name 'FormMessage'.
+
+112                         <FormMessage />
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:113:25 - error TS2304: Cannot find name 'FormItem'.
+
+113                       </FormItem>
+                            ~~~~~~~~
+
+client/src/pages/login-old.tsx:117:20 - error TS2304: Cannot find name 'FormField'.
+
+117                   <FormField
+                       ~~~~~~~~~
+
+client/src/pages/login-old.tsx:118:30 - error TS2304: Cannot find name 'registerForm'.
+
+118                     control={registerForm.control}
+                                 ~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:120:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+120                     render={({ field }) => (
+                                   ~~~~~
+
+client/src/pages/login-old.tsx:121:24 - error TS2304: Cannot find name 'FormItem'.
+
+121                       <FormItem>
+                           ~~~~~~~~
+
+client/src/pages/login-old.tsx:122:26 - error TS2304: Cannot find name 'FormLabel'.
+
+122                         <FormLabel>Email Address</FormLabel>
+                             ~~~~~~~~~
+
+client/src/pages/login-old.tsx:122:51 - error TS2304: Cannot find name 'FormLabel'.
+
+122                         <FormLabel>Email Address</FormLabel>
+                                                      ~~~~~~~~~
+
+client/src/pages/login-old.tsx:123:26 - error TS2304: Cannot find name 'FormControl'.
+
+123                         <FormControl>
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:124:28 - error TS2304: Cannot find name 'Input'.
+
+124                           <Input
+                               ~~~~~
+
+client/src/pages/login-old.tsx:129:27 - error TS2304: Cannot find name 'FormControl'.
+
+129                         </FormControl>
+                              ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:130:26 - error TS2304: Cannot find name 'FormMessage'.
+
+130                         <FormMessage />
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:131:25 - error TS2304: Cannot find name 'FormItem'.
+
+131                       </FormItem>
+                            ~~~~~~~~
+
+client/src/pages/login-old.tsx:135:20 - error TS2304: Cannot find name 'FormField'.
+
+135                   <FormField
+                       ~~~~~~~~~
+
+client/src/pages/login-old.tsx:136:30 - error TS2304: Cannot find name 'registerForm'.
+
+136                     control={registerForm.control}
+                                 ~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:138:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+138                     render={({ field }) => (
+                                   ~~~~~
+
+client/src/pages/login-old.tsx:139:24 - error TS2304: Cannot find name 'FormItem'.
+
+139                       <FormItem>
+                           ~~~~~~~~
+
+client/src/pages/login-old.tsx:140:26 - error TS2304: Cannot find name 'FormLabel'.
+
+140                         <FormLabel>Password</FormLabel>
+                             ~~~~~~~~~
+
+client/src/pages/login-old.tsx:140:46 - error TS2304: Cannot find name 'FormLabel'.
+
+140                         <FormLabel>Password</FormLabel>
+                                                 ~~~~~~~~~
+
+client/src/pages/login-old.tsx:141:26 - error TS2304: Cannot find name 'FormControl'.
+
+141                         <FormControl>
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:142:28 - error TS2304: Cannot find name 'Input'.
+
+142                           <Input
+                               ~~~~~
+
+client/src/pages/login-old.tsx:147:27 - error TS2304: Cannot find name 'FormControl'.
+
+147                         </FormControl>
+                              ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:148:26 - error TS2304: Cannot find name 'FormMessage'.
+
+148                         <FormMessage />
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:149:25 - error TS2304: Cannot find name 'FormItem'.
+
+149                       </FormItem>
+                            ~~~~~~~~
+
+client/src/pages/login-old.tsx:153:20 - error TS2304: Cannot find name 'FormField'.
+
+153                   <FormField
+                       ~~~~~~~~~
+
+client/src/pages/login-old.tsx:154:30 - error TS2304: Cannot find name 'registerForm'.
+
+154                     control={registerForm.control}
+                                 ~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:156:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+156                     render={({ field }) => (
+                                   ~~~~~
+
+client/src/pages/login-old.tsx:157:24 - error TS2304: Cannot find name 'FormItem'.
+
+157                       <FormItem>
+                           ~~~~~~~~
+
+client/src/pages/login-old.tsx:158:26 - error TS2304: Cannot find name 'FormLabel'.
+
+158                         <FormLabel>Register As</FormLabel>
+                             ~~~~~~~~~
+
+client/src/pages/login-old.tsx:158:49 - error TS2304: Cannot find name 'FormLabel'.
+
+158                         <FormLabel>Register As</FormLabel>
+                                                    ~~~~~~~~~
+
+client/src/pages/login-old.tsx:159:26 - error TS2304: Cannot find name 'FormControl'.
+
+159                         <FormControl>
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:160:28 - error TS2304: Cannot find name 'RadioGroup'.
+
+160                           <RadioGroup
+                               ~~~~~~~~~~
+
+client/src/pages/login-old.tsx:166:32 - error TS2304: Cannot find name 'RadioGroupItem'.
+
+166                               <RadioGroupItem value="teacher" id="teacher" />
+                                   ~~~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:167:32 - error TS2304: Cannot find name 'Label'.
+
+167                               <Label htmlFor="teacher">Teacher</Label>
+                                   ~~~~~
+
+client/src/pages/login-old.tsx:167:65 - error TS2304: Cannot find name 'Label'.
+
+167                               <Label htmlFor="teacher">Teacher</Label>
+                                                                    ~~~~~
+
+client/src/pages/login-old.tsx:170:32 - error TS2304: Cannot find name 'RadioGroupItem'.
+
+170                               <RadioGroupItem value="student" id="student" />
+                                   ~~~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:171:32 - error TS2304: Cannot find name 'Label'.
+
+171                               <Label htmlFor="student">Student</Label>
+                                   ~~~~~
+
+client/src/pages/login-old.tsx:171:65 - error TS2304: Cannot find name 'Label'.
+
+171                               <Label htmlFor="student">Student</Label>
+                                                                    ~~~~~
+
+client/src/pages/login-old.tsx:173:29 - error TS2304: Cannot find name 'RadioGroup'.
+
+173                           </RadioGroup>
+                                ~~~~~~~~~~
+
+client/src/pages/login-old.tsx:174:27 - error TS2304: Cannot find name 'FormControl'.
+
+174                         </FormControl>
+                              ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:175:26 - error TS2304: Cannot find name 'FormMessage'.
+
+175                         <FormMessage />
+                             ~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:176:25 - error TS2304: Cannot find name 'FormItem'.
+
+176                       </FormItem>
+                            ~~~~~~~~
+
+client/src/pages/login-old.tsx:180:20 - error TS2304: Cannot find name 'Button'.
+
+180                   <Button
+                       ~~~~~~
+
+client/src/pages/login-old.tsx:186:21 - error TS2304: Cannot find name 'Button'.
+
+186                   </Button>
+                        ~~~~~~
+
+client/src/pages/login-old.tsx:188:17 - error TS2304: Cannot find name 'Form'.
+
+188               </Form>
+                    ~~~~
+
+client/src/pages/login-old.tsx:200:14 - error TS2304: Cannot find name 'Button'.
+
+200             <Button
+                 ~~~~~~
+
+client/src/pages/login-old.tsx:204:24 - error TS2304: Cannot find name 'handleGoogleLogin'.       
+
+204               onClick={handleGoogleLogin}
+                           ~~~~~~~~~~~~~~~~~
+
+client/src/pages/login-old.tsx:212:15 - error TS2304: Cannot find name 'Button'.
+
+212             </Button>
+                  ~~~~~~
+
+server/controllers/assignmentController.ts:22:9 - error TS2353: Object literal may only specify known properties, and 'teacherId' does not exist in type '{ title: string; mode: "voice" | "voice_text"; facultyName: string; collegeName: string; subjectName: string; subjectCode: string; startDate: string; endDate: string; autoDelete: boolean; questions: { ...; }[]; }'.
+
+22         teacherId: req.user!.id
+           ~~~~~~~~~
+
+server/controllers/authController.ts:105:25 - error TS2339: Property 'name' does not exist on type 'AuthPayload'.
+
+105         name: req.user!.name,
+                            ~~~~
+
+server/services/assignmentService.ts:11:7 - error TS2353: Object literal may only specify known properties, and 'code' does not exist in type '{ title: string; mode: "voice" | "voice_text"; facultyName: string; collegeName: string; subjectName: string; subjectCode: string; startDate: string; endDate: string; autoDelete: boolean; questions: { ...; }[]; } & { ...; }'.
+
+11       code
+         ~~~~
+
+server/services/similarityService.ts:17:38 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.   
+
+17     const intersection = new Set([...set1].filter(x => set2.has(x)));
+                                        ~~~~
+
+server/services/similarityService.ts:18:31 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.   
+
+18     const union = new Set([...set1, ...set2]);
+                                 ~~~~
+
+server/services/similarityService.ts:18:40 - error TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.   
+
+18     const union = new Set([...set1, ...set2]);
+                                          ~~~~
+
+server/services/submissionService.ts:13:37 - error TS2345: Argument of type '{ assignmentCode: string; answers: { text: string; questionId: string; sttMeta?: any; }[]; }' is not assignable to parameter of type 'Omit<{ id: string; answers: { text: string; questionId: string; sttMeta?: any; }[]; createdAt: string; updatedAt: string; assignmentId: string; studentId: string; scores: { questionId: string; similarity: number; awarded: number; }[]; totalAwarded: number; }, "id" | ... 1 more ... | "updatedAt">'.
+  Type '{ assignmentCode: string; answers: { text: string; questionId: string; sttMeta?: any; }[]; }' is missing the following properties from type 'Omit<{ id: string; answers: { text: string; questionId: string; sttMeta?: any; }[]; createdAt: string; updatedAt: string; assignmentId: string; studentId: string; scores: { questionId: string; similarity: number; awarded: number; }[]; totalAwarded: number; }, "id" | ... 1 more ... | "updatedAt">': assignmentId, studentId, scores, totalAwarded
+
+13     return storage.createSubmission(submissionData);
+                                       ~~~~~~~~~~~~~~
+
+server/services/submissionService.ts:39:7 - error TS2561: Object literal may only specify known properties, but 'assignmentId' does not exist in type '{ assignmentCode: string; answers: { text: string; questionId: string; sttMeta?: any; }[]; }'. Did you mean to write 'assignmentCode'?
+
+39       assignmentId: assignment.id,
+         ~~~~~~~~~~~~
+
+
+Found 98 errors in 6 files.
+
+Errors  Files
+    90  client/src/pages/login-old.tsx:50
+     1  server/controllers/assignmentController.ts:22
+     1  server/controllers/authController.ts:105
+     1  server/services/assignmentService.ts:11
+     3  server/services/similarityService.ts:17
+     2  server/services/submissionService.ts:13
+
+D:\Projects\Github\EduQuest>

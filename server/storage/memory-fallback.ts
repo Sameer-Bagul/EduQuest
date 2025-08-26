@@ -64,9 +64,8 @@ export class MemoryStorage implements IStorage {
     return Array.from(this.assignments.values()).filter(assignment => assignment.teacherId === teacherId);
   }
 
-  async createAssignment(data: InsertAssignment & { teacherId: string }): Promise<Assignment> {
+  async createAssignment(data: InsertAssignment & { teacherId: string; code: string }): Promise<Assignment> {
     const id = randomUUID();
-    const code = this.generateAssignmentCode();
     const now = new Date().toISOString();
     
     // Calculate expireAt based on endDate and retention policy
@@ -77,7 +76,7 @@ export class MemoryStorage implements IStorage {
     const assignment: Assignment = {
       ...data,
       id,
-      code,
+      code: data.code,
       expireAt: expireAt.toISOString(),
       questions: data.questions.map(q => ({ ...q, id: randomUUID() })),
       createdAt: now,

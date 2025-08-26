@@ -38,7 +38,7 @@ export class AuthController {
       });
 
       // Generate token and set cookie
-      const token = this.authService.generateToken({ id: user.id, role: user.role, email: user.email });
+      const token = this.authService.generateToken({ id: user.id, name: user.name, role: user.role, email: user.email });
       this.authService.setAuthCookie(res, token);
 
       res.json({ 
@@ -76,7 +76,7 @@ export class AuthController {
       }
 
       // Generate token and set cookie
-      const token = this.authService.generateToken({ id: user.id, role: user.role, email: user.email });
+      const token = this.authService.generateToken({ id: user.id, name: user.name, role: user.role, email: user.email });
       this.authService.setAuthCookie(res, token);
 
       res.json({ 

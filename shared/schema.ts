@@ -54,6 +54,7 @@ export const insertAssignmentSchema = z.object({
   startDate: z.string(),
   endDate: z.string(),
   autoDelete: z.boolean().default(true),
+  teacherId: z.string().optional(),
   questions: z.array(z.object({
     text: z.string().min(3),
     answerKey: z.string().min(1),

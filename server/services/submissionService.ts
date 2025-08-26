@@ -9,7 +9,13 @@ export class SubmissionService {
     this.similarityService = new SimilarityService();
   }
 
-  async createSubmission(submissionData: InsertSubmission): Promise<Submission> {
+  async createSubmission(submissionData: {
+    assignmentId: string;
+    studentId: string;
+    answers: { questionId: string; text: string; sttMeta?: any }[];
+    scores: { questionId: string; similarity: number; awarded: number }[];
+    totalAwarded: number;
+  }): Promise<Submission> {
     return storage.createSubmission(submissionData);
   }
 
@@ -35,7 +41,7 @@ export class SubmissionService {
     const totalAwarded = scores.reduce((sum, score) => sum + score.awarded, 0);
 
     // Create submission
-    const submission = await this.createSubmission({
+    const submission = await storage.createSubmission({
       assignmentId: assignment.id,
       studentId,
       answers,

@@ -138,9 +138,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Invalid input', details: parsed.error });
       }
 
+      const assignmentCode = Math.floor(100000 + Math.random() * 900000).toString();
       const assignment = await storage.createAssignment({
         ...parsed.data,
-        teacherId: req.user!.id
+        teacherId: req.user!.id,
+        code: assignmentCode
       });
 
       res.json({ assignment });

@@ -14,7 +14,7 @@ export interface IStorage {
   getAssignment(id: string): Promise<Assignment | undefined>;
   getAssignmentByCode(code: string): Promise<Assignment | undefined>;
   getAssignmentsByTeacher(teacherId: string): Promise<Assignment[]>;
-  createAssignment(assignment: InsertAssignment & { teacherId: string }): Promise<Assignment>;
+  createAssignment(assignment: InsertAssignment & { teacherId: string; code: string }): Promise<Assignment>;
   updateAssignment(id: string, updates: Partial<Assignment>): Promise<Assignment | undefined>;
   deleteAssignment(id: string): Promise<boolean>;
   getExpiredAssignments(): Promise<Assignment[]>;
