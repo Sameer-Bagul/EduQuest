@@ -10,6 +10,7 @@ import { VoiceRecorderComponent } from "@/components/assignment/voice-recorder";
 import { ProctoringManager } from "@/lib/proctoring";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import { useElectron } from "@/hooks/use-electron";
 
 export default function AssignmentInterface() {
   const { code } = useParams<{ code: string }>();
@@ -17,6 +18,7 @@ export default function AssignmentInterface() {
   const { user, isAuthenticated } = useAuthContext();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { isElectron, showAlert, enableSecureMode } = useElectron();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -47,11 +49,24 @@ export default function AssignmentInterface() {
   useEffect(() => {
     if (!assignment) return;
 
-    // Start proctoring
+    // Start proctoring with enhanced security for desktop app
     proctoringRef.current = new ProctoringManager((event) => {
       console.log('Proctoring event:', event);
+      
+      // Show desktop alerts for critical events
+      if (isElectron && (event.severity === 'critical' || event.severity === 'high')) {
+        const alertMessage = getAlertMessage(event);
+        showAlert(alertMessage, event.severity);
+      }
+      
       // In a real implementation, send events to server
     });
+    
+    // Enable enhanced security mode for desktop app
+    if (isElectron) {
+      enableSecureMode();
+    }
+    
     proctoringRef.current.start();
 
     // Calculate time remaining
@@ -142,6 +157,25 @@ export default function AssignmentInterface() {
       return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getAlertMessage = (event: any) => {
+    switch (event.type) {
+      case 'tab_change':
+        return `Tab switching detected! This is your ${event.details?.switchCount || 1} violation. Please stay focused on the assignment.`;
+      case 'copy_attempt':
+        return 'Copy/paste operations are not allowed during the assignment.';
+      case 'paste_attempt':
+        return 'Pasting content is prohibited. Please type your answers manually.';
+      case 'key_combination':
+        return 'Unauthorized keyboard shortcuts detected. Please use only standard typing.';
+      case 'screen_capture':
+        return 'Screen capture attempt detected! This is a serious violation.';
+      case 'suspicious_activity':
+        return `Suspicious activity detected: ${event.details?.alert || 'Please maintain focus on the assignment'}`;
+      default:
+        return 'Security violation detected. Please maintain academic integrity.';
+    }
   };
 
   const nextQuestion = () => {

@@ -61,28 +61,38 @@ export default function TeacherDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Navigation Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-white/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center mr-3">
-                <GraduationCap className="text-white text-sm w-4 h-4" />
+              <div className="h-10 w-10 gradient-bg rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                <GraduationCap className="text-white w-5 h-5" />
               </div>
-              <h1 className="text-xl font-semibold text-gray-900">
-                Digital Assignment Platform
+              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                EduQuest Platform
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">{user?.name}</span>
+              <div className="hidden sm:flex items-center space-x-3 px-3 py-2 bg-white/60 rounded-lg">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-semibold">
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+              </div>
               <div className="flex items-center space-x-2">
-                <Badge className="bg-blue-100 text-blue-800">Teacher</Badge>
+                <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover-lift" data-testid="badge-teacher-role">
+                  Teacher
+                </Badge>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleLogout}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg focus-ring"
+                  data-testid="button-logout"
                 >
                   <LogOut className="w-4 h-4" />
                 </Button>
@@ -94,44 +104,68 @@ export default function TeacherDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 fade-in">
+          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg hover-lift" data-testid="card-total-assignments">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-blue-100 mr-4">
-                  <ClipboardList className="text-primary w-6 h-6" />
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 mr-4 shadow-lg">
+                  <ClipboardList className="text-white w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Assignments</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.totalAssignments}</p>
+                  <p className="text-sm font-medium text-gray-600 mb-1">Total Assignments</p>
+                  <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                    {stats.totalAssignments}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm text-gray-500">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
+                  <span>Active assignments managed</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg hover-lift" data-testid="card-active-students">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-green-100 mr-4">
-                  <Users className="text-secondary w-6 h-6" />
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 mr-4 shadow-lg">
+                  <Users className="text-white w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Active Students</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.activeStudents}</p>
+                  <p className="text-sm font-medium text-gray-600 mb-1">Active Students</p>
+                  <p className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent">
+                    {stats.activeStudents}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm text-gray-500">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 status-active"></div>
+                  <span>Currently enrolled</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg hover-lift" data-testid="card-pending-reviews">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-orange-100 mr-4">
-                  <Clock className="text-accent w-6 h-6" />
+                <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 mr-4 shadow-lg">
+                  <Clock className="text-white w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Pending Reviews</p>
-                  <p className="text-3xl font-bold text-gray-900">{stats.pendingReviews}</p>
+                  <p className="text-sm font-medium text-gray-600 mb-1">Pending Reviews</p>
+                  <p className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-orange-700 bg-clip-text text-transparent">
+                    {stats.pendingReviews}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm text-gray-500">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-amber-400 rounded-full mr-2 status-warning"></div>
+                  <span>Awaiting evaluation</span>
                 </div>
               </div>
             </CardContent>
