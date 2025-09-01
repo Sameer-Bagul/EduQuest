@@ -9,6 +9,11 @@ import TeacherDashboard from "@/pages/teacher-dashboard";
 import StudentDashboard from "@/pages/student-dashboard";
 import AssignmentInterface from "@/pages/assignment-interface";
 import NotFound from "@/pages/not-found";
+import CancellationRefunds from "@/pages/cancellation-refunds";
+import ContactUs from "@/pages/contact-us";
+import ShippingPolicy from "@/pages/shipping-policy";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import TermsConditions from "@/pages/terms-conditions";
 
 function Router() {
   return (
@@ -18,6 +23,11 @@ function Router() {
       <Route path="/teacher-dashboard" component={TeacherDashboard} />
       <Route path="/student-dashboard" component={StudentDashboard} />
       <Route path="/assignment/:code" component={AssignmentInterface} />
+      <Route path="/cancellation-refunds" component={CancellationRefunds} />
+      <Route path="/contact-us" component={ContactUs} />
+      <Route path="/shipping-policy" component={ShippingPolicy} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/terms-conditions" component={TermsConditions} />
       <Route component={NotFound} />
     </Switch>
   );
