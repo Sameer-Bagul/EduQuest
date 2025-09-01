@@ -4,9 +4,10 @@ import { useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, ClipboardList, Users, Clock, Plus, BarChart3, LogOut, User } from "lucide-react";
+import { GraduationCap, ClipboardList, Users, Clock, Plus, BarChart3, LogOut, User, Sparkles } from "lucide-react";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { CreateAssignmentModal } from "@/components/assignment/create-assignment-modal";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function TeacherDashboard() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -61,37 +62,56 @@ export default function TeacherDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen animated-bg relative overflow-hidden">
+      {/* Floating Decorative Elements */}
+      <div className="absolute top-32 right-20 floating">
+        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 backdrop-blur-sm"></div>
+      </div>
+      <div className="absolute bottom-40 left-10 floating-delayed">
+        <div className="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-400/20 to-blue-400/20 backdrop-blur-sm"></div>
+      </div>
       {/* Navigation Header */}
-      <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-white/20 sticky top-0 z-50">
+      <header className="glass-card shadow-xl border-0 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="h-10 w-10 gradient-bg rounded-xl flex items-center justify-center mr-4 shadow-lg">
-                <GraduationCap className="text-white w-5 h-5" />
+              <div className="relative">
+                <div className="h-12 w-12 gradient-bg rounded-2xl flex items-center justify-center mr-4 shadow-xl pulse-glow">
+                  <GraduationCap className="text-white w-6 h-6" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
+                  <Sparkles className="w-2.5 h-2.5 text-white" />
+                </div>
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                EduQuest Platform
-              </h1>
+              <div>
+                <h1 className="text-xl font-bold text-gradient">
+                  EduQuest Platform
+                </h1>
+                <p className="text-xs text-muted-foreground">Teacher Dashboard</p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-3 px-3 py-2 bg-white/60 rounded-lg cursor-pointer hover:bg-white/70 transition-colors" onClick={() => setLocation('/profile')}>
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">
+              <div className="hidden sm:flex items-center space-x-3 glass-card px-4 py-2 cursor-pointer hover-lift" onClick={() => setLocation('/profile')}>
+                <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-white text-sm font-bold">
                     {user?.name?.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                <div>
+                  <span className="text-sm font-semibold text-foreground block">{user?.name}</span>
+                  <span className="text-xs text-muted-foreground">Educator</span>
+                </div>
               </div>
               <div className="flex items-center space-x-2">
-                <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover-lift" data-testid="badge-teacher-role">
+                <Badge className="gradient-bg text-white shadow-lg hover-lift border-0" data-testid="badge-teacher-role">
                   Teacher
                 </Badge>
+                <ThemeToggle />
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setLocation('/profile')}
-                  className="text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg focus-ring"
+                  className="glass-effect hover-lift text-muted-foreground hover:text-foreground focus-ring"
                   title="Profile Settings"
                 >
                   <User className="w-4 h-4" />
@@ -100,7 +120,7 @@ export default function TeacherDashboard() {
                   variant="ghost"
                   size="sm"
                   onClick={handleLogout}
-                  className="text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg focus-ring"
+                  className="glass-effect hover-lift text-muted-foreground hover:text-foreground focus-ring"
                   data-testid="button-logout"
                 >
                   <LogOut className="w-4 h-4" />
