@@ -14,6 +14,8 @@ import ContactUs from "@/pages/contact-us";
 import ShippingPolicy from "@/pages/shipping-policy";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsConditions from "@/pages/terms-conditions";
+import ProfilePage from "@/pages/profile";
+import CreateAssignmentPage from "@/pages/create-assignment";
 
 function Router() {
   return (
@@ -22,6 +24,8 @@ function Router() {
       <Route path="/login" component={LoginPage} />
       <Route path="/teacher-dashboard" component={TeacherDashboard} />
       <Route path="/student-dashboard" component={StudentDashboard} />
+      <Route path="/profile" component={ProfilePage} />
+      <Route path="/create-assignment" component={CreateAssignmentPage} />
       <Route path="/assignment/:code" component={AssignmentInterface} />
       <Route path="/cancellation-refunds" component={CancellationRefunds} />
       <Route path="/contact-us" component={ContactUs} />

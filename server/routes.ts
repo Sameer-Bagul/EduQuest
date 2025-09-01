@@ -7,6 +7,9 @@ import { requireAuth, requireRole, type AuthenticatedRequest } from "./middlewar
 import { generateToken, hashPassword, comparePassword, setAuthCookie, clearAuthCookie } from "./services/auth";
 import { calculateSimilarity } from "./services/similarity";
 import { registerSchema, loginSchema, insertAssignmentSchema, insertSubmissionSchema } from "@shared/schema";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Middleware
@@ -128,6 +131,141 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // This is a simplified implementation
     // In production, you would exchange the code for tokens and get user info
     res.redirect('/login?google_auth=success');
+  });
+
+  // Configure multer for avatar uploads
+  const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only image files are allowed'));
+      }
+    }
+  });
+
+  // Profile management routes
+  app.put('/api/auth/profile', requireAuth, upload.single('avatar'), async (req: AuthenticatedRequest, res) => {
+    try {
+      const { name, email } = req.body;
+      const userId = req.user!.id;
+      
+      // Check if email is already taken by another user
+      if (email) {
+        const existingUser = await storage.getUserByEmail(email);
+        if (existingUser && existingUser.id !== userId) {
+          return res.status(409).json({ error: 'Email already in use by another account' });
+        }
+      }
+      
+      // Update user profile
+      const currentUser = await storage.getUser(userId);
+      if (!currentUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const updatedUser = await storage.updateUser(userId, { 
+        name: name || currentUser.name, 
+        email: email || currentUser.email 
+      });
+      
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'Failed to update user' });
+      }
+      
+      // Handle avatar upload if present
+      if (req.file) {
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'avatars');
+        const extension = req.file.mimetype.split('/')[1];
+        const fileName = `${userId}.${extension}`;
+        const filePath = path.join(uploadDir, fileName);
+        
+        // Ensure directory exists
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        
+        // Save avatar file
+        fs.writeFileSync(filePath, req.file.buffer);
+      }
+      
+      res.json({ 
+        user: { 
+          id: updatedUser.id, 
+          name: updatedUser.name, 
+          email: updatedUser.email, 
+          role: updatedUser.role 
+        } 
+      });
+    } catch (error) {
+      console.error('Update profile error:', error);
+      res.status(500).json({ error: 'Failed to update profile' });
+    }
+  });
+  
+  app.put('/api/auth/change-password', requireAuth, async (req: AuthenticatedRequest, res) => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const userId = req.user!.id;
+      
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({ error: 'Current password and new password are required' });
+      }
+      
+      if (newPassword.length < 6) {
+        return res.status(400).json({ error: 'New password must be at least 6 characters long' });
+      }
+      
+      // Get user and verify current password
+      const user = await storage.getUser(userId);
+      if (!user || !user.passwordHash) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      
+      const validPassword = await comparePassword(currentPassword, user.passwordHash);
+      if (!validPassword) {
+        return res.status(401).json({ error: 'Current password is incorrect' });
+      }
+      
+      // Hash new password and update
+      const newPasswordHash = await hashPassword(newPassword);
+      await storage.updateUser(userId, { passwordHash: newPasswordHash });
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Change password error:', error);
+      res.status(500).json({ error: 'Failed to change password' });
+    }
+  });
+  
+  app.get('/api/auth/avatar/:userId', (req, res) => {
+    try {
+      const { userId } = req.params;
+      const avatarDir = path.join(process.cwd(), 'public', 'uploads', 'avatars');
+      
+      // Try different image formats
+      const extensions = ['jpg', 'jpeg', 'png', 'gif'];
+      let avatarPath = null;
+      
+      for (const ext of extensions) {
+        const filePath = path.join(avatarDir, `${userId}.${ext}`);
+        if (fs.existsSync(filePath)) {
+          avatarPath = filePath;
+          break;
+        }
+      }
+      
+      if (!avatarPath) {
+        return res.status(404).json({ error: 'Avatar not found' });
+      }
+      
+      res.sendFile(avatarPath);
+    } catch (error) {
+      console.error('Get avatar error:', error);
+      res.status(500).json({ error: 'Failed to get avatar' });
+    }
   });
 
   // Assignment routes

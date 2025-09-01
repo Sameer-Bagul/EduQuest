@@ -4,7 +4,7 @@ import { useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, ClipboardList, Users, Clock, Plus, BarChart3, LogOut } from "lucide-react";
+import { GraduationCap, ClipboardList, Users, Clock, Plus, BarChart3, LogOut, User } from "lucide-react";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { CreateAssignmentModal } from "@/components/assignment/create-assignment-modal";
 
@@ -75,7 +75,7 @@ export default function TeacherDashboard() {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-3 px-3 py-2 bg-white/60 rounded-lg">
+              <div className="hidden sm:flex items-center space-x-3 px-3 py-2 bg-white/60 rounded-lg cursor-pointer hover:bg-white/70 transition-colors" onClick={() => setLocation('/profile')}>
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-semibold">
                     {user?.name?.charAt(0).toUpperCase()}
@@ -87,6 +87,15 @@ export default function TeacherDashboard() {
                 <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md hover-lift" data-testid="badge-teacher-role">
                   Teacher
                 </Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLocation('/profile')}
+                  className="text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg focus-ring"
+                  title="Profile Settings"
+                >
+                  <User className="w-4 h-4" />
+                </Button>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -175,14 +184,17 @@ export default function TeacherDashboard() {
         {/* Quick Actions */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <Button
-            onClick={() => setCreateModalOpen(true)}
-            className="bg-primary text-white hover:bg-blue-700"
+            onClick={() => setLocation('/create-assignment')}
+            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg px-6 py-3 rounded-xl font-semibold transform hover:scale-105 transition-all duration-200"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-5 h-5 mr-2" />
             Create New Assignment
           </Button>
-          <Button variant="outline">
-            <BarChart3 className="w-4 h-4 mr-2" />
+          <Button 
+            variant="outline" 
+            className="border-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 px-6 py-3 rounded-xl font-semibold transform hover:scale-105 transition-all duration-200"
+          >
+            <BarChart3 className="w-5 h-5 mr-2" />
             View Analytics
           </Button>
         </div>

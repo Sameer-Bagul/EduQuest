@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, Plus, CheckCircle, Star, LogOut, ListTodo } from "lucide-react";
+import { GraduationCap, Plus, CheckCircle, Star, LogOut, ListTodo, User } from "lucide-react";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { useToast } from "@/hooks/use-toast";
 
@@ -89,26 +89,44 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-emerald-50">
       {/* Navigation Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-white/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center mr-3">
-                <GraduationCap className="text-white text-sm w-4 h-4" />
+              <div className="h-10 w-10 gradient-bg rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                <GraduationCap className="text-white w-5 h-5" />
               </div>
-              <h1 className="text-xl font-semibold text-gray-900">Student Portal</h1>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                EduQuest Student Portal
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">{user?.name}</span>
+              <div className="hidden sm:flex items-center space-x-3 px-3 py-2 bg-white/60 rounded-lg cursor-pointer hover:bg-white/70 transition-colors" onClick={() => setLocation('/profile')}>
+                <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-semibold">
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+              </div>
               <div className="flex items-center space-x-2">
-                <Badge className="bg-green-100 text-green-800">Student</Badge>
+                <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md hover-lift">Student</Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLocation('/profile')}
+                  className="text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg focus-ring"
+                  title="Profile Settings"
+                >
+                  <User className="w-4 h-4" />
+                </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleLogout}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg focus-ring"
                 >
                   <LogOut className="w-4 h-4" />
                 </Button>
