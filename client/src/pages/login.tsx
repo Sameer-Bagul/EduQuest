@@ -32,91 +32,72 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen animated-bg relative overflow-hidden">
-      {/* Floating Decorative Elements */}
-      <div className="absolute top-20 left-10 floating">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 backdrop-blur-sm"></div>
-      </div>
-      <div className="absolute top-40 right-20 floating-delayed">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-400/20 to-cyan-400/20 backdrop-blur-sm"></div>
-      </div>
-      <div className="absolute bottom-40 left-1/4 floating">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-r from-teal-400/20 to-green-400/20 backdrop-blur-sm"></div>
-      </div>
-
+    <div className="min-h-screen bg-background">
       {/* Header with Theme Toggle */}
       <div className="absolute top-4 right-4 z-10">
         <ThemeToggle />
       </div>
 
-      {/* Hero Section */}
+      {/* Main Content */}
       <div className="flex flex-col lg:flex-row min-h-screen">
         {/* Left Side - Hero Content */}
-        <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
-          <div className="max-w-2xl text-center lg:text-left fade-in">
+        <div className="flex-1 flex items-center justify-center p-8 lg:p-16">
+          <div className="max-w-lg text-center lg:text-left">
             {/* Logo & Brand */}
-            <div className="flex items-center justify-center lg:justify-start mb-8">
-              <div className="relative">
-                <div className="w-20 h-20 gradient-bg rounded-2xl flex items-center justify-center shadow-xl pulse-glow">
-                  <GraduationCap className="text-white text-3xl w-10 h-10" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-3 h-3 text-white" />
-                </div>
+            <div className="flex items-center justify-center lg:justify-start mb-12">
+              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                <GraduationCap className="text-primary-foreground w-6 h-6" />
               </div>
-              <div className="ml-4">
-                <h1 className="text-4xl lg:text-5xl font-bold text-gradient">
+              <div className="ml-3">
+                <h1 className="text-2xl font-bold text-foreground">
                   EduQuest
                 </h1>
-                <p className="text-secondary-gradient text-lg font-medium">
+                <p className="text-muted-foreground text-sm">
                   Digital Learning Platform
                 </p>
               </div>
             </div>
 
             {/* Hero Text */}
-            <h2 className="text-4xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Transform Your 
-              <span className="text-gradient block">Learning Experience</span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4 leading-tight">
+              Transform Your Learning Experience
             </h2>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              Join thousands of educators and students in our revolutionary platform. 
-              Create, submit, and grade assignments with cutting-edge voice technology 
-              and AI-powered insights.
+            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+              Create, submit, and grade assignments with voice technology and AI-powered insights.
             </p>
 
-            {/* Feature Pills */}
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8">
-              <div className="glass-card px-4 py-2 flex items-center gap-2 hover-lift">
-                <BookOpen className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">Smart Assignments</span>
+            {/* Simple Feature List */}
+            <div className="space-y-3 mb-8">
+              <div className="flex items-center gap-3">
+                <BookOpen className="w-5 h-5 text-primary" />
+                <span className="text-foreground">Smart Assignment Creation</span>
               </div>
-              <div className="glass-card px-4 py-2 flex items-center gap-2 hover-lift">
-                <Users className="w-4 h-4 text-secondary" />
-                <span className="text-sm font-medium">Collaboration</span>
+              <div className="flex items-center gap-3">
+                <Users className="w-5 h-5 text-primary" />
+                <span className="text-foreground">Real-time Collaboration</span>
               </div>
-              <div className="glass-card px-4 py-2 flex items-center gap-2 hover-lift">
-                <Sparkles className="w-4 h-4 text-accent" />
-                <span className="text-sm font-medium">AI-Powered</span>
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-5 h-5 text-primary" />
+                <span className="text-foreground">AI-Powered Grading</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Right Side - Auth Form */}
-        <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
-          <div className="max-w-md w-full space-y-8 fade-in stagger-2">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-foreground mb-2">
-                {isRegister ? 'Join the Revolution' : 'Welcome Back'}
+        <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-muted/30">
+          <div className="w-full max-w-md">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-semibold text-foreground mb-2">
+                {isRegister ? 'Create Account' : 'Welcome Back'}
               </h3>
               <p className="text-muted-foreground">
-                {isRegister ? 'Create your account and start your journey' : 'Sign in to continue your learning'}
+                {isRegister ? 'Start your learning journey today' : 'Sign in to continue'}
               </p>
             </div>
 
-            <Card className="glass-card shadow-xl border-0 card-hover">
-              <CardContent className="p-8">
+            <Card className="clean-card">
+              <CardContent className="p-6">
                 {!isRegister ? (
                   <LoginForm 
                     onSubmit={handleLoginSubmit} 
@@ -133,7 +114,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setIsRegister(!isRegister)}
-                    className="text-gradient hover:opacity-80 text-sm font-medium transition-opacity duration-200"
+                    className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
                     data-testid="button-toggle-auth-mode"
                   >
                     {isRegister ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
@@ -141,20 +122,6 @@ export default function LoginPage() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Trust Indicators */}
-            <div className="text-center text-sm text-muted-foreground">
-              <div className="flex items-center justify-center gap-4">
-                <span className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  Secure & Private
-                </span>
-                <span className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  GDPR Compliant
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

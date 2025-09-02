@@ -62,48 +62,36 @@ export default function TeacherDashboard() {
   }
 
   return (
-    <div className="min-h-screen animated-bg relative overflow-hidden">
-      {/* Floating Decorative Elements */}
-      <div className="absolute top-32 right-20 floating">
-        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 backdrop-blur-sm"></div>
-      </div>
-      <div className="absolute bottom-40 left-10 floating-delayed">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-400/20 to-blue-400/20 backdrop-blur-sm"></div>
-      </div>
+    <div className="min-h-screen bg-background">
       {/* Navigation Header */}
-      <header className="glass-card shadow-xl border-0 sticky top-0 z-50">
+      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="relative">
-                <div className="h-12 w-12 gradient-bg rounded-2xl flex items-center justify-center mr-4 shadow-xl pulse-glow">
-                  <GraduationCap className="text-white w-6 h-6" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                  <Sparkles className="w-2.5 h-2.5 text-white" />
-                </div>
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3">
+                <GraduationCap className="text-primary-foreground w-5 h-5" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gradient">
-                  EduQuest Platform
+                <h1 className="text-lg font-semibold text-foreground">
+                  EduQuest
                 </h1>
                 <p className="text-xs text-muted-foreground">Teacher Dashboard</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-3 glass-card px-4 py-2 cursor-pointer hover-lift" onClick={() => setLocation('/profile')}>
-                <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-white text-sm font-bold">
+              <div className="hidden sm:flex items-center space-x-3 cursor-pointer" onClick={() => setLocation('/profile')}>
+                <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                  <span className="text-foreground text-sm font-medium">
                     {user?.name?.charAt(0).toUpperCase()}
                   </span>
                 </div>
                 <div>
-                  <span className="text-sm font-semibold text-foreground block">{user?.name}</span>
+                  <span className="text-sm font-medium text-foreground block">{user?.name}</span>
                   <span className="text-xs text-muted-foreground">Educator</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <Badge className="gradient-bg text-white shadow-lg hover-lift border-0" data-testid="badge-teacher-role">
+                <Badge variant="secondary" data-testid="badge-teacher-role">
                   Teacher
                 </Badge>
                 <ThemeToggle />
@@ -111,7 +99,7 @@ export default function TeacherDashboard() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setLocation('/profile')}
-                  className="glass-effect hover-lift text-muted-foreground hover:text-foreground focus-ring"
+                  className="text-muted-foreground hover:text-foreground"
                   title="Profile Settings"
                 >
                   <User className="w-4 h-4" />
@@ -120,7 +108,7 @@ export default function TeacherDashboard() {
                   variant="ghost"
                   size="sm"
                   onClick={handleLogout}
-                  className="glass-effect hover-lift text-muted-foreground hover:text-foreground focus-ring"
+                  className="text-muted-foreground hover:text-foreground"
                   data-testid="button-logout"
                 >
                   <LogOut className="w-4 h-4" />
@@ -133,69 +121,60 @@ export default function TeacherDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 fade-in">
-          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg hover-lift" data-testid="card-total-assignments">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card className="hover-subtle" data-testid="card-total-assignments">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 mr-4 shadow-lg">
-                  <ClipboardList className="text-white w-6 h-6" />
+                <div className="p-3 rounded-lg bg-primary/10 mr-4">
+                  <ClipboardList className="text-primary w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">Total Assignments</p>
-                  <p className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Total Assignments</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {stats.totalAssignments}
                   </p>
                 </div>
               </div>
-              <div className="mt-4 flex items-center text-sm text-gray-500">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
-                  <span>Active assignments managed</span>
-                </div>
+              <div className="mt-4 text-sm text-muted-foreground">
+                Active assignments managed
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg hover-lift" data-testid="card-active-students">
+          <Card className="hover-subtle" data-testid="card-active-students">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 mr-4 shadow-lg">
-                  <Users className="text-white w-6 h-6" />
+                <div className="p-3 rounded-lg bg-success/10 mr-4">
+                  <Users className="text-success w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">Active Students</p>
-                  <p className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent">
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Active Students</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {stats.activeStudents}
                   </p>
                 </div>
               </div>
-              <div className="mt-4 flex items-center text-sm text-gray-500">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 status-active"></div>
-                  <span>Currently enrolled</span>
-                </div>
+              <div className="mt-4 text-sm text-muted-foreground">
+                Currently enrolled
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg hover-lift" data-testid="card-pending-reviews">
+          <Card className="hover-subtle" data-testid="card-pending-reviews">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 mr-4 shadow-lg">
-                  <Clock className="text-white w-6 h-6" />
+                <div className="p-3 rounded-lg bg-warning/10 mr-4">
+                  <Clock className="text-warning w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">Pending Reviews</p>
-                  <p className="text-3xl font-bold bg-gradient-to-r from-amber-600 to-orange-700 bg-clip-text text-transparent">
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Pending Reviews</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {stats.pendingReviews}
                   </p>
                 </div>
               </div>
-              <div className="mt-4 flex items-center text-sm text-gray-500">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-amber-400 rounded-full mr-2 status-warning"></div>
-                  <span>Awaiting evaluation</span>
-                </div>
+              <div className="mt-4 text-sm text-muted-foreground">
+                Awaiting evaluation
               </div>
             </CardContent>
           </Card>
@@ -205,87 +184,87 @@ export default function TeacherDashboard() {
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <Button
             onClick={() => setLocation('/create-assignment')}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg px-6 py-3 rounded-xl font-semibold transform hover:scale-105 transition-all duration-200"
+            className="h-11"
           >
-            <Plus className="w-5 h-5 mr-2" />
+            <Plus className="w-4 h-4 mr-2" />
             Create New Assignment
           </Button>
           <Button 
             variant="outline" 
-            className="border-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 px-6 py-3 rounded-xl font-semibold transform hover:scale-105 transition-all duration-200"
+            className="h-11"
           >
-            <BarChart3 className="w-5 h-5 mr-2" />
+            <BarChart3 className="w-4 h-4 mr-2" />
             View Analytics
           </Button>
         </div>
 
         {/* Assignments List */}
         <Card>
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Recent Assignments</h3>
+          <div className="px-6 py-4 border-b">
+            <h3 className="text-lg font-semibold text-foreground">Recent Assignments</h3>
           </div>
           {isLoading ? (
             <div className="p-6">
-              <div className="text-center text-gray-500">Loading assignments...</div>
+              <div className="text-center text-muted-foreground">Loading assignments...</div>
             </div>
           ) : assignments.length === 0 ? (
             <div className="p-6">
-              <div className="text-center text-gray-500">
+              <div className="text-center text-muted-foreground">
                 No assignments yet. Create your first assignment to get started.
               </div>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <table className="min-w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
                       Assignment
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
                       Subject
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
                       Due Date
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-sm font-medium text-muted-foreground">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody>
                   {assignments.map((assignment: any) => {
                     const status = getAssignmentStatus(assignment);
                     return (
-                      <tr key={assignment.id}>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                      <tr key={assignment.id} className="border-b last:border-b-0">
+                        <td className="px-6 py-4">
                           <div>
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium text-foreground">
                               {assignment.title}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-muted-foreground">
                               Code: {assignment.code}
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{assignment.subjectName}</div>
-                          <div className="text-sm text-gray-500">{assignment.subjectCode}</div>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-foreground">{assignment.subjectName}</div>
+                          <div className="text-sm text-muted-foreground">{assignment.subjectCode}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-foreground">
                           {new Date(assignment.endDate).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                           <Badge variant={status.variant}>{status.label}</Badge>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
-                          <Button variant="ghost" size="sm" className="text-primary hover:text-blue-900">
+                        <td className="px-6 py-4 text-sm font-medium space-x-2">
+                          <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                             View
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-gray-600">
+                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
                             Edit
                           </Button>
                         </td>
