@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "wouter";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useLocation, useParams } from "wouter";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +18,7 @@ import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthContext } from "@/components/ui/auth-provider";
 
-const createAssignmentSchema = z.object({
+const updateAssignmentSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
   mode: z.enum(['voice', 'voice_text']),
   facultyName: z.string().min(1, "Faculty name is required"),
@@ -34,9 +34,10 @@ const createAssignmentSchema = z.object({
   })).min(1, "At least one question is required"),
 });
 
-type CreateAssignmentFormData = z.infer<typeof createAssignmentSchema>;
+type UpdateAssignmentFormData = z.infer<typeof updateAssignmentSchema>;
 
-export default function CreateAssignmentPage() {
+export default function EditAssignmentPage() {
+  const { id } = useParams<{ id: string }>();
   const [questions, setQuestions] = useState([{ text: "", answerKey: "" }]);
   const [, setLocation] = useLocation();
   const { user, isAuthenticated } = useAuthContext();
@@ -52,8 +53,15 @@ export default function CreateAssignmentPage() {
     }
   }, [isAuthenticated, user, setLocation]);
 
-  const form = useForm<CreateAssignmentFormData>({
-    resolver: zodResolver(createAssignmentSchema),
+  const { data: assignmentData, isLoading, error } = useQuery({
+    queryKey: ['/api/assignments', id],
+    enabled: !!id && isAuthenticated && user?.role === 'teacher',
+  });
+
+  const assignment = (assignmentData as any)?.assignment;
+
+  const form = useForm<UpdateAssignmentFormData>({
+    resolver: zodResolver(updateAssignmentSchema),
     defaultValues: {
       mode: 'voice_text',
       autoDelete: true,
@@ -61,20 +69,46 @@ export default function CreateAssignmentPage() {
     },
   });
 
-  const createMutation = useMutation({
-    mutationFn: api.createAssignment,
+  // Populate form when assignment data is loaded
+  useEffect(() => {
+    if (assignment) {
+      const formData = {
+        title: assignment.title,
+        mode: assignment.mode,
+        facultyName: assignment.facultyName,
+        collegeName: assignment.collegeName,
+        subjectName: assignment.subjectName,
+        subjectCode: assignment.subjectCode,
+        startDate: new Date(assignment.startDate).toISOString().slice(0, 16),
+        endDate: new Date(assignment.endDate).toISOString().slice(0, 16),
+        autoDelete: assignment.autoDelete,
+        questions: assignment.questions.map((q: any) => ({
+          text: q.text,
+          answerKey: q.answerKey,
+        })),
+      };
+      
+      form.reset(formData);
+      setQuestions(formData.questions);
+    }
+  }, [assignment, form]);
+
+  const updateMutation = useMutation({
+    mutationFn: (data: UpdateAssignmentFormData) => 
+      api.request(`/api/assignments/${id}`, { method: 'PUT', body: data }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/assignments/teacher'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/assignments', id] });
       toast({
-        title: "🎉 Success!",
-        description: `Assignment "${data.assignment.title}" created successfully with code: ${data.assignment.code}`,
+        title: "✅ Success!",
+        description: `Assignment "${data.assignment.title}" updated successfully!`,
       });
       setLocation('/teacher-dashboard');
     },
     onError: (error: any) => {
       toast({
         title: "❌ Error",
-        description: error.message || "Failed to create assignment",
+        description: error.message || "Failed to update assignment",
         variant: "destructive",
       });
     },
@@ -101,8 +135,8 @@ export default function CreateAssignmentPage() {
     form.setValue('questions', newQuestions);
   };
 
-  const onSubmit = (data: CreateAssignmentFormData) => {
-    createMutation.mutate(data);
+  const onSubmit = (data: UpdateAssignmentFormData) => {
+    updateMutation.mutate(data);
   };
 
   const handleGoBack = () => {
@@ -111,6 +145,35 @@ export default function CreateAssignmentPage() {
 
   if (!isAuthenticated || user?.role !== 'teacher') {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg font-medium text-foreground mb-2">Loading Assignment...</div>
+          <p className="text-muted-foreground">Please wait while we fetch the assignment details.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !assignment) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardContent className="p-6 text-center">
+            <div className="text-lg font-medium text-destructive mb-2">Assignment Not Found</div>
+            <p className="text-muted-foreground mb-4">
+              The assignment could not be found or you don't have access to it.
+            </p>
+            <Button onClick={handleGoBack}>
+              Back to Dashboard
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -132,21 +195,11 @@ export default function CreateAssignmentPage() {
                 <GraduationCap className="text-primary-foreground w-4 h-4" />
               </div>
               <h1 className="text-lg font-semibold text-foreground">
-                Create New Assignment
+                Edit Assignment
               </h1>
             </div>
             <div className="flex items-center space-x-3">
-              <Badge variant="secondary">
-                Teacher
-              </Badge>
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
-                  <span className="text-foreground text-sm font-medium">
-                    {user?.name?.charAt(0)?.toUpperCase()}
-                  </span>
-                </div>
-                <span className="text-sm font-medium text-foreground">{user?.name}</span>
-              </div>
+              <Badge variant="secondary">Teacher</Badge>
               <ThemeToggle />
             </div>
           </div>
@@ -223,13 +276,9 @@ export default function CreateAssignmentPage() {
                     name="facultyName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Faculty Name</FormLabel>
+                        <FormLabel className="text-foreground font-medium">Faculty Name</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Enter faculty name" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
+                          <Input placeholder="Enter faculty name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -241,33 +290,23 @@ export default function CreateAssignmentPage() {
                     name="collegeName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">College Name</FormLabel>
+                        <FormLabel className="text-foreground font-medium">College Name</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Enter college name" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
+                          <Input placeholder="Enter college name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="subjectName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Subject Name</FormLabel>
+                        <FormLabel className="text-foreground font-medium">Subject Name</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Enter subject name" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
+                          <Input placeholder="Enter subject name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -279,13 +318,9 @@ export default function CreateAssignmentPage() {
                     name="subjectCode"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Subject Code</FormLabel>
+                        <FormLabel className="text-foreground font-medium">Subject Code</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Enter subject code" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
+                          <Input placeholder="Enter subject code" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -310,16 +345,12 @@ export default function CreateAssignmentPage() {
                     name="startDate"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium flex items-center">
-                          <Clock className="w-4 h-4 mr-2 text-purple-600" />
+                        <FormLabel className="text-foreground font-medium flex items-center">
+                          <Clock className="w-4 h-4 mr-2 text-primary" />
                           Start Date & Time
                         </FormLabel>
                         <FormControl>
-                          <Input 
-                            type="datetime-local" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-purple-500 transition-colors"
-                          />
+                          <Input type="datetime-local" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -331,16 +362,12 @@ export default function CreateAssignmentPage() {
                     name="endDate"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium flex items-center">
-                          <Clock className="w-4 h-4 mr-2 text-purple-600" />
+                        <FormLabel className="text-foreground font-medium flex items-center">
+                          <Clock className="w-4 h-4 mr-2 text-primary" />
                           End Date & Time
                         </FormLabel>
                         <FormControl>
-                          <Input 
-                            type="datetime-local" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-purple-500 transition-colors"
-                          />
+                          <Input type="datetime-local" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -417,7 +444,7 @@ export default function CreateAssignmentPage() {
                     </Card>
                   ))}
                   
-                  {/* Add Question Button - Now Below Questions */}
+                  {/* Add Question Button - Below Questions */}
                   <div className="pt-4">
                     <Button
                       type="button"
@@ -439,25 +466,23 @@ export default function CreateAssignmentPage() {
               <CardContent className="p-6">
                 <div className="flex justify-between items-center">
                   <div className="text-sm text-muted-foreground">
-                    <p>Ready to create your assignment?</p>
-                    <p>Students will be able to access it using the generated assignment code.</p>
+                    <p>Ready to update your assignment?</p>
+                    <p>Changes will be saved and students can access the updated version.</p>
                   </div>
                   <div className="flex space-x-4">
                     <Button
                       type="button"
                       variant="outline"
                       onClick={handleGoBack}
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
                     >
                       Cancel
                     </Button>
                     <Button
                       type="submit"
-                      disabled={createMutation.isPending}
-                      className="bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg px-8"
+                      disabled={updateMutation.isPending}
                     >
                       <Save className="w-4 h-4 mr-2" />
-                      {createMutation.isPending ? "Creating..." : "Create Assignment"}
+                      {updateMutation.isPending ? "Updating..." : "Update Assignment"}
                     </Button>
                   </div>
                 </div>

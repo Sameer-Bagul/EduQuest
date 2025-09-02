@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Eye, Mic, ChevronLeft, ChevronRight, Save } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { VoiceRecorderComponent } from "@/components/assignment/voice-recorder";
 import { ProctoringManager } from "@/lib/proctoring";
@@ -243,8 +244,11 @@ export default function AssignmentInterface() {
               <span>Audio monitoring active</span>
             </div>
           </div>
-          <div className="text-sm font-medium text-red-800">
-            Time Remaining: {formatTime(timeRemaining)}
+          <div className="flex items-center space-x-4">
+            <div className="text-sm font-medium text-red-800">
+              Time Remaining: {formatTime(timeRemaining)}
+            </div>
+            <ThemeToggle />
           </div>
         </div>
       </div>

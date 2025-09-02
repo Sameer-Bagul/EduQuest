@@ -327,6 +327,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get individual assignment by ID (for viewing)
+  app.get('/api/assignments/:id', requireAuth, requireRole('teacher'), async (req: AuthenticatedRequest, res) => {
+    try {
+      const assignment = await storage.getAssignment(req.params.id);
+      if (!assignment) {
+        return res.status(404).json({ error: 'Assignment not found' });
+      }
+
+      // Check if teacher owns this assignment
+      if (assignment.teacherId !== req.user!.id) {
+        return res.status(403).json({ error: 'Access denied' });
+      }
+
+      res.json({ assignment });
+    } catch (error) {
+      console.error('Get assignment error:', error);
+      res.status(500).json({ error: 'Failed to get assignment' });
+    }
+  });
+
+  // Update assignment (for editing)
+  app.put('/api/assignments/:id', requireAuth, requireRole('teacher'), async (req: AuthenticatedRequest, res) => {
+    try {
+      const assignment = await storage.getAssignment(req.params.id);
+      if (!assignment) {
+        return res.status(404).json({ error: 'Assignment not found' });
+      }
+
+      // Check if teacher owns this assignment
+      if (assignment.teacherId !== req.user!.id) {
+        return res.status(403).json({ error: 'Access denied' });
+      }
+
+      const parsed = insertAssignmentSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ error: 'Invalid input', details: parsed.error });
+      }
+
+      const updatedAssignment = await storage.updateAssignment(req.params.id, parsed.data);
+      if (!updatedAssignment) {
+        return res.status(404).json({ error: 'Assignment not found' });
+      }
+
+      res.json({ assignment: updatedAssignment });
+    } catch (error) {
+      console.error('Update assignment error:', error);
+      res.status(500).json({ error: 'Failed to update assignment' });
+    }
+  });
+
   // Submission routes
   app.post('/api/submissions', requireAuth, requireRole('student'), async (req: AuthenticatedRequest, res) => {
     try {

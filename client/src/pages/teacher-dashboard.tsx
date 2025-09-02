@@ -261,10 +261,20 @@ export default function TeacherDashboard() {
                           <Badge variant={status.variant}>{status.label}</Badge>
                         </td>
                         <td className="px-6 py-4 text-sm font-medium space-x-2">
-                          <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-primary hover:text-primary/80"
+                            onClick={() => setLocation(`/assignments/view/${assignment.id}`)}
+                          >
                             View
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-muted-foreground hover:text-foreground"
+                            onClick={() => setLocation(`/assignments/edit/${assignment.id}`)}
+                          >
                             Edit
                           </Button>
                         </td>
