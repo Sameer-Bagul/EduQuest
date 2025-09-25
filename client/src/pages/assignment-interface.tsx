@@ -1,10 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useParams } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Eye, Mic, ChevronLeft, ChevronRight, Save } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { 
+  Eye, 
+  Mic, 
+  ChevronLeft, 
+  ChevronRight, 
+  Save, 
+  Wallet, 
+  AlertTriangle, 
+  CheckCircle,
+  CreditCard
+} from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { VoiceRecorderComponent } from "@/components/assignment/voice-recorder";
@@ -25,6 +37,7 @@ export default function AssignmentInterface() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showTokenInfo, setShowTokenInfo] = useState(true);
   
   const proctoringRef = useRef<ProctoringManager | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -45,6 +58,20 @@ export default function AssignmentInterface() {
   });
 
   const assignment = (assignmentData as any)?.assignment;
+
+  // Fetch wallet data
+  const { data: wallet, isLoading: walletLoading } = useQuery({
+    queryKey: ['/api/wallet'],
+    queryFn: () => api.getWallet(),
+    enabled: isAuthenticated && user?.role === 'student'
+  });
+
+  // Fetch assignment cost
+  const { data: costData, isLoading: costLoading } = useQuery({
+    queryKey: ['/api/assignments', assignment?.id, 'cost'],
+    queryFn: () => api.getAssignmentCost(assignment!.id),
+    enabled: !!assignment?.id
+  });
 
   // Initialize proctoring and timer
   useEffect(() => {
@@ -100,18 +127,31 @@ export default function AssignmentInterface() {
     onSuccess: (data) => {
       proctoringRef.current?.stop();
       queryClient.invalidateQueries({ queryKey: ['/api/submissions/student'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/wallet'] });
+      
+      // Show success message with tokens deducted
+      const tokensUsed = costData?.tokensRequired || 0;
       toast({
-        title: "Assignment Submitted!",
-        description: `Your score: ${Math.round(data.totalAwarded * 100)}%`,
+        title: "Assignment Submitted Successfully!",
+        description: `Score: ${Math.round(data.totalAwarded * 100)}% | ${tokensUsed} tokens deducted`,
       });
       setLocation('/student-dashboard');
     },
     onError: (error: any) => {
+      const isTokenError = error.message?.includes('Insufficient token balance');
       toast({
-        title: "Submission Failed",
-        description: error.message || "Failed to submit assignment",
+        title: isTokenError ? "Insufficient Tokens" : "Submission Failed",
+        description: isTokenError 
+          ? "You don't have enough tokens to submit this assignment. Please purchase more tokens."
+          : error.message || "Failed to submit assignment",
         variant: "destructive",
       });
+      
+      // Redirect to wallet if token error
+      if (isTokenError) {
+        setTimeout(() => setLocation('/profile?tab=wallet'), 2000);
+      }
+      
       setIsSubmitting(false);
     },
   });
@@ -266,6 +306,120 @@ export default function AssignmentInterface() {
       </header>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Token Cost Information */}
+        {showTokenInfo && costData && (
+          <Card className="mb-6 border-blue-200 bg-blue-50" data-testid="card-token-cost">
+            <CardHeader className="pb-3">
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-lg flex items-center">
+                  <Wallet className="w-5 h-5 mr-2 text-blue-600" />
+                  Token Information
+                </CardTitle>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setShowTokenInfo(false)}
+                  className="text-blue-600 hover:text-blue-800"
+                  data-testid="button-hide-token-info"
+                >
+                  Hide
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Required Tokens:</span>
+                  <div className="flex items-center">
+                    <Wallet className="w-4 h-4 mr-1 text-blue-600" />
+                    <span className="font-bold text-blue-700" data-testid="text-required-tokens">
+                      {costLoading ? '...' : costData.tokensRequired}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Your Balance:</span>
+                  <div className="flex items-center">
+                    <Wallet className="w-4 h-4 mr-1 text-gray-600" />
+                    {walletLoading ? (
+                      <span className="font-bold text-gray-500" data-testid="text-user-balance">Loading...</span>
+                    ) : wallet ? (
+                      <span className={`font-bold ${wallet.balance >= costData.tokensRequired ? 'text-green-600' : 'text-red-600'}`} data-testid="text-user-balance">
+                        {wallet.balance}
+                      </span>
+                    ) : (
+                      <span className="font-bold text-red-600" data-testid="text-user-balance">Error</span>
+                    )}
+                  </div>
+                </div>
+                
+                {costData.formattedCost && (
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                    <span className="text-sm font-medium text-gray-700">Cost:</span>
+                    <span className="font-bold text-gray-700" data-testid="text-cost">
+                      {costData.formattedCost}
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              {!walletLoading && wallet && wallet.balance < costData.tokensRequired && (
+                <Alert className="border-red-200 bg-red-50" data-testid="alert-insufficient-tokens">
+                  <AlertTriangle className="h-4 w-4 text-red-600" />
+                  <AlertDescription className="text-red-800">
+                    <div className="flex items-center justify-between">
+                      <span>
+                        Insufficient tokens! You need {costData.tokensRequired - wallet.balance} more tokens to complete this assignment.
+                      </span>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => setLocation('/profile?tab=wallet')}
+                        className="ml-4 border-red-300 text-red-700 hover:bg-red-100"
+                        data-testid="button-buy-tokens-assignment"
+                      >
+                        <CreditCard className="w-4 h-4 mr-1" />
+                        Buy Tokens
+                      </Button>
+                    </div>
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              {!walletLoading && wallet && wallet.balance >= costData.tokensRequired && (
+                <Alert className="border-green-200 bg-green-50" data-testid="alert-sufficient-tokens">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <AlertDescription className="text-green-800">
+                    You have sufficient tokens to complete this assignment. Tokens will be deducted upon submission.
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              <div className="text-xs text-blue-600 space-y-1">
+                <p>• 1 token = 4 questions (rounded up)</p>
+                <p>• Tokens are only deducted when you submit the assignment</p>
+                <p>• You can save your progress without using tokens</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Show Token Info Button (when hidden) */}
+        {!showTokenInfo && costData && (
+          <div className="mb-6">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowTokenInfo(true)}
+              className="border-blue-300 text-blue-700 hover:bg-blue-50"
+              data-testid="button-show-token-info"
+            >
+              <Wallet className="w-4 h-4 mr-2" />
+              Show Token Information
+            </Button>
+          </div>
+        )}
+
         {/* Progress Indicator */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">

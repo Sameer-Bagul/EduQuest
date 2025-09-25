@@ -3,39 +3,39 @@
 ## Core Features to Implement
 
 ### 1. Database & Backend Architecture
-- [ ] Set up MongoDB connection
-- [ ] Create MongoDB schemas for:
-  - [ ] Users (students/teachers with role-based access)
-  - [ ] Assignments (with question count and metadata)
-  - [ ] Token Wallets (user token balances)
-  - [ ] Transactions (token deductions and purchases)
-  - [ ] Payments (RazorPay order tracking)
+- [x] Set up MongoDB connection (with memory fallback)
+- [x] Create MongoDB schemas for:
+  - [x] Users (students/teachers with role-based access)
+  - [x] Assignments (with question count and metadata)
+  - [x] Token Wallets (user token balances)
+  - [x] Transactions (token deductions and purchases)
+  - [x] Payments (RazorPay order tracking)
 
 ### 2. Payment System
-- [ ] Integrate RazorPay payment gateway
-- [ ] Implement currency detection (India = INR, Outside = USD)
-- [ ] Token pricing system:
-  - [ ] Base: ₹2 per token
-  - [ ] USD conversion: $0.023 per token (₹88 = $1)
-- [ ] Token calculation: 1 token = 4 questions (ceil(questions/4))
+- [x] Integrate RazorPay payment gateway
+- [x] Implement currency detection (India = INR, Outside = USD)
+- [x] Token pricing system:
+  - [x] Base: ₹2 per token
+  - [x] USD conversion: $0.023 per token (₹88 = $1)
+- [x] Token calculation: 1 token = 4 questions (ceil(questions/4))
 
 ### 3. Authentication & User Management
-- [ ] User registration with geolocation for currency
-- [ ] Login/logout with JWT tokens
-- [ ] Role-based access (student vs teacher)
+- [x] User registration with geolocation for currency
+- [x] Login/logout with JWT tokens
+- [x] Role-based access (student vs teacher)
 
 ### 4. Assignment System
-- [ ] Teacher assignment creation
-- [ ] Token requirement calculation
-- [ ] Assignment access control (token-gated)
-- [ ] Assignment completion tracking
+- [x] Teacher assignment creation
+- [x] Token requirement calculation
+- [x] Assignment access control (token-gated)
+- [x] Assignment completion tracking
 
 ### 5. Payment Workflow
-- [ ] Token purchase flow
-- [ ] RazorPay order creation
-- [ ] Payment verification
-- [ ] Token wallet updates
-- [ ] Transaction logging
+- [x] Token purchase flow (backend)
+- [x] RazorPay order creation
+- [x] Payment verification
+- [x] Token wallet updates
+- [x] Transaction logging
 
 ### 6. User Interface
 - [ ] Student Dashboard:
@@ -53,10 +53,10 @@
   - [ ] Payment history
 
 ### 7. Security & Reliability
-- [ ] Atomic token transactions
-- [ ] Race condition handling
-- [ ] Payment signature verification
-- [ ] Data encryption (passwords, sensitive info)
+- [x] Atomic token transactions
+- [x] Race condition handling
+- [x] Payment signature verification
+- [x] Data encryption (passwords, sensitive info)
 
 ## Current Status
 - [x] Basic UI components created

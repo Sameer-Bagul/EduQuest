@@ -89,5 +89,40 @@ export const api = {
   async getAssignmentSubmissions(assignmentId: string) {
     const response = await apiRequest('GET', `/api/submissions/assignment/${assignmentId}`);
     return response.json();
+  },
+
+  // Wallet & Payments
+  async getWallet() {
+    const response = await apiRequest('GET', '/api/wallet');
+    return response.json();
+  },
+
+  async getTransactionHistory() {
+    const response = await apiRequest('GET', '/api/transactions/history');
+    return response.json();
+  },
+
+  async getPaymentHistory() {
+    const response = await apiRequest('GET', '/api/payments/history');
+    return response.json();
+  },
+
+  async createTokenPurchaseOrder(tokens: number) {
+    const response = await apiRequest('POST', '/api/payments/create-order', { tokens });
+    return response.json();
+  },
+
+  async verifyPayment(paymentData: {
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+  }) {
+    const response = await apiRequest('POST', '/api/payments/verify', paymentData);
+    return response.json();
+  },
+
+  async getAssignmentCost(assignmentId: string) {
+    const response = await apiRequest('GET', `/api/assignments/${assignmentId}/cost`);
+    return response.json();
   }
 };
