@@ -6,6 +6,8 @@ import { storage } from "./storage";
 import { requireAuth, requireRole, type AuthenticatedRequest } from "./middleware/auth";
 import { generateToken, hashPassword, comparePassword, setAuthCookie, clearAuthCookie } from "./services/auth";
 import { calculateSimilarity } from "./services/similarity";
+import { PaymentController } from "./controllers/paymentController";
+import { paymentService } from "./services/paymentService";
 import { registerSchema, loginSchema, insertAssignmentSchema, insertSubmissionSchema } from "@shared/schema";
 import multer from "multer";
 import path from "path";
@@ -365,7 +367,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Invalid input', details: parsed.error });
       }
 
-      const updatedAssignment = await storage.updateAssignment(req.params.id, parsed.data);
+      // Add IDs to questions if they don't have them
+      const dataWithIds = {
+        ...parsed.data,
+        questions: parsed.data.questions.map(q => ({
+          ...q,
+          id: ('id' in q && typeof q.id === 'string') ? q.id : Math.random().toString(36).substring(2, 15)
+        }))
+      };
+      
+      const updatedAssignment = await storage.updateAssignment(req.params.id, dataWithIds);
       if (!updatedAssignment) {
         return res.status(404).json({ error: 'Assignment not found' });
       }
@@ -376,6 +387,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: 'Failed to update assignment' });
     }
   });
+
+  // Payment and Token routes
+  app.post('/api/payments/create-order', requireAuth, PaymentController.createTokenPurchaseOrder);
+  app.post('/api/payments/verify', requireAuth, PaymentController.verifyPayment);
+  app.get('/api/payments/history', requireAuth, PaymentController.getPaymentHistory);
+  app.get('/api/transactions/history', requireAuth, PaymentController.getTransactionHistory);
+  app.get('/api/wallet', requireAuth, PaymentController.getTokenWallet);
+  app.get('/api/assignments/:assignmentId/cost', requireAuth, PaymentController.calculateAssignmentCost);
 
   // Submission routes
   app.post('/api/submissions', requireAuth, requireRole('student'), async (req: AuthenticatedRequest, res) => {
@@ -415,6 +434,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(409).json({ error: 'Assignment already submitted' });
       }
 
+      // Calculate tokens required for this assignment
+      const tokensRequired = paymentService.calculateTokensRequired(assignment.questions.length);
+      
+      // Deduct tokens atomically (this will check balance and create transaction)
+      let tokenDeduction;
+      try {
+        tokenDeduction = await storage.deductTokensForAssignment(
+          req.user!.id, 
+          tokensRequired, 
+          assignment.id
+        );
+      } catch (error) {
+        if (error instanceof Error && error.message === 'Insufficient token balance') {
+          // Get user's current balance for error message
+          const wallet = await storage.getTokenWallet(req.user!.id);
+          const currentBalance = wallet?.balance || 0;
+          
+          return res.status(402).json({ 
+            error: 'Insufficient token balance',
+            details: {
+              required: tokensRequired,
+              current: currentBalance,
+              shortfall: tokensRequired - currentBalance
+            }
+          });
+        }
+        throw error;
+      }
+
       // Grade answers using NLP similarity
       const threshold = 0.70;
       const marksPerQuestion = 1;
@@ -444,7 +492,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         totalAwarded
       });
 
-      res.json({ submission, scores, totalAwarded });
+      res.json({ 
+        submission, 
+        scores, 
+        totalAwarded,
+        tokensDeducted: tokensRequired,
+        newTokenBalance: tokenDeduction.wallet.balance
+      });
     } catch (error) {
       console.error('Submit assignment error:', error);
       res.status(500).json({ error: 'Failed to submit assignment' });
