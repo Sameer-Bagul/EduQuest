@@ -1,4 +1,11 @@
-import { type User, type InsertUser, type Assignment, type InsertAssignment, type Submission, type InsertSubmission } from "@shared/schema";
+import { 
+  type User, type InsertUser, 
+  type Assignment, type InsertAssignment, 
+  type Submission, type InsertSubmission,
+  type TokenWallet, type InsertTokenWallet,
+  type Transaction, type InsertTransaction,
+  type Payment, type InsertPayment
+} from "@shared/schema";
 import { randomUUID } from "crypto";
 import type { IStorage } from "../storage";
 
@@ -6,6 +13,9 @@ export class MemoryStorage implements IStorage {
   private users: Map<string, User> = new Map();
   private assignments: Map<string, Assignment> = new Map();
   private submissions: Map<string, Submission> = new Map();
+  private tokenWallets: Map<string, TokenWallet> = new Map();
+  private transactions: Map<string, Transaction> = new Map();
+  private payments: Map<string, Payment> = new Map();
 
   private generateAssignmentCode(): string {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -142,5 +152,131 @@ export class MemoryStorage implements IStorage {
     };
     this.submissions.set(id, submission);
     return submission;
+  }
+
+  // Token Wallet operations
+  async getTokenWallet(userId: string): Promise<TokenWallet | undefined> {
+    return Array.from(this.tokenWallets.values()).find(wallet => wallet.userId === userId);
+  }
+
+  async createTokenWallet(insertWallet: InsertTokenWallet): Promise<TokenWallet> {
+    const id = randomUUID();
+    const now = new Date().toISOString();
+    const wallet: TokenWallet = {
+      ...insertWallet,
+      id,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.tokenWallets.set(id, wallet);
+    return wallet;
+  }
+
+  async updateTokenBalance(userId: string, newBalance: number): Promise<TokenWallet | undefined> {
+    const wallet = await this.getTokenWallet(userId);
+    if (!wallet) return undefined;
+    
+    const updatedWallet: TokenWallet = {
+      ...wallet,
+      balance: newBalance,
+      updatedAt: new Date().toISOString(),
+    };
+    this.tokenWallets.set(wallet.id, updatedWallet);
+    return updatedWallet;
+  }
+
+  // Transaction operations
+  async getTransaction(id: string): Promise<Transaction | undefined> {
+    return this.transactions.get(id);
+  }
+
+  async getTransactionsByUser(userId: string): Promise<Transaction[]> {
+    return Array.from(this.transactions.values()).filter(transaction => transaction.userId === userId);
+  }
+
+  async createTransaction(insertTransaction: InsertTransaction): Promise<Transaction> {
+    const id = randomUUID();
+    const now = new Date().toISOString();
+    const transaction: Transaction = {
+      ...insertTransaction,
+      id,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.transactions.set(id, transaction);
+    return transaction;
+  }
+
+  // Payment operations
+  async getPayment(id: string): Promise<Payment | undefined> {
+    return this.payments.get(id);
+  }
+
+  async getPaymentByOrderId(razorpayOrderId: string): Promise<Payment | undefined> {
+    return Array.from(this.payments.values()).find(payment => payment.razorpayOrderId === razorpayOrderId);
+  }
+
+  async getPaymentsByUser(userId: string): Promise<Payment[]> {
+    return Array.from(this.payments.values()).filter(payment => payment.userId === userId);
+  }
+
+  async createPayment(insertPayment: InsertPayment): Promise<Payment> {
+    const id = randomUUID();
+    const now = new Date().toISOString();
+    const payment: Payment = {
+      ...insertPayment,
+      id,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.payments.set(id, payment);
+    return payment;
+  }
+
+  async updatePayment(id: string, updates: Partial<Payment>): Promise<Payment | undefined> {
+    const payment = this.payments.get(id);
+    if (!payment) return undefined;
+    
+    const updatedPayment: Payment = {
+      ...payment,
+      ...updates,
+      id,
+      updatedAt: new Date().toISOString(),
+    };
+    this.payments.set(id, updatedPayment);
+    return updatedPayment;
+  }
+
+  // Atomic operations for token system
+  async deductTokensForAssignment(userId: string, tokens: number, assignmentId: string): Promise<{wallet: TokenWallet, transaction: Transaction}> {
+    // Get current wallet or create if doesn't exist
+    let wallet = await this.getTokenWallet(userId);
+    if (!wallet) {
+      wallet = await this.createTokenWallet({ userId, balance: 0 });
+    }
+
+    // Check if user has enough tokens
+    if (wallet.balance < tokens) {
+      throw new Error('Insufficient token balance');
+    }
+
+    // Deduct tokens
+    const newBalance = wallet.balance - tokens;
+    const updatedWallet = await this.updateTokenBalance(userId, newBalance);
+    if (!updatedWallet) {
+      throw new Error('Failed to update wallet balance');
+    }
+
+    // Create transaction record
+    const transaction = await this.createTransaction({
+      userId,
+      type: 'deduction',
+      tokens,
+      assignmentId,
+      description: `Assignment access: ${assignmentId}`,
+      balanceAfter: newBalance,
+    });
+
+    return { wallet: updatedWallet, transaction };
   }
 }
