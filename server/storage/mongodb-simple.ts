@@ -112,15 +112,12 @@ const paymentSchema = new mongoose.Schema({
   _id: false
 });
 
-// Indexes
-assignmentSchema.index({ code: 1 });
+// Indexes (only for non-unique fields to avoid duplicates)
 assignmentSchema.index({ teacherId: 1 });
 submissionSchema.index({ assignmentId: 1, studentId: 1 }, { unique: true });
-tokenWalletSchema.index({ userId: 1 });
 transactionSchema.index({ userId: 1 });
 transactionSchema.index({ assignmentId: 1 });
 paymentSchema.index({ userId: 1 });
-paymentSchema.index({ razorpayOrderId: 1 });
 
 const UserModel = mongoose.model('User', userSchema);
 const AssignmentModel = mongoose.model('Assignment', assignmentSchema);
