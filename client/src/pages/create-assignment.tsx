@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Plus, Trash2, Save, Clock, Users, BookOpen, Calendar, User, GraduationCap } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Save, Clock, Users, BookOpen, Calendar, User, GraduationCap, Wallet, Calculator } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
@@ -104,6 +104,25 @@ export default function CreateAssignmentPage() {
   const onSubmit = (data: CreateAssignmentFormData) => {
     createMutation.mutate(data);
   };
+
+  // Calculate token requirements preview
+  const getTokenRequirements = () => {
+    const questionCount = questions.filter(q => q.text.trim()).length;
+    const tokensRequired = Math.ceil(questionCount / 4);
+    const currency = user?.currency || 'USD';
+    const pricePerToken = currency === 'INR' ? 2 : 0.023;
+    const totalCost = tokensRequired * pricePerToken;
+    
+    return {
+      questionCount,
+      tokensRequired,
+      totalCost,
+      currency,
+      formattedCost: currency === 'INR' ? `₹${totalCost.toFixed(2)}` : `$${totalCost.toFixed(2)}`
+    };
+  };
+
+  const tokenInfo = getTokenRequirements();
 
   const handleGoBack = () => {
     setLocation('/teacher-dashboard');
@@ -346,6 +365,49 @@ export default function CreateAssignmentPage() {
                       </FormItem>
                     )}
                   />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Token Requirements Preview */}
+            <Card className="hover-subtle border-blue-200 bg-blue-50">
+              <CardHeader>
+                <CardTitle className="flex items-center text-foreground">
+                  <Calculator className="w-5 h-5 mr-3 text-blue-600" />
+                  Student Token Requirements
+                  <Badge variant="outline" className="ml-3 border-blue-300 text-blue-700">
+                    Preview
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-sm text-gray-600">Questions</div>
+                    <div className="text-lg font-bold text-blue-700" data-testid="text-question-count">
+                      {tokenInfo.questionCount}
+                    </div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-sm text-gray-600">Tokens Required</div>
+                    <div className="text-lg font-bold text-blue-700 flex items-center justify-center" data-testid="text-tokens-preview">
+                      <Wallet className="w-4 h-4 mr-1" />
+                      {tokenInfo.tokensRequired}
+                    </div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-sm text-gray-600">Student Cost</div>
+                    <div className="text-lg font-bold text-blue-700" data-testid="text-cost-preview">
+                      {tokenInfo.formattedCost}
+                    </div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded-lg">
+                    <div className="text-sm text-gray-600">Calculation</div>
+                    <div className="text-xs text-gray-500">1 token = 4 questions</div>
+                  </div>
+                </div>
+                <div className="mt-3 text-xs text-blue-600">
+                  <p>💡 Students will need {tokenInfo.tokensRequired} token{tokenInfo.tokensRequired !== 1 ? 's' : ''} to access this assignment ({tokenInfo.formattedCost} in {tokenInfo.currency})</p>
                 </div>
               </CardContent>
             </Card>
