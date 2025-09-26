@@ -1,26 +1,26 @@
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/components/ui/auth-provider";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import LandingPage from "@/pages/landing";
-import AuthLoginPage from "@/pages/auth-login";
-import AuthRegisterPage from "@/pages/auth-register";
-import TeacherDashboard from "@/pages/teacher-dashboard";
-import StudentDashboard from "@/pages/student-dashboard";
-import AssignmentInterface from "@/pages/assignment-interface";
-import NotFound from "@/pages/not-found";
-import CancellationRefunds from "@/pages/cancellation-refunds";
-import ContactUs from "@/pages/contact-us";
-import ShippingPolicy from "@/pages/shipping-policy";
-import PrivacyPolicy from "@/pages/privacy-policy";
-import TermsConditions from "@/pages/terms-conditions";
-import ProfilePage from "@/pages/profile";
-import CreateAssignmentPage from "@/pages/create-assignment";
-import ViewAssignmentPage from "@/pages/view-assignment";
-import EditAssignmentPage from "@/pages/edit-assignment";
+import { Toaster } from "./components/ui/toaster";
+import { TooltipProvider } from "./components/ui/tooltip";
+import { AuthProvider } from "./components/ui/auth-provider";
+import { ThemeProvider } from "./ThemeContext";
+import LandingPage from "./pages/landing";
+import AuthLoginPage from "./pages/auth-login";
+import AuthRegisterPage from "./pages/auth-register";
+import TeacherDashboard from "./pages/teacher-dashboard";
+import StudentDashboard from "./pages/student-dashboard";
+import AssignmentInterface from "./pages/assignment-interface";
+import NotFound from "./pages/not-found";
+import CancellationRefunds from "./pages/cancellation-refunds";
+import ContactUs from "./pages/contact-us";
+import ShippingPolicy from "./pages/shipping-policy";
+import PrivacyPolicy from "./pages/privacy-policy";
+import TermsConditions from "./pages/terms-conditions";
+import ProfilePage from "./pages/profile";
+import CreateAssignmentPage from "./pages/create-assignment";
+import ViewAssignmentPage from "./pages/view-assignment";
+import EditAssignmentPage from "./pages/edit-assignment";
 
 function Router() {
   return (
