@@ -19,7 +19,15 @@ import {
   AlertTriangle,
   CreditCard,
   IndianRupee,
-  DollarSign
+  DollarSign,
+  BookOpen,
+  Trophy,
+  TrendingUp,
+  Sparkles,
+  Heart,
+  Code,
+  Target,
+  Zap
 } from "lucide-react";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { useToast } from "@/hooks/use-toast";
@@ -164,59 +172,84 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 relative">
+      {/* Background decorative elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 opacity-5">
+          <BookOpen className="w-32 h-32 text-blue-400 floating" />
+        </div>
+        <div className="absolute bottom-32 right-16 opacity-5">
+          <Trophy className="w-28 h-28 text-purple-400 floating" style={{animationDelay: '1s'}} />
+        </div>
+        <div className="absolute top-1/2 right-1/4 opacity-5">
+          <Target className="w-24 h-24 text-orange-400 floating" style={{animationDelay: '2s'}} />
+        </div>
+      </div>
+
       {/* Navigation Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+      <header className="border-b border-white/20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50 shadow-lg relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3">
-                <GraduationCap className="text-primary-foreground w-5 h-5" />
+          <div className="flex justify-between items-center h-18">
+            <div className="flex items-center group">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <GraduationCap className="text-white w-6 h-6" />
               </div>
-              <h1 className="text-lg font-semibold text-foreground">
-                EduQuest Student Portal
-              </h1>
+              <div>
+                <h1 className="text-2xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Student Portal
+                </h1>
+                <p className="text-xs font-handwriting text-orange-500 -mt-1">
+                  Your learning adventure! ✨
+                </p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-3 cursor-pointer" onClick={() => setLocation('/profile')}>
-                <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
-                  <span className="text-foreground text-sm font-medium">
+              <div className="hidden sm:flex items-center space-x-3 cursor-pointer hover:scale-105 transition-transform duration-300" onClick={() => setLocation('/profile')}>
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+                  <span className="text-white text-sm font-heading font-bold">
                     {user?.name?.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                <span className="text-sm font-medium text-foreground">{user?.name}</span>
+                <div>
+                  <span className="text-sm font-heading font-semibold text-gray-800 dark:text-white">{user?.name}</span>
+                  <div className="font-handwriting text-xs text-blue-500 -mt-1">Awesome learner! 🌟</div>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 {/* Token Balance Display */}
                 <div 
-                  className="flex items-center space-x-2 px-3 py-1 bg-blue-500/10 rounded-lg cursor-pointer hover:bg-blue-500/20 transition-colors"
+                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/50 dark:to-purple-900/50 rounded-xl cursor-pointer hover:from-blue-200 hover:to-purple-200 dark:hover:from-blue-800/50 dark:hover:to-purple-800/50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
                   onClick={() => setLocation('/profile?tab=wallet')}
                   title="View wallet"
                   data-testid="wallet-balance-display"
                 >
-                  <Wallet className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-700">
+                  <Wallet className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <span className="text-sm font-heading font-bold text-blue-700 dark:text-blue-300">
                     {walletLoading ? '...' : `${stats.tokenBalance} tokens`}
                   </span>
+                  <Sparkles className="w-4 h-4 text-purple-500" />
                 </div>
-                <Badge variant="secondary">Student</Badge>
+                <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-none shadow-lg">
+                  Student
+                </Badge>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setLocation('/profile')}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors hover:scale-110"
                   title="Profile Settings"
                   data-testid="button-profile"
                 >
-                  <User className="w-4 h-4" />
+                  <User className="w-5 h-5" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleLogout}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-gray-600 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors hover:scale-110"
+                  title="Logout"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-5 h-5" />
                 </Button>
               </div>
             </div>
@@ -224,36 +257,46 @@ export default function StudentDashboard() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* Welcome Section */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome back, {user?.name}!
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl animate-bounce-in">
+            <Heart className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 mb-4">
+            Welcome back, {user?.name}! 
           </h1>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-xl text-gray-700 dark:text-gray-300 font-body mb-2">
             Ready to tackle your next assignment?
           </p>
+          <div className="font-handwriting text-2xl text-blue-500">
+            Let's learn something amazing today! 🚀
+          </div>
         </div>
 
         {/* Low Balance Warning */}
         {!walletLoading && stats.tokenBalance < 10 && (
-          <Alert className="mb-6 border-orange-200 bg-orange-50" data-testid="alert-low-balance">
-            <AlertTriangle className="h-4 w-4 text-orange-600" />
-            <AlertDescription className="text-orange-800">
+          <Alert className="mb-8 border-orange-300 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 shadow-lg animate-pulse" data-testid="alert-low-balance">
+            <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+            <AlertDescription className="text-orange-800 dark:text-orange-200">
               <div className="flex items-center justify-between">
-                <span>
-                  Low token balance! You have {stats.tokenBalance} tokens. 
-                  Most assignments require 10+ tokens.
-                </span>
+                <div>
+                  <span className="font-heading font-semibold">Low token balance! </span>
+                  <span className="font-body">You have {stats.tokenBalance} tokens. Most assignments require 10+ tokens.</span>
+                  <div className="font-handwriting text-sm text-orange-600 dark:text-orange-400 mt-1">
+                    Time to refuel! ⛽
+                  </div>
+                </div>
                 <Button 
                   variant="outline" 
                   size="sm" 
                   onClick={() => setLocation('/profile?tab=wallet')}
-                  className="ml-4 border-orange-300 text-orange-700 hover:bg-orange-100"
+                  className="ml-4 border-orange-400 text-orange-700 hover:bg-orange-100 dark:text-orange-300 dark:hover:bg-orange-900/30 font-heading shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                   data-testid="button-buy-tokens-warning"
                 >
-                  <CreditCard className="w-4 h-4 mr-1" />
+                  <CreditCard className="w-4 h-4 mr-2" />
                   Buy Tokens
+                  <Zap className="w-4 h-4 ml-1" />
                 </Button>
               </div>
             </AlertDescription>
@@ -261,68 +304,83 @@ export default function StudentDashboard() {
         )}
 
         {/* Join Assignment Section */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Join Assignment</h3>
+        <Card className="mb-10 edu-card shadow-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-blue-100 dark:border-purple-700 animate-slide-up">
+          <CardContent className="p-8">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                <Code className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-heading font-bold text-gray-800 dark:text-white mb-1">Join Assignment</h3>
+                <div className="font-handwriting text-blue-500">Enter the magic code! ✨</div>
+              </div>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Input
-                type="text"
-                value={assignmentCode}
-                onChange={(e) => setAssignmentCode(e.target.value)}
-                placeholder="Enter assignment code (e.g., 123456)"
-                className="flex-1"
-                onKeyPress={(e) => e.key === 'Enter' && handleJoinAssignment()}
-              />
+              <div className="relative flex-1">
+                <Input
+                  type="text"
+                  value={assignmentCode}
+                  onChange={(e) => setAssignmentCode(e.target.value)}
+                  placeholder="Enter assignment code (e.g., 123456)"
+                  className="pl-12 pr-4 py-4 border-2 border-blue-200 dark:border-purple-600 rounded-xl bg-white dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 font-body text-lg"
+                  onKeyPress={(e) => e.key === 'Enter' && handleJoinAssignment()}
+                />
+                <Code className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5" />
+              </div>
               <Button
                 onClick={handleJoinAssignment}
-                className="whitespace-nowrap"
+                className="h-14 px-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-heading text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
               >
-                <Plus className="w-4 h-4 mr-2" />
-                Join Assignment
+                <Plus className="w-5 h-5 mr-2" />
+                Join Adventure
+                <Sparkles className="w-5 h-5 ml-2" />
               </Button>
             </div>
           </CardContent>
         </Card>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="hover-subtle">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-blue-500/10 mr-4">
-                  <Wallet className="text-blue-600 w-6 h-6" />
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <Card className="hover-lift bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/50 dark:to-blue-800/50 border-2 border-blue-200 dark:border-blue-700 shadow-xl animate-bounce-in">
+            <CardContent className="p-8">
+              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">E-paper Tokens</p>
-                  <p className="text-2xl font-bold text-foreground">{stats.tokenBalance}</p>
+                  <p className="text-sm font-heading font-semibold text-blue-600 dark:text-blue-400 mb-2">E-paper Tokens</p>
+                  <p className="text-4xl font-heading font-bold text-blue-700 dark:text-blue-300 mb-2">{stats.tokenBalance}</p>
+                  <div className="font-handwriting text-blue-500 text-sm">Fuel for learning! ⛽</div>
+                </div>
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Wallet className="text-white w-8 h-8" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="hover-subtle">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-success/10 mr-4">
-                  <CheckCircle className="text-success w-6 h-6" />
-                </div>
+          <Card className="hover-lift bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/50 dark:to-emerald-800/50 border-2 border-green-200 dark:border-green-700 shadow-xl animate-bounce-in" style={{animationDelay: '0.2s'}}>
+            <CardContent className="p-8">
+              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Completed</p>
-                  <p className="text-2xl font-bold text-foreground">{stats.completed}</p>
+                  <p className="text-sm font-heading font-semibold text-green-600 dark:text-green-400 mb-2">Completed</p>
+                  <p className="text-4xl font-heading font-bold text-green-700 dark:text-green-300 mb-2">{stats.completed}</p>
+                  <div className="font-handwriting text-green-500 text-sm">Great progress! 🎯</div>
+                </div>
+                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <CheckCircle className="text-white w-8 h-8" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="hover-subtle">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-warning/10 mr-4">
-                  <Star className="text-warning w-6 h-6" />
-                </div>
+          <Card className="hover-lift bg-gradient-to-br from-orange-50 to-yellow-100 dark:from-orange-900/50 dark:to-yellow-800/50 border-2 border-orange-200 dark:border-orange-700 shadow-xl animate-bounce-in" style={{animationDelay: '0.4s'}}>
+            <CardContent className="p-8">
+              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Average Score</p>
-                  <p className="text-2xl font-bold text-foreground">{stats.averageScore}%</p>
+                  <p className="text-sm font-heading font-semibold text-orange-600 dark:text-orange-400 mb-2">Average Score</p>
+                  <p className="text-4xl font-heading font-bold text-orange-700 dark:text-orange-300 mb-2">{stats.averageScore}%</p>
+                  <div className="font-handwriting text-orange-500 text-sm">You're awesome! 🌟</div>
+                </div>
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Trophy className="text-white w-8 h-8" />
                 </div>
               </div>
             </CardContent>
@@ -330,60 +388,105 @@ export default function StudentDashboard() {
         </div>
 
         {/* Assignments List */}
-        <Card>
-          <div className="px-6 py-4 border-b">
-            <h3 className="text-lg font-semibold text-foreground">My Assignments</h3>
+        <Card className="edu-card shadow-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-2 border-purple-100 dark:border-blue-700 animate-slide-up">
+          <div className="px-8 py-6 border-b border-purple-100 dark:border-blue-700">
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                <TrendingUp className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-heading font-bold text-gray-800 dark:text-white">My Assignments</h3>
+                <div className="font-handwriting text-purple-500 text-sm -mt-1">Your learning journey! 📚</div>
+              </div>
+            </div>
           </div>
           {isLoading ? (
-            <div className="p-6">
-              <div className="text-center text-muted-foreground">Loading assignments...</div>
+            <div className="p-12">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg animate-spin">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-lg font-heading font-semibold text-gray-700 dark:text-gray-300">Loading assignments...</div>
+                <div className="font-handwriting text-blue-500 mt-2">Hold tight! ⏳</div>
+              </div>
             </div>
           ) : submissions.length === 0 ? (
-            <div className="p-6">
-              <div className="text-center text-muted-foreground">
-                No assignments completed yet. Join an assignment using the code above.
+            <div className="p-12">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <BookOpen className="w-8 h-8 text-gray-400" />
+                </div>
+                <h4 className="text-xl font-heading font-bold text-gray-600 dark:text-gray-400 mb-2">
+                  No assignments completed yet
+                </h4>
+                <p className="text-gray-500 dark:text-gray-500 font-body mb-4">
+                  Join an assignment using the code above to start your learning journey!
+                </p>
+                <div className="font-handwriting text-lg text-blue-500">
+                  Your first adventure awaits! 🚀
+                </div>
               </div>
             </div>
           ) : (
             <div>
-              {submissions.map((submission: any) => (
-                <div key={submission.id} className="p-6 border-b last:border-b-0">
+              {submissions.map((submission: any, index: number) => (
+                <div key={submission.id} className="p-8 border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-3">
-                        <h4 className="text-lg font-medium text-foreground">
-                          {submission.assignmentTitle || `Assignment ${submission.id.slice(0, 8)}`}
-                        </h4>
-                        <Badge variant="outline" className="text-success border-success/20 bg-success/10">
-                          Completed
-                        </Badge>
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                          <CheckCircle className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-heading font-bold text-gray-800 dark:text-white mb-1">
+                            {submission.assignmentTitle || `Assignment ${submission.id.slice(0, 8)}`}
+                          </h4>
+                          <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-none shadow-lg">
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            Completed
+                          </Badge>
+                        </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm text-muted-foreground">
-                        <div>
-                          <span className="font-medium text-foreground">Submitted:</span>{' '}
-                          <span>{new Date(submission.createdAt).toLocaleDateString()}</span>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl">
+                          <span className="font-heading font-semibold text-blue-600 dark:text-blue-400 text-sm">Submitted</span>
+                          <p className="text-blue-800 dark:text-blue-200 font-body font-medium mt-1">
+                            {new Date(submission.createdAt).toLocaleDateString()}
+                          </p>
                         </div>
-                        <div>
-                          <span className="font-medium text-foreground">Score:</span>{' '}
-                          <span className="text-success font-semibold">
+                        <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl">
+                          <span className="font-heading font-semibold text-green-600 dark:text-green-400 text-sm">Score</span>
+                          <p className="text-green-800 dark:text-green-200 font-heading font-bold text-lg mt-1">
                             {Math.round(submission.totalAwarded * 100)}%
-                          </span>
+                          </p>
                         </div>
-                        <div>
-                          <span className="font-medium text-foreground">Questions:</span>{' '}
-                          <span>{submission.answers.length}</span>
+                        <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-xl">
+                          <span className="font-heading font-semibold text-purple-600 dark:text-purple-400 text-sm">Questions</span>
+                          <p className="text-purple-800 dark:text-purple-200 font-body font-medium mt-1">
+                            {submission.answers.length}
+                          </p>
                         </div>
-                        <div>
-                          <span className="font-medium text-foreground">Assignment ID:</span>{' '}
-                          <span>{submission.assignmentId.slice(0, 8)}</span>
+                        <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-xl">
+                          <span className="font-heading font-semibold text-orange-600 dark:text-orange-400 text-sm">Assignment ID</span>
+                          <p className="text-orange-800 dark:text-orange-200 font-body font-medium mt-1">
+                            {submission.assignmentId.slice(0, 8)}
+                          </p>
                         </div>
                       </div>
                     </div>
-                    <div className="ml-6 flex items-center space-x-3">
-                      <Button variant="outline" size="sm">
+                    <div className="ml-8 flex items-center space-x-3">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="border-purple-300 text-purple-700 hover:bg-purple-50 dark:border-purple-600 dark:text-purple-400 dark:hover:bg-purple-900/30 font-heading shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                      >
+                        <Star className="w-4 h-4 mr-2" />
                         View Results
                       </Button>
                     </div>
+                  </div>
+                  <div className="mt-4 font-handwriting text-green-500 text-sm">
+                    Great work on this one! 🎉
                   </div>
                 </div>
               ))}
