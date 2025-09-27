@@ -1,0 +1,303 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Mode - Educational Theme */
+  --background: linear-gradient(135deg, hsl(210, 100%, 98%) 0%, hsl(200, 100%, 97%) 100%);
+  --background-solid: hsl(210, 100%, 98%);
+  --foreground: hsl(240, 10%, 15%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(240, 10%, 15%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(240, 10%, 15%);
+  
+  /* Primary - Educational Blue */
+  --primary: hsl(210, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --primary-light: hsl(210, 100%, 95%);
+  
+  /* Secondary - Warm Orange */
+  --secondary: hsl(25, 100%, 50%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --secondary-light: hsl(25, 100%, 95%);
+  
+  /* Accent - Creative Purple */
+  --accent: hsl(270, 70%, 60%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --accent-light: hsl(270, 70%, 95%);
+  
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  
+  --border: hsl(214.3, 31.8%, 91.4%);
+  --input: hsl(0, 0%, 100%);
+  --ring: hsl(210, 100%, 50%);
+  
+  /* Educational Color Palette */
+  --success: hsl(142, 76%, 36%);
+  --success-light: hsl(142, 76%, 95%);
+  --warning: hsl(38, 92%, 50%);
+  --warning-light: hsl(38, 92%, 95%);
+  --info: hsl(210, 100%, 50%);
+  --info-light: hsl(210, 100%, 95%);
+  --creative: hsl(320, 70%, 60%);
+  --creative-light: hsl(320, 70%, 95%);
+  
+  /* Typography System */
+  --font-heading: "Poppins", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+  --font-handwriting: "Caveat", "Kalam", cursive;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  
+  --radius: 0.75rem;
+  
+  /* Minimal Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.dark {
+  /* Dark Mode - Educational Theme */
+  --background: linear-gradient(135deg, hsl(240, 10%, 8%) 0%, hsl(220, 15%, 12%) 100%);
+  --background-solid: hsl(240, 10%, 8%);
+  --foreground: hsl(210, 40%, 98%);
+  --card: hsl(240, 10%, 10%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --popover: hsl(240, 10%, 10%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  
+  /* Primary - Educational Blue */
+  --primary: hsl(210, 100%, 60%);
+  --primary-foreground: hsl(240, 10%, 8%);
+  --primary-light: hsl(210, 100%, 15%);
+  
+  /* Secondary - Warm Orange */
+  --secondary: hsl(25, 100%, 55%);
+  --secondary-foreground: hsl(240, 10%, 8%);
+  --secondary-light: hsl(25, 100%, 15%);
+  
+  /* Accent - Creative Purple */
+  --accent: hsl(270, 70%, 65%);
+  --accent-foreground: hsl(240, 10%, 8%);
+  --accent-light: hsl(270, 70%, 15%);
+  
+  --muted: hsl(240, 10%, 15%);
+  --muted-foreground: hsl(215, 20.2%, 65.1%);
+  --destructive: hsl(0, 62.8%, 60%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  
+  --border: hsl(240, 10%, 18%);
+  --input: hsl(240, 10%, 12%);
+  --ring: hsl(210, 100%, 60%);
+  
+  /* Educational Color Palette */
+  --success: hsl(142, 76%, 45%);
+  --success-light: hsl(142, 76%, 15%);
+  --warning: hsl(38, 92%, 55%);
+  --warning-light: hsl(38, 92%, 15%);
+  --info: hsl(210, 100%, 60%);
+  --info-light: hsl(210, 100%, 15%);
+  --creative: hsl(320, 70%, 65%);
+  --creative-light: hsl(320, 70%, 15%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    font-family: var(--font-body);
+    @apply antialiased text-foreground;
+    background: var(--background-solid);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Typography Classes */
+  .font-heading {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+  
+  .font-body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  
+  .font-handwriting {
+    font-family: var(--font-handwriting);
+    line-height: 1.4;
+  }
+  
+  .font-mono {
+    font-family: var(--font-mono);
+    line-height: 1.5;
+  }
+
+  /* Heading Styles */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+    color: var(--primary);
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+    color: var(--foreground);
+  }
+
+  /* Proctoring styles */
+  .proctored {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  .proctored * {
+    pointer-events: auto;
+  }
+
+  .recording-indicator {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Educational UI Classes */
+  .edu-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .edu-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  }
+
+  .edu-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .edu-handwriting {
+    font-family: var(--font-handwriting);
+    font-size: 1.25rem;
+    color: var(--accent);
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .bounce-in {
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  /* Educational Animations */
+  @keyframes fadeIn {
+    from { 
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .floating {
+    animation: float 3s ease-in-out infinite;
+  }
+}
