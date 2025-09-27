@@ -58,13 +58,12 @@ outputType = "webview"
 name = "Backend API"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd server && npm run dev"
-waitForPort = 3001
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [agent]
 expertMode = true
