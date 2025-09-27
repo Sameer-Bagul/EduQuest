@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth';
 import { storage } from '../storage';
 import { paymentService } from '../services/paymentService';
-import { tokenPurchaseSchema, verifyPaymentSchema } from '@shared/schema';
+import { tokenPurchaseSchema, verifyPaymentSchema } from '../schemas/schema';
 import { z } from 'zod';
 
 export class PaymentController {

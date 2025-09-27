@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { requireAuth, requireRole, type AuthenticatedRequest } from "../middleware/auth";
 import { generateToken, hashPassword, comparePassword, setAuthCookie, clearAuthCookie } from "../services/auth";
 import { storage } from "../storage";
-import { registerSchema, loginSchema } from "../shared/schema";
+import { registerSchema, loginSchema } from "../schemas/schema";
 import multer from "multer";
 import path from "path";
 import fs from "fs";

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
 import { UserService } from '../services/userService';
-import { registerSchema, loginSchema } from '@shared/schema';
+import { registerSchema, loginSchema } from '../schemas/schema';
 import type { AuthenticatedRequest } from '../middleware/auth';
 import multer from 'multer';
 import path from 'path';
