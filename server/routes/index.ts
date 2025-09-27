@@ -1,9 +1,13 @@
 import type { Express } from "express";
-import { createServer, type Server } from "http";
-import { registerRoutes as registerApiRoutes } from "../routes";
+import { registerAuthRoutes } from "./authRoutes";
+import { registerAssignmentRoutes } from "./assignmentRoutes";
+import { registerSubmissionRoutes } from "./submissionRoutes";
+import { registerPaymentRoutes } from "./paymentRoutes";
 
-export async function registerRoutes(app: Express): Promise<Server> {
-  // Use the existing routes from routes.ts
-  const httpServer = await registerApiRoutes(app);
-  return httpServer;
+export function registerApiRoutes(app: Express) {
+  // Register all route modules
+  registerAuthRoutes(app);
+  registerAssignmentRoutes(app);
+  registerSubmissionRoutes(app);
+  registerPaymentRoutes(app);
 }

@@ -1,6 +1,7 @@
 import { storage } from '../storage';
 import { SimilarityService } from './similarityService';
-import type { Submission, Assignment, InsertSubmission } from '@shared/schema';
+import type { Submission, InsertSubmission } from '../Models/submission';
+import type { Assignment } from '../Models/assignment';
 
 export class SubmissionService {
   private similarityService: SimilarityService;
@@ -16,6 +17,12 @@ export class SubmissionService {
     scores: { questionId: string; similarity: number; awarded: number }[];
     totalAwarded: number;
   }): Promise<Submission> {
+    if (!submissionData.assignmentId || !submissionData.studentId || !submissionData.answers) {
+      throw new Error('Missing required submission data');
+    }
+    if (!Array.isArray(submissionData.answers) || submissionData.answers.length === 0) {
+      throw new Error('Submission must have at least one answer');
+    }
     return storage.createSubmission(submissionData);
   }
 
@@ -53,6 +60,9 @@ export class SubmissionService {
   }
 
   async getSubmissionById(id: string): Promise<Submission | null> {
+    if (!id || typeof id !== 'string') {
+      throw new Error('Invalid submission ID');
+    }
     const submission = await storage.getSubmission(id);
     return submission || null;
   }

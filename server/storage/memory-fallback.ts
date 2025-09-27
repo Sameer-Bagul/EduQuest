@@ -1,11 +1,9 @@
-import { 
-  type User, type InsertUser, 
-  type Assignment, type InsertAssignment, 
-  type Submission, type InsertSubmission,
-  type TokenWallet, type InsertTokenWallet,
-  type Transaction, type InsertTransaction,
-  type Payment, type InsertPayment
-} from "@shared/schema";
+import { type User, type InsertUser } from "../Models/user";
+import { type Assignment, type InsertAssignment } from "../Models/assignment";
+import { type Submission, type InsertSubmission } from "../Models/submission";
+import { type TokenWallet, type InsertTokenWallet } from "../Models/tokenWallet";
+import { type Transaction, type InsertTransaction } from "../Models/transaction";
+import { type Payment, type InsertPayment } from "../Models/payment";
 import { randomUUID } from "crypto";
 import type { IStorage } from "../storage";
 
@@ -77,10 +75,20 @@ export class MemoryStorage implements IStorage {
   async createAssignment(data: InsertAssignment & { teacherId: string; code: string }): Promise<Assignment> {
     const id = randomUUID();
     const now = new Date().toISOString();
-    
-    // Calculate expireAt based on endDate and retention policy
+
+    // Validate endDate
     const endDate = new Date(data.endDate);
+    if (isNaN(endDate.getTime())) {
+      console.error('Invalid endDate provided:', data.endDate);
+      throw new Error('Invalid endDate format');
+    }
+
+    // Calculate expireAt based on endDate and retention policy
     const retentionDays = parseInt(process.env.AUTO_DELETE_RETENTION_DAYS || '0');
+    if (isNaN(retentionDays)) {
+      console.error('Invalid AUTO_DELETE_RETENTION_DAYS:', process.env.AUTO_DELETE_RETENTION_DAYS);
+      throw new Error('Invalid retention days configuration');
+    }
     const expireAt = new Date(endDate.getTime() + (retentionDays * 24 * 60 * 60 * 1000));
 
     const assignment: Assignment = {

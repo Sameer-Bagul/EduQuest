@@ -14,20 +14,44 @@ export interface AuthenticatedRequest extends Request {
 
 export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   try {
-    const token = req.cookies?.auth_token;
-    
+    if (!req.cookies) {
+      return res.status(500).json({ error: 'Cookie parser not configured' });
+    }
+
+    const token = req.cookies.auth_token;
+
     if (!token) {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
-    const secret = process.env.JWT_SECRET || 'default-secret-key';
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
     const decoded = jwt.verify(token, secret) as AuthPayload;
-    
+
+    if (!decoded || typeof decoded !== 'object' || !decoded.id || !decoded.name || !decoded.email || !decoded.role) {
+      throw new Error('Invalid token payload');
+    }
+
     req.user = decoded;
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);
-    res.status(401).json({ error: 'Invalid token' });
+
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ error: 'Token expired' });
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ error: 'Invalid token' });
+    } else if (error instanceof jwt.NotBeforeError) {
+      return res.status(401).json({ error: 'Token not active' });
+    } else if (error instanceof Error && error.message === 'JWT_SECRET environment variable is not set') {
+      return res.status(500).json({ error: 'Server configuration error' });
+    } else if (error instanceof Error && error.message === 'Invalid token payload') {
+      return res.status(401).json({ error: 'Invalid token' });
+    } else {
+      return res.status(500).json({ error: 'Authentication error' });
+    }
   }
 }
 

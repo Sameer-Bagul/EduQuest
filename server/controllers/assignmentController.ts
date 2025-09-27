@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { AssignmentService } from '../services/assignmentService';
-import { insertAssignmentSchema } from '@shared/schema';
+import { insertAssignmentSchema } from '../Models/assignment';
 import type { AuthenticatedRequest } from '../middleware/auth';
 
 export class AssignmentController {

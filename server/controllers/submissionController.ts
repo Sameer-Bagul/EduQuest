@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { SubmissionService } from '../services/submissionService';
 import { AssignmentService } from '../services/assignmentService';
-import { insertSubmissionSchema } from '@shared/schema';
+import { insertSubmissionSchema } from '../Models/submission';
 import type { AuthenticatedRequest } from '../middleware/auth';
 
 export class SubmissionController {

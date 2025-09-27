@@ -1,12 +1,21 @@
 import { storage } from '../storage';
-import type { User, InsertUser } from '@shared/schema';
+import type { User, InsertUser } from '../Models/user';
 
 export class UserService {
   async createUser(userData: InsertUser): Promise<User> {
+    if (!userData.email || !userData.name || !userData.role) {
+      throw new Error('Missing required user data fields');
+    }
+    if (!['teacher', 'student'].includes(userData.role)) {
+      throw new Error('Invalid role');
+    }
     return storage.createUser(userData);
   }
 
   async getUserById(id: string): Promise<User | null> {
+    if (!id || typeof id !== 'string') {
+      throw new Error('Invalid user ID');
+    }
     const user = await storage.getUser(id);
     return user || null;
   }

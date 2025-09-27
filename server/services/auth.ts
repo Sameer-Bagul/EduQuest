@@ -8,7 +8,10 @@ export interface TokenPayload {
   role: 'teacher' | 'student';
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is not set');
+}
 const SALT_ROUNDS = 12;
 
 export async function hashPassword(password: string): Promise<string> {
@@ -20,11 +23,15 @@ export async function comparePassword(password: string, hash: string): Promise<b
 }
 
 export function generateToken(payload: TokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign(payload, JWT_SECRET!, { expiresIn: '7d' });
 }
 
 export function verifyToken(token: string): TokenPayload {
-  return jwt.verify(token, JWT_SECRET) as TokenPayload;
+  try {
+    return jwt.verify(token, JWT_SECRET!) as TokenPayload;
+  } catch (error) {
+    throw new Error('Invalid token');
+  }
 }
 
 export function setAuthCookie(res: Response, token: string): void {

@@ -91,15 +91,22 @@ export class PaymentController {
       }
 
       if (payment.status === 'paid') {
+        console.log(`Payment ${payment.id} already processed`);
         return res.status(400).json({ error: 'Payment already processed' });
       }
 
+      console.log(`Processing payment ${payment.id} for user ${userId}`);
+
+      // TODO: To prevent race conditions, implement atomic update with database transaction
+      // or conditional update (only update if status is not 'paid')
       // Update payment record
       await storage.updatePayment(payment.id, {
         razorpayPaymentId: razorpay_payment_id,
         razorpaySignature: razorpay_signature,
         status: 'paid',
       });
+
+      console.log(`Payment ${payment.id} updated to paid status`);
 
       // Get or create token wallet
       let wallet = await storage.getTokenWallet(userId);

@@ -1,11 +1,9 @@
-import { 
-  type User, type InsertUser, 
-  type Assignment, type InsertAssignment, 
-  type Submission, type InsertSubmission,
-  type TokenWallet, type InsertTokenWallet,
-  type Transaction, type InsertTransaction,
-  type Payment, type InsertPayment
-} from "@shared/schema";
+import { type User, type InsertUser } from "./Models/user";
+import { type Assignment, type InsertAssignment } from "./Models/assignment";
+import { type Submission, type InsertSubmission } from "./Models/submission";
+import { type TokenWallet, type InsertTokenWallet } from "./Models/tokenWallet";
+import { type Transaction, type InsertTransaction } from "./Models/transaction";
+import { type Payment, type InsertPayment } from "./Models/payment";
 import { MongoStorage } from "./storage/mongodb-simple";
 import { MemoryStorage } from "./storage/memory-fallback";
 

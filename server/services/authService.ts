@@ -14,7 +14,10 @@ export class AuthService {
   private saltRounds = 10;
 
   constructor() {
-    this.jwtSecret = process.env.JWT_SECRET || 'your-secret-key';
+    this.jwtSecret = process.env.JWT_SECRET;
+    if (!this.jwtSecret) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
   }
 
   async hashPassword(password: string): Promise<string> {

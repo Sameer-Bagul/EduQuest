@@ -72,8 +72,12 @@ export class PaymentService {
 
   // Verify payment signature
   verifyPayment(orderId: string, paymentId: string, signature: string): boolean {
+    if (!process.env.RAZORPAY_KEY_SECRET) {
+      throw new Error('RAZORPAY_KEY_SECRET environment variable is not set');
+    }
+
     const generatedSignature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
       .update(orderId + '|' + paymentId)
       .digest('hex');
 
@@ -91,9 +95,10 @@ export class PaymentService {
   // Detect currency based on country (simplified geolocation)
   detectCurrency(country?: string): 'INR' | 'USD' {
     if (!country) return 'USD';
-    
+
     // India uses INR, everything else uses USD for simplicity
-    return country.toLowerCase() === 'india' || country.toLowerCase() === 'in' ? 'INR' : 'USD';
+    const lowerCountry = country.toLowerCase();
+    return lowerCountry === 'india' || lowerCountry === 'in' ? 'INR' : 'USD';
   }
 
   // Format currency for display

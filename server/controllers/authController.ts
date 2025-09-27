@@ -6,6 +6,7 @@ import type { AuthenticatedRequest } from '../middleware/auth';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { promises as fsPromises } from 'fs';
 
 export class AuthController {
   private authService: AuthService;
@@ -152,15 +153,27 @@ export class AuthController {
       if (req.file) {
         const avatarPath = `/uploads/avatars/${userId}.${req.file.mimetype.split('/')[1]}`;
         const fullPath = path.join(process.cwd(), 'public', avatarPath);
-        
+
+        console.log(`Saving avatar for user ${userId} to ${fullPath}`);
+
         // Ensure directory exists
         const dir = path.dirname(fullPath);
-        if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir, { recursive: true });
+        try {
+          await fsPromises.mkdir(dir, { recursive: true });
+        } catch (mkdirError) {
+          console.error('Failed to create avatar directory:', mkdirError);
+          throw new Error('Failed to save avatar');
         }
-        
+
         // Save avatar file
-        fs.writeFileSync(fullPath, req.file.buffer);
+        try {
+          await fsPromises.writeFile(fullPath, req.file.buffer);
+        } catch (writeError) {
+          console.error('Failed to write avatar file:', writeError);
+          throw new Error('Failed to save avatar');
+        }
+
+        console.log(`Avatar saved successfully for user ${userId}`);
       }
       
       res.json({ 
@@ -220,12 +233,15 @@ export class AuthController {
       // Try different image formats
       const extensions = ['jpg', 'jpeg', 'png', 'gif'];
       let avatarPath = null;
-      
+
       for (const ext of extensions) {
         const filePath = path.join(avatarDir, `${userId}.${ext}`);
-        if (fs.existsSync(filePath)) {
+        try {
+          await fsPromises.access(filePath);
           avatarPath = filePath;
           break;
+        } catch {
+          // File does not exist, continue to next extension
         }
       }
       
