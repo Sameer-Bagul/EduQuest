@@ -20,20 +20,26 @@ export default defineConfig({
     alias: {
       "@": path.resolve(import.meta.dirname, ""),
       "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "../attached_assets"),
+    },
+  },
+  server: {
+    host: "0.0.0.0",
+    port: 5000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+    fs: {
+      strict: true,
+      deny: ["**/.*"],
     },
   },
   root: path.resolve(import.meta.dirname, ""),
   build: {
     outDir: path.resolve(import.meta.dirname, "dist"),
     emptyOutDir: true,
-  },
-  server: {
-    host: "0.0.0.0",
-    port: 5000,
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
-    },
   },
 });

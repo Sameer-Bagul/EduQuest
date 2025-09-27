@@ -1,7 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-// API base URL - server runs on port 3001, client on port 5000
-const API_BASE_URL = 'http://localhost:3001';
+// API base URL - use relative paths for same-origin requests
+const API_BASE_URL = '';
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {

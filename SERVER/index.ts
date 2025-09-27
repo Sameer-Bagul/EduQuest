@@ -56,7 +56,7 @@ app.use((req, res, next) => {
   const port = parseInt(process.env.PORT || '3001', 10);
   server.listen({
     port,
-    host: "localhost",
+    host: "0.0.0.0",
     reusePort: true,
   }, () => {
     console.log(`API server running on port ${port}`);
