@@ -108,6 +108,7 @@
 }
 
 @layer base {
+  @apply text-sm;
   * {
     @apply border-border;
   }
