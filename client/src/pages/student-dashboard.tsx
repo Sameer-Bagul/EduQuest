@@ -1,40 +1,40 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { 
   GraduationCap, 
   Plus, 
   CheckCircle, 
   Star, 
-  LogOut, 
-  ListTodo, 
-  User, 
   Wallet, 
   AlertTriangle,
-  CreditCard,
-  IndianRupee,
-  DollarSign
+  Trophy,
+  Target,
+  TrendingUp,
+  BookOpen,
+  Calendar,
+  Clock,
+  Award
 } from "lucide-react";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/lib/api";
+import { Navbar } from "@/components/ui/navbar";
 
 export default function StudentDashboard() {
   const [assignmentCode, setAssignmentCode] = useState("");
   const [, setLocation] = useLocation();
-  const { user, isAuthenticated, logout } = useAuthContext();
+  const { user, isAuthenticated } = useAuthContext();
   const { toast } = useToast();
   const [assignmentPreview, setAssignmentPreview] = useState<any>(null);
   const [showCostDialog, setShowCostDialog] = useState(false);
   const [costData, setCostData] = useState<any>(null);
 
-  // Redirect if not authenticated or not a student
   useEffect(() => {
     if (!isAuthenticated) {
       setLocation('/login');
@@ -48,7 +48,6 @@ export default function StudentDashboard() {
     enabled: isAuthenticated && user?.role === 'student',
   });
 
-  // Fetch wallet data
   const { data: wallet, isLoading: walletLoading } = useQuery({
     queryKey: ['/api/wallet'],
     queryFn: () => api.getWallet(),
@@ -57,7 +56,6 @@ export default function StudentDashboard() {
 
   const submissions = (submissionsData as any)?.submissions || [];
 
-  // Stats calculation
   const stats = {
     tokenBalance: wallet?.balance || 0,
     completed: submissions.length,
@@ -75,11 +73,6 @@ export default function StudentDashboard() {
     }
   };
 
-  const getTokenPrice = () => {
-    const currency = user?.currency || 'USD';
-    return currency === 'INR' ? 2 : 0.023;
-  };
-
   const handleJoinAssignment = async () => {
     if (!assignmentCode.trim()) {
       toast({
@@ -91,7 +84,6 @@ export default function StudentDashboard() {
     }
 
     try {
-      // Check if assignment exists and is valid
       const response = await fetch(`/api/assignments/code/${assignmentCode}`, {
         credentials: 'include',
       });
@@ -100,13 +92,11 @@ export default function StudentDashboard() {
         const assignment = await response.json();
         setAssignmentPreview(assignment);
         
-        // Fetch cost information
         try {
           const costResponse = await api.getAssignmentCost(assignment.id);
           setCostData(costResponse);
           setShowCostDialog(true);
         } catch (error) {
-          // If cost fetch fails, proceed without cost display
           console.warn("Failed to fetch assignment cost:", error);
           setLocation(`/assignment/${assignmentCode}`);
         }
@@ -129,7 +119,6 @@ export default function StudentDashboard() {
 
   const handleConfirmJoin = () => {
     if (assignmentPreview && costData) {
-      // Only check balance if wallet data has loaded successfully
       if (!walletLoading && wallet) {
         const userBalance = wallet.balance;
         if (userBalance < costData.tokensRequired) {
@@ -143,20 +132,10 @@ export default function StudentDashboard() {
           return;
         }
       }
-      // If wallet is still loading or failed, we proceed anyway and let the backend handle validation
     }
     
     setShowCostDialog(false);
     setLocation(`/assignment/${assignmentCode}`);
-  };
-
-  const handleStartAssignment = (code: string) => {
-    setLocation(`/assignment/${code}`);
-  };
-
-  const handleLogout = () => {
-    logout();
-    setLocation('/login');
   };
 
   if (!isAuthenticated || user?.role !== 'student') {
@@ -165,347 +144,337 @@ export default function StudentDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3">
-                <GraduationCap className="text-primary-foreground w-5 h-5" />
-              </div>
-              <h1 className="text-lg font-semibold text-foreground">
-                EduQuest Student Portal
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="hidden sm:flex items-center space-x-3 cursor-pointer" onClick={() => setLocation('/profile')}>
-                <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
-                  <span className="text-foreground text-sm font-medium">
-                    {user?.name?.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <span className="text-sm font-medium text-foreground">{user?.name}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                {/* Token Balance Display */}
-                <div 
-                  className="flex items-center space-x-2 px-3 py-1 bg-blue-500/10 rounded-lg cursor-pointer hover:bg-blue-500/20 transition-colors"
-                  onClick={() => setLocation('/profile?tab=wallet')}
-                  title="View wallet"
-                  data-testid="wallet-balance-display"
-                >
-                  <Wallet className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-700">
-                    {walletLoading ? '...' : `${stats.tokenBalance} tokens`}
-                  </span>
-                </div>
-                <Badge variant="secondary">Student</Badge>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setLocation('/profile')}
-                  className="text-muted-foreground hover:text-foreground"
-                  title="Profile Settings"
-                  data-testid="button-profile"
-                >
-                  <User className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
+      <Navbar subtitle="Student Portal" />
+      
+      <div className="pt-28 pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+              Welcome back, <span className="highlight-marker">{user?.name}</span>
+            </h1>
+            <p className="text-muted-foreground text-lg">Ready to continue your learning journey?</p>
           </div>
-        </div>
-      </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome back, {user?.name}!
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Ready to tackle your next assignment?
-          </p>
-        </div>
-
-        {/* Low Balance Warning */}
-        {!walletLoading && stats.tokenBalance < 10 && (
-          <Alert className="mb-6 border-orange-200 bg-orange-50" data-testid="alert-low-balance">
-            <AlertTriangle className="h-4 w-4 text-orange-600" />
-            <AlertDescription className="text-orange-800">
-              <div className="flex items-center justify-between">
-                <span>
-                  Low token balance! You have {stats.tokenBalance} tokens. 
-                  Most assignments require 10+ tokens.
-                </span>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => setLocation('/profile?tab=wallet')}
-                  className="ml-4 border-orange-300 text-orange-700 hover:bg-orange-100"
-                  data-testid="button-buy-tokens-warning"
-                >
-                  <CreditCard className="w-4 h-4 mr-1" />
-                  Buy Tokens
-                </Button>
-              </div>
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Join Assignment Section */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Join Assignment</h3>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Input
-                type="text"
-                value={assignmentCode}
-                onChange={(e) => setAssignmentCode(e.target.value)}
-                placeholder="Enter assignment code (e.g., 123456)"
-                className="flex-1"
-                onKeyPress={(e) => e.key === 'Enter' && handleJoinAssignment()}
-              />
-              <Button
-                onClick={handleJoinAssignment}
-                className="whitespace-nowrap"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Join Assignment
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="hover-subtle">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-blue-500/10 mr-4">
-                  <Wallet className="text-blue-600 w-6 h-6" />
+          {/* Stats Grid - Bento Style */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Card className="bento-card" data-testid="card-token-balance">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center border-2 border-primary/30">
+                    <Wallet className="w-6 h-6 text-primary" />
+                  </div>
+                  <TrendingUp className="w-5 h-5 text-success" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">E-paper Tokens</p>
-                  <p className="text-2xl font-bold text-foreground">{stats.tokenBalance}</p>
+                <div className="text-3xl font-bold text-foreground mb-1">
+                  {walletLoading ? '...' : stats.tokenBalance}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                <p className="text-sm text-muted-foreground font-medium">Token Balance</p>
+              </CardContent>
+            </Card>
 
-          <Card className="hover-subtle">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-success/10 mr-4">
-                  <CheckCircle className="text-success w-6 h-6" />
+            <Card className="bento-card" data-testid="card-completed">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-success/20 to-primary/20 rounded-2xl flex items-center justify-center border-2 border-success/30">
+                    <CheckCircle className="w-6 h-6 text-success" />
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Completed</p>
-                  <p className="text-2xl font-bold text-foreground">{stats.completed}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="text-3xl font-bold text-foreground mb-1">{stats.completed}</div>
+                <p className="text-sm text-muted-foreground font-medium">Completed</p>
+              </CardContent>
+            </Card>
 
-          <Card className="hover-subtle">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-warning/10 mr-4">
-                  <Star className="text-warning w-6 h-6" />
+            <Card className="bento-card" data-testid="card-average-score">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-warning/20 to-accent/20 rounded-2xl flex items-center justify-center border-2 border-warning/30">
+                    <Trophy className="w-6 h-6 text-warning" />
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">Average Score</p>
-                  <p className="text-2xl font-bold text-foreground">{stats.averageScore}%</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                <div className="text-3xl font-bold text-foreground mb-1">{stats.averageScore}%</div>
+                <p className="text-sm text-muted-foreground font-medium">Average Score</p>
+              </CardContent>
+            </Card>
 
-        {/* Assignments List */}
-        <Card>
-          <div className="px-6 py-4 border-b">
-            <h3 className="text-lg font-semibold text-foreground">My Assignments</h3>
+            <Card className="bento-card" data-testid="card-streak">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent/20 to-secondary/20 rounded-2xl flex items-center justify-center border-2 border-accent/30">
+                    <Target className="w-6 h-6 text-accent" />
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-1">7</div>
+                <p className="text-sm text-muted-foreground font-medium">Day Streak</p>
+              </CardContent>
+            </Card>
           </div>
-          {isLoading ? (
-            <div className="p-6">
-              <div className="text-center text-muted-foreground">Loading assignments...</div>
-            </div>
-          ) : submissions.length === 0 ? (
-            <div className="p-6">
-              <div className="text-center text-muted-foreground">
-                No assignments completed yet. Join an assignment using the code above.
-              </div>
-            </div>
-          ) : (
-            <div>
-              {submissions.map((submission: any) => (
-                <div key={submission.id} className="p-6 border-b last:border-b-0">
+
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Join Assignment - Large Card */}
+            <div className="lg:col-span-2">
+              <Card className="bento-card mb-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20">
+                <CardHeader>
+                  <CardTitle className="text-2xl flex items-center">
+                    <Plus className="w-6 h-6 mr-2 text-primary" />
+                    Join New Assignment
+                  </CardTitle>
+                  <CardDescription>Enter the assignment code provided by your teacher</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-3">
+                    <Input
+                      placeholder="Enter assignment code"
+                      value={assignmentCode}
+                      onChange={(e) => setAssignmentCode(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleJoinAssignment()}
+                      className="h-12 text-lg rounded-xl border-2"
+                      data-testid="input-assignment-code"
+                    />
+                    <Button 
+                      onClick={handleJoinAssignment}
+                      size="lg"
+                      className="rounded-xl h-12 px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                      data-testid="button-join-assignment"
+                    >
+                      Join
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Submissions List */}
+              <Card className="bento-card">
+                <CardHeader>
                   <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-3">
-                        <h4 className="text-lg font-medium text-foreground">
-                          {submission.assignmentTitle || `Assignment ${submission.id.slice(0, 8)}`}
-                        </h4>
-                        <Badge variant="outline" className="text-success border-success/20 bg-success/10">
-                          Completed
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm text-muted-foreground">
-                        <div>
-                          <span className="font-medium text-foreground">Submitted:</span>{' '}
-                          <span>{new Date(submission.createdAt).toLocaleDateString()}</span>
-                        </div>
-                        <div>
-                          <span className="font-medium text-foreground">Score:</span>{' '}
-                          <span className="text-success font-semibold">
-                            {Math.round(submission.totalAwarded * 100)}%
-                          </span>
-                        </div>
-                        <div>
-                          <span className="font-medium text-foreground">Questions:</span>{' '}
-                          <span>{submission.answers.length}</span>
-                        </div>
-                        <div>
-                          <span className="font-medium text-foreground">Assignment ID:</span>{' '}
-                          <span>{submission.assignmentId.slice(0, 8)}</span>
-                        </div>
-                      </div>
+                    <div>
+                      <CardTitle className="text-2xl flex items-center">
+                        <BookOpen className="w-6 h-6 mr-2 text-primary" />
+                        Your Submissions
+                      </CardTitle>
+                      <CardDescription className="mt-1">Track your assignment history and scores</CardDescription>
                     </div>
-                    <div className="ml-6 flex items-center space-x-3">
-                      <Button variant="outline" size="sm">
-                        View Results
-                      </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {isLoading ? (
+                    <div className="space-y-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="h-24 bg-muted/30 rounded-xl animate-pulse" />
+                      ))}
+                    </div>
+                  ) : submissions.length === 0 ? (
+                    <div className="text-center py-12">
+                      <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <BookOpen className="w-8 h-8 text-muted-foreground" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-foreground mb-2">No submissions yet</h3>
+                      <p className="text-muted-foreground mb-4">Join an assignment to get started</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {submissions.map((submission: any) => (
+                        <Card 
+                          key={submission.id}
+                          className="hover-subtle border-2 cursor-pointer group"
+                          onClick={() => setLocation(`/assignment/${submission.assignment.code}`)}
+                          data-testid={`card-submission-${submission.id}`}
+                        >
+                          <CardContent className="p-5">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-gradient-to-br from-success/20 to-primary/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                    <CheckCircle className="w-5 h-5 text-success" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="font-semibold text-foreground mb-1 truncate">
+                                      {submission.assignment.title}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                      Submitted on {new Date(submission.submittedAt).toLocaleDateString()}
+                                    </p>
+                                  </div>
+                                  <div className="text-right flex-shrink-0">
+                                    <div className="text-2xl font-bold text-primary">
+                                      {Math.round(submission.totalAwarded * 100)}%
+                                    </div>
+                                    <div className="flex items-center text-warning mt-1">
+                                      <Star className="w-4 h-4 fill-current mr-1" />
+                                      <span className="text-sm font-medium">
+                                        {submission.totalAwarded.toFixed(2)}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                  <div className="flex items-center">
+                                    <Calendar className="w-4 h-4 mr-1" />
+                                    {new Date(submission.assignment.startDate).toLocaleDateString()}
+                                  </div>
+                                  <Badge variant="outline" className="rounded-lg">
+                                    {submission.assignment.code}
+                                  </Badge>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Sidebar - Wallet & Quick Actions */}
+            <div className="space-y-6">
+              {/* Wallet Card */}
+              <Card className="bento-card">
+                <CardHeader>
+                  <CardTitle className="text-xl flex items-center">
+                    <Wallet className="w-5 h-5 mr-2 text-primary" />
+                    Token Wallet
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-center p-6 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl border-2 border-primary/20">
+                    <div className="text-4xl font-bold text-foreground mb-2">
+                      {walletLoading ? '...' : stats.tokenBalance}
+                    </div>
+                    <p className="text-sm text-muted-foreground font-medium mb-4">Available Tokens</p>
+                    <Button 
+                      onClick={() => setLocation('/profile?tab=wallet')}
+                      className="w-full rounded-xl bg-gradient-to-r from-primary to-secondary"
+                      data-testid="button-add-tokens"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Tokens
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground text-center">
+                    Tokens are used to take assignments
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Performance Card */}
+              <Card className="bento-card">
+                <CardHeader>
+                  <CardTitle className="text-xl flex items-center">
+                    <Award className="w-5 h-5 mr-2 text-warning" />
+                    Performance
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Average Score</span>
+                      <span className="text-lg font-bold text-foreground">{stats.averageScore}%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Completed</span>
+                      <span className="text-lg font-bold text-foreground">{stats.completed}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Streak</span>
+                      <span className="text-lg font-bold text-foreground">7 days</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Achievement Badge */}
+              <Card className="bento-card bg-gradient-to-br from-warning/5 to-accent/5 border-2 border-warning/20">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-warning/20 to-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-warning/30">
+                    <Trophy className="w-8 h-8 text-warning" />
+                  </div>
+                  <h3 className="font-bold text-foreground mb-2">Keep it up!</h3>
+                  <p className="text-sm text-muted-foreground">
+                    You're on a 7-day learning streak
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Cost Dialog */}
+      <Dialog open={showCostDialog} onOpenChange={setShowCostDialog}>
+        <DialogContent className="rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Assignment Details</DialogTitle>
+            <DialogDescription>Review the assignment information before joining</DialogDescription>
+          </DialogHeader>
+          
+          {assignmentPreview && costData && (
+            <div className="space-y-4">
+              <div className="p-4 bg-muted/30 rounded-xl">
+                <h3 className="font-semibold text-foreground mb-2">{assignmentPreview.title}</h3>
+                <p className="text-sm text-muted-foreground mb-3">{assignmentPreview.description}</p>
+                
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Duration:</span>
+                    <div className="font-semibold text-foreground">{assignmentPreview.duration} min</div>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Questions:</span>
+                    <div className="font-semibold text-foreground">{costData.questionCount}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 border-2 border-primary/20 rounded-xl bg-primary/5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-muted-foreground">Token Cost:</span>
+                  <span className="text-2xl font-bold text-primary">{costData.tokensRequired} tokens</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Your Balance:</span>
+                  <span className="font-semibold text-foreground">{stats.tokenBalance} tokens</span>
+                </div>
+              </div>
+
+              {wallet && stats.tokenBalance < costData.tokensRequired && (
+                <div className="p-4 border-2 border-destructive/20 rounded-xl bg-destructive/5">
+                  <div className="flex items-start space-x-3">
+                    <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-semibold text-destructive mb-1">Insufficient Tokens</p>
+                      <p className="text-muted-foreground">
+                        You need {costData.tokensRequired - stats.tokenBalance} more tokens to join this assignment.
+                      </p>
                     </div>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
           )}
-        </Card>
 
-        {/* Assignment Cost Preview Dialog */}
-        <Dialog open={showCostDialog} onOpenChange={setShowCostDialog}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Assignment Cost Preview</DialogTitle>
-              <DialogDescription>
-                Review the token cost before joining this assignment
-              </DialogDescription>
-            </DialogHeader>
-            
-            {assignmentPreview && costData && (
-              <div className="space-y-4">
-                <div className="p-4 bg-muted rounded-lg">
-                  <h4 className="font-semibold mb-2">{assignmentPreview.title}</h4>
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <p>Faculty: {assignmentPreview.facultyName}</p>
-                    <p>Subject: {assignmentPreview.subjectName} ({assignmentPreview.subjectCode})</p>
-                    <p>Questions: {costData.questionCount}</p>
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                    <span className="font-medium">Tokens Required:</span>
-                    <div className="flex items-center">
-                      <Wallet className="w-4 h-4 mr-1 text-blue-600" />
-                      <span className="font-bold text-blue-700" data-testid="text-tokens-required">{costData.tokensRequired}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                    <span className="font-medium">Your Balance:</span>
-                    <div className="flex items-center">
-                      <Wallet className="w-4 h-4 mr-1 text-gray-600" />
-                      {walletLoading ? (
-                        <span className="font-bold text-gray-500" data-testid="text-user-balance">Loading...</span>
-                      ) : wallet ? (
-                        <span className={`font-bold ${wallet.balance >= costData.tokensRequired ? 'text-green-600' : 'text-red-600'}`} data-testid="text-user-balance">
-                          {wallet.balance}
-                        </span>
-                      ) : (
-                        <span className="font-bold text-red-600" data-testid="text-user-balance">Failed to load</span>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {costData.formattedCost && (
-                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                      <span className="font-medium">Equivalent Cost:</span>
-                      <span className="font-bold" data-testid="text-equivalent-cost">
-                        {costData.formattedCost}
-                      </span>
-                    </div>
-                  )}
-                  
-                  {!walletLoading && wallet && wallet.balance < costData.tokensRequired && (
-                    <Alert className="border-red-200 bg-red-50" data-testid="alert-insufficient-balance">
-                      <AlertTriangle className="h-4 w-4 text-red-600" />
-                      <AlertDescription className="text-red-800">
-                        Insufficient balance! You need {costData.tokensRequired - wallet.balance} more tokens.
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                  
-                  {!walletLoading && !wallet && (
-                    <Alert className="border-yellow-200 bg-yellow-50" data-testid="alert-wallet-error">
-                      <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                      <AlertDescription className="text-yellow-800">
-                        Unable to load wallet data. You can still proceed, but token verification will happen during assignment access.
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </div>
-              </div>
-            )}
-            
-            <DialogFooter className="flex gap-2">
-              <Button 
-                variant="outline" 
-                onClick={() => setShowCostDialog(false)}
-                data-testid="button-cancel-join"
-              >
-                Cancel
-              </Button>
-              {walletLoading ? (
-                <Button 
-                  disabled
-                  data-testid="button-loading"
-                >
-                  Loading wallet...
-                </Button>
-              ) : wallet && wallet.balance < (costData?.tokensRequired || 0) ? (
-                <Button 
-                  onClick={() => {
-                    setShowCostDialog(false);
-                    setLocation('/profile?tab=wallet');
-                  }}
-                  className="bg-orange-600 hover:bg-orange-700"
-                  data-testid="button-buy-tokens-dialog"
-                >
-                  <CreditCard className="w-4 h-4 mr-2" />
-                  Buy Tokens
-                </Button>
-              ) : (
-                <Button 
-                  onClick={handleConfirmJoin}
-                  data-testid="button-confirm-join"
-                >
-                  Join Assignment
-                </Button>
-              )}
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+          <DialogFooter className="flex gap-2 sm:gap-0">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowCostDialog(false)}
+              className="rounded-xl"
+              data-testid="button-cancel-join"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleConfirmJoin}
+              className="rounded-xl bg-gradient-to-r from-primary to-secondary"
+              data-testid="button-confirm-join"
+            >
+              Join Assignment
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

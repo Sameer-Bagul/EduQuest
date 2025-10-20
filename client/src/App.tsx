@@ -18,6 +18,7 @@ import ShippingPolicy from "@/pages/shipping-policy";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsConditions from "@/pages/terms-conditions";
 import ProfilePage from "@/pages/profile";
+import SettingsPage from "@/pages/settings";
 import CreateAssignmentPage from "@/pages/create-assignment";
 import ViewAssignmentPage from "@/pages/view-assignment";
 import EditAssignmentPage from "@/pages/edit-assignment";
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/teacher-dashboard" component={TeacherDashboard} />
       <Route path="/student-dashboard" component={StudentDashboard} />
       <Route path="/profile" component={ProfilePage} />
+      <Route path="/settings" component={SettingsPage} />
       <Route path="/create-assignment" component={CreateAssignmentPage} />
       <Route path="/assignments/view/:id" component={ViewAssignmentPage} />
       <Route path="/assignments/edit/:id" component={EditAssignmentPage} />

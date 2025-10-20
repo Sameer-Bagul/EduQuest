@@ -12,9 +12,12 @@ import {
   Star,
   BarChart3,
   Shield,
-  Clock
+  Clock,
+  Mic,
+  Brain,
+  Award
 } from "lucide-react";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
 
 export default function LandingPage() {
@@ -22,140 +25,226 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3">
-                <GraduationCap className="text-primary-foreground w-5 h-5" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-foreground">EduQuest</h1>
-                <p className="text-xs text-muted-foreground">Digital Learning Platform</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-              <Button variant="ghost" onClick={() => setLocation('/login')}>
-                Sign In
+      <Navbar showAuth={true} />
+      
+      {/* Hero Section with Diary Aesthetic */}
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 fade-in">
+            <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-primary/20 to-secondary/20 border-primary/30 rounded-full" data-testid="badge-featured">
+              <Sparkles className="w-4 h-4 mr-2 inline" />
+              AI-Powered Learning Platform
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
+              Transform Your
+              <span className="highlight-marker text-primary block mt-2">
+                Learning Journey
+              </span>
+            </h1>
+            <p className="text-xl sm:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed font-medium">
+              Create, submit, and grade assignments with voice technology, 
+              AI insights, and real-time collaboration.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button 
+                size="lg" 
+                onClick={() => setLocation('/register')} 
+                className="h-14 px-10 text-lg rounded-2xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all"
+                data-testid="button-start-trial"
+              >
+                Start Free Trial
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
-              <Button onClick={() => setLocation('/register')}>
-                Get Started
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="h-14 px-10 text-lg rounded-2xl border-2 hover:bg-accent/30"
+                data-testid="button-watch-demo"
+              >
+                Watch Demo
               </Button>
             </div>
+
+            <p className="text-sm text-muted-foreground">
+              No credit card required • 14-day free trial • Cancel anytime
+            </p>
+          </div>
+
+          {/* Bento Grid Features */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto slide-in-right">
+            {/* Feature Card 1 - Large */}
+            <Card className="bento-card md:col-span-2 lg:col-span-2 lg:row-span-2" data-testid="card-feature-voice">
+              <CardContent className="p-8 h-full flex flex-col justify-between">
+                <div>
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mb-6 border-2 border-primary/30">
+                    <Mic className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-4">Voice-to-Text Technology</h3>
+                  <p className="text-muted-foreground text-lg leading-relaxed">
+                    Speak your answers naturally and let our AI convert them to text instantly. 
+                    Perfect for accessibility and faster assignment completion.
+                  </p>
+                </div>
+                <div className="mt-6 flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-success" />
+                  <span className="text-sm text-muted-foreground">99% accuracy rate</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Feature Card 2 */}
+            <Card className="bento-card" data-testid="card-feature-ai">
+              <CardContent className="p-6">
+                <div className="w-14 h-14 bg-gradient-to-br from-warning/20 to-accent/20 rounded-2xl flex items-center justify-center mb-4 border-2 border-warning/30">
+                  <Brain className="w-7 h-7 text-warning" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-3">AI Grading</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Intelligent evaluation with detailed feedback and insights.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Feature Card 3 */}
+            <Card className="bento-card" data-testid="card-feature-collab">
+              <CardContent className="p-6">
+                <div className="w-14 h-14 bg-gradient-to-br from-success/20 to-primary/20 rounded-2xl flex items-center justify-center mb-4 border-2 border-success/30">
+                  <Users className="w-7 h-7 text-success" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-3">Real-time Collaboration</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Connect teachers and students seamlessly in one platform.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Feature Card 4 */}
+            <Card className="bento-card lg:col-span-2" data-testid="card-feature-security">
+              <CardContent className="p-6 flex items-center space-x-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center flex-shrink-0 border-2 border-primary/30">
+                  <Shield className="w-8 h-8 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">Secure Proctoring</h3>
+                  <p className="text-muted-foreground">
+                    Advanced monitoring ensures academic integrity with webcam tracking and browser lockdown.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Feature Card 5 */}
+            <Card className="bento-card" data-testid="card-feature-analytics">
+              <CardContent className="p-6">
+                <div className="w-14 h-14 bg-gradient-to-br from-accent/20 to-secondary/20 rounded-2xl flex items-center justify-center mb-4 border-2 border-accent/30">
+                  <BarChart3 className="w-7 h-7 text-accent" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-3">Analytics</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Comprehensive insights into performance and learning patterns.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
-            Transform Your
-            <span className="text-primary block">Learning Experience</span>
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-            Create, submit, and grade assignments with cutting-edge voice technology, 
-            AI-powered insights, and real-time proctoring features.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button size="lg" onClick={() => setLocation('/register')} className="h-12 px-8">
-              Start Free Trial
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-            <Button variant="outline" size="lg" className="h-12 px-8">
-              Watch Demo
-            </Button>
-          </div>
-
-          {/* Feature highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">Smart Assignments</h3>
-              <p className="text-muted-foreground text-sm">Create interactive assignments with voice-to-text capabilities</p>
+      {/* Stats Section with Diary Paper Effect */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-accent/10 to-background">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div className="fade-in">
+              <div className="text-5xl font-bold text-primary mb-2">10k+</div>
+              <p className="text-muted-foreground font-medium">Active Students</p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-success" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">Real-time Collaboration</h3>
-              <p className="text-muted-foreground text-sm">Connect teachers and students seamlessly</p>
+            <div className="fade-in">
+              <div className="text-5xl font-bold text-secondary mb-2">500+</div>
+              <p className="text-muted-foreground font-medium">Educators</p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-6 h-6 text-warning" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-2">AI-Powered Grading</h3>
-              <p className="text-muted-foreground text-sm">Automatic evaluation with intelligent insights</p>
+            <div className="fade-in">
+              <div className="text-5xl font-bold text-warning mb-2">50k+</div>
+              <p className="text-muted-foreground font-medium">Assignments Completed</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      {/* Testimonials with Bento Cards */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Everything You Need for Modern Education
+            <h2 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">
+              Loved by Educators Worldwide
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive tools designed for the digital classroom
+              See what teachers and students are saying about EduQuest
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="flex items-start space-x-4">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Shield className="w-5 h-5 text-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="bento-card" data-testid="card-testimonial-1">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-warning fill-current" />
+                  ))}
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Secure Proctoring</h3>
-                  <p className="text-muted-foreground">Advanced proctoring features ensure academic integrity with real-time monitoring</p>
+                <p className="text-foreground mb-4 leading-relaxed">
+                  "EduQuest has transformed how I manage my classroom. The voice-to-text feature is a game changer!"
+                </p>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center">
+                    <span className="text-foreground font-bold">SM</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">Sarah Mitchell</p>
+                    <p className="text-sm text-muted-foreground">High School Teacher</p>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <BarChart3 className="w-5 h-5 text-success" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Analytics Dashboard</h3>
-                  <p className="text-muted-foreground">Comprehensive insights into student performance and learning patterns</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-5 h-5 text-warning" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Auto-Save & Recovery</h3>
-                  <p className="text-muted-foreground">Never lose progress with automatic saving and session recovery</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            <Card className="hover-subtle">
-              <CardContent className="p-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <GraduationCap className="w-8 h-8 text-primary-foreground" />
+            <Card className="bento-card" data-testid="card-testimonial-2">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-warning fill-current" />
+                  ))}
+                </div>
+                <p className="text-foreground mb-4 leading-relaxed">
+                  "The AI grading system saves me hours every week. Highly recommended for busy educators."
+                </p>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-success/20 to-primary/20 rounded-full flex items-center justify-center">
+                    <span className="text-foreground font-bold">JC</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-4">Join 1000+ Educators</h3>
-                  <p className="text-muted-foreground mb-6">Trusted by educational institutions worldwide</p>
-                  <div className="flex justify-center space-x-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-warning fill-current" />
-                    ))}
+                  <div>
+                    <p className="font-semibold text-foreground">James Chen</p>
+                    <p className="text-sm text-muted-foreground">University Professor</p>
                   </div>
-                  <p className="text-sm text-muted-foreground">4.9/5 from 500+ reviews</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bento-card" data-testid="card-testimonial-3">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-warning fill-current" />
+                  ))}
+                </div>
+                <p className="text-foreground mb-4 leading-relaxed">
+                  "As a student, I love how easy it is to submit assignments and track my progress in real-time."
+                </p>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-warning/20 to-accent/20 rounded-full flex items-center justify-center">
+                    <span className="text-foreground font-bold">EP</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">Emma Peterson</p>
+                    <p className="text-sm text-muted-foreground">College Student</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -165,27 +254,39 @@ export default function LandingPage() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Ready to Transform Your Classroom?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of educators using EduQuest to enhance their teaching experience
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={() => setLocation('/register')} className="h-12 px-8">
-              Start Free Trial
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-            <Button variant="outline" size="lg" onClick={() => setLocation('/login')} className="h-12 px-8">
-              Sign In
-            </Button>
-          </div>
-          
-          <p className="text-sm text-muted-foreground mt-4">
-            No credit card required • 14-day free trial • Cancel anytime
-          </p>
+        <div className="max-w-5xl mx-auto">
+          <Card className="bento-card bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20">
+            <CardContent className="p-12 text-center">
+              <Award className="w-16 h-16 text-primary mx-auto mb-6" />
+              <h2 className="text-3xl sm:text-5xl font-bold text-foreground mb-4">
+                Ready to Transform Your Classroom?
+              </h2>
+              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Join thousands of educators using EduQuest to enhance their teaching experience
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  size="lg" 
+                  onClick={() => setLocation('/register')} 
+                  className="h-14 px-10 text-lg rounded-2xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg"
+                  data-testid="button-cta-start"
+                >
+                  Start Free Trial
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  onClick={() => setLocation('/login')} 
+                  className="h-14 px-10 text-lg rounded-2xl border-2"
+                  data-testid="button-cta-signin"
+                >
+                  Sign In
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
