@@ -1,128 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Light Mode - Clean & Minimal */
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(240, 10%, 3.9%);
+  /* Old-School Diary Theme with Turquoise & Yellow */
+  --background: hsl(45, 100%, 98%);
+  --foreground: hsl(220, 13%, 26%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(220, 13%, 26%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(220, 13%, 26%);
   
-  /* Primary - Clean Blue */
-  --primary: hsl(221.2, 83.2%, 53.3%);
-  --primary-foreground: hsl(210, 40%, 98%);
+  /* Primary - Turquoise/Cyan (#4ED7F1) */
+  --primary: hsl(188, 85%, 63%);
+  --primary-foreground: hsl(220, 13%, 26%);
   
-  /* Secondary - Neutral Gray */
-  --secondary: hsl(210, 40%, 96%);
-  --secondary-foreground: hsl(222.2, 84%, 4.9%);
+  /* Secondary - Lighter Turquoise (#6FE6FC) */
+  --secondary: hsl(189, 95%, 71%);
+  --secondary-foreground: hsl(220, 13%, 26%);
   
-  /* Accent - Subtle Blue */
-  --accent: hsl(210, 40%, 96%);
-  --accent-foreground: hsl(222.2, 84%, 4.9%);
+  /* Accent - Soft Cyan (#A8F1FF) */
+  --accent: hsl(192, 100%, 83%);
+  --accent-foreground: hsl(220, 13%, 26%);
   
-  --muted: hsl(210, 40%, 96%);
-  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(210, 40%, 98%);
+  /* Warning/Highlight - Yellow (#FFFA8D) */
+  --warning: hsl(59, 100%, 77%);
+  --warning-foreground: hsl(220, 13%, 26%);
   
-  --border: hsl(214.3, 31.8%, 91.4%);
-  --input: hsl(214.3, 31.8%, 91.4%);
-  --ring: hsl(221.2, 83.2%, 53.3%);
+  --muted: hsl(45, 60%, 94%);
+  --muted-foreground: hsl(220, 13%, 46%);
+  --destructive: hsl(0, 72%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
   
-  /* Neutral Charts */
-  --chart-1: hsl(221.2, 83.2%, 53.3%);
-  --chart-2: hsl(210, 40%, 50%);
-  --chart-3: hsl(215.4, 16.3%, 46.9%);
-  --chart-4: hsl(142.1, 76.2%, 36.3%);
-  --chart-5: hsl(38, 92%, 50%);
+  --border: hsl(188, 40%, 85%);
+  --input: hsl(188, 40%, 85%);
+  --ring: hsl(188, 85%, 63%);
   
-  /* Sidebar */
-  --sidebar: hsl(0, 0%, 100%);
-  --sidebar-foreground: hsl(240, 10%, 3.9%);
-  --sidebar-primary: hsl(221.2, 83.2%, 53.3%);
-  --sidebar-primary-foreground: hsl(210, 40%, 98%);
-  --sidebar-accent: hsl(210, 40%, 96%);
-  --sidebar-accent-foreground: hsl(222.2, 84%, 4.9%);
-  --sidebar-border: hsl(214.3, 31.8%, 91.4%);
-  --sidebar-ring: hsl(221.2, 83.2%, 53.3%);
+  /* Success - Warm green to match diary theme */
+  --success: hsl(142, 71%, 45%);
+  --success-foreground: hsl(0, 0%, 100%);
   
-  /* Status Colors - Subtle */
-  --success: hsl(142.1, 76.2%, 36.3%);
-  --success-foreground: hsl(355.7, 100%, 97.3%);
-  --warning: hsl(38, 92%, 50%);
-  --warning-foreground: hsl(48, 96%, 89%);
-  --info: hsl(221.2, 83.2%, 53.3%);
-  --info-foreground: hsl(210, 40%, 98%);
+  /* Info - Using primary turquoise */
+  --info: hsl(188, 85%, 63%);
+  --info-foreground: hsl(220, 13%, 26%);
   
-  /* Typography - Geist Mono */
-  --font-sans: "Geist Mono", "Geist Mono Fallback", monospace;
-  --radius: 0.5rem;
+  /* Charts - Using theme colors */
+  --chart-1: hsl(188, 85%, 63%);
+  --chart-2: hsl(189, 95%, 71%);
+  --chart-3: hsl(192, 100%, 83%);
+  --chart-4: hsl(59, 100%, 77%);
+  --chart-5: hsl(142, 71%, 45%);
   
-  /* Minimal Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* Sidebar - Diary aesthetic */
+  --sidebar: hsl(45, 100%, 98%);
+  --sidebar-foreground: hsl(220, 13%, 26%);
+  --sidebar-primary: hsl(188, 85%, 63%);
+  --sidebar-primary-foreground: hsl(220, 13%, 26%);
+  --sidebar-accent: hsl(192, 100%, 83%);
+  --sidebar-accent-foreground: hsl(220, 13%, 26%);
+  --sidebar-border: hsl(188, 40%, 85%);
+  --sidebar-ring: hsl(188, 85%, 63%);
+  
+  /* Typography - Poppins */
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius: 1rem;
+  
+  /* Diary-style shadows with warmth */
+  --shadow-sm: 0 2px 4px 0 rgba(78, 215, 241, 0.1);
+  --shadow: 0 4px 8px 0 rgba(78, 215, 241, 0.15), 0 2px 4px 0 rgba(78, 215, 241, 0.1);
+  --shadow-md: 0 8px 16px 0 rgba(78, 215, 241, 0.2), 0 4px 8px 0 rgba(78, 215, 241, 0.15);
+  --shadow-lg: 0 16px 32px 0 rgba(78, 215, 241, 0.25), 0 8px 16px 0 rgba(78, 215, 241, 0.2);
+  --shadow-xl: 0 24px 48px 0 rgba(78, 215, 241, 0.3), 0 12px 24px 0 rgba(78, 215, 241, 0.25);
 }
 
 .dark {
-  /* Dark Mode - Clean & Minimal */
-  --background: hsl(222.2, 84%, 4.9%);
-  --foreground: hsl(210, 40%, 98%);
-  --card: hsl(222.2, 84%, 4.9%);
-  --card-foreground: hsl(210, 40%, 98%);
-  --popover: hsl(222.2, 84%, 4.9%);
-  --popover-foreground: hsl(210, 40%, 98%);
+  /* Dark Mode - Diary night theme */
+  --background: hsl(220, 20%, 12%);
+  --foreground: hsl(45, 100%, 95%);
+  --card: hsl(220, 18%, 16%);
+  --card-foreground: hsl(45, 100%, 95%);
+  --popover: hsl(220, 18%, 16%);
+  --popover-foreground: hsl(45, 100%, 95%);
   
-  /* Primary - Clean Blue */
-  --primary: hsl(217.2, 91.2%, 59.8%);
-  --primary-foreground: hsl(222.2, 84%, 4.9%);
+  /* Primary - Brighter Turquoise for dark mode */
+  --primary: hsl(188, 85%, 55%);
+  --primary-foreground: hsl(220, 20%, 12%);
   
-  /* Secondary - Neutral Gray */
-  --secondary: hsl(217.2, 32.6%, 17.5%);
-  --secondary-foreground: hsl(210, 40%, 98%);
+  /* Secondary - Lighter Turquoise */
+  --secondary: hsl(189, 95%, 65%);
+  --secondary-foreground: hsl(220, 20%, 12%);
   
-  /* Accent - Subtle Blue */
-  --accent: hsl(217.2, 32.6%, 17.5%);
-  --accent-foreground: hsl(210, 40%, 98%);
+  /* Accent - Soft Cyan */
+  --accent: hsl(192, 100%, 75%);
+  --accent-foreground: hsl(220, 20%, 12%);
   
-  --muted: hsl(217.2, 32.6%, 17.5%);
-  --muted-foreground: hsl(215, 20.2%, 65.1%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(210, 40%, 98%);
+  /* Warning/Highlight - Yellow */
+  --warning: hsl(59, 100%, 70%);
+  --warning-foreground: hsl(220, 20%, 12%);
   
-  --border: hsl(217.2, 32.6%, 17.5%);
-  --input: hsl(217.2, 32.6%, 17.5%);
-  --ring: hsl(217.2, 91.2%, 59.8%);
+  --muted: hsl(220, 18%, 20%);
+  --muted-foreground: hsl(45, 40%, 65%);
+  --destructive: hsl(0, 62%, 50%);
+  --destructive-foreground: hsl(45, 100%, 95%);
   
-  /* Neutral Charts */
-  --chart-1: hsl(217.2, 91.2%, 59.8%);
-  --chart-2: hsl(215, 20.2%, 65.1%);
-  --chart-3: hsl(217.2, 32.6%, 17.5%);
-  --chart-4: hsl(142.1, 70.6%, 45.3%);
-  --chart-5: hsl(38, 92%, 50%);
+  --border: hsl(220, 18%, 24%);
+  --input: hsl(220, 18%, 24%);
+  --ring: hsl(188, 85%, 55%);
+  
+  /* Success */
+  --success: hsl(142, 71%, 50%);
+  --success-foreground: hsl(220, 20%, 12%);
+  
+  /* Info */
+  --info: hsl(188, 85%, 55%);
+  --info-foreground: hsl(220, 20%, 12%);
+  
+  /* Charts */
+  --chart-1: hsl(188, 85%, 55%);
+  --chart-2: hsl(189, 95%, 65%);
+  --chart-3: hsl(192, 100%, 75%);
+  --chart-4: hsl(59, 100%, 70%);
+  --chart-5: hsl(142, 71%, 50%);
   
   /* Sidebar */
-  --sidebar: hsl(222.2, 84%, 4.9%);
-  --sidebar-foreground: hsl(210, 40%, 98%);
-  --sidebar-primary: hsl(217.2, 91.2%, 59.8%);
-  --sidebar-primary-foreground: hsl(222.2, 84%, 4.9%);
-  --sidebar-accent: hsl(217.2, 32.6%, 17.5%);
-  --sidebar-accent-foreground: hsl(210, 40%, 98%);
-  --sidebar-border: hsl(217.2, 32.6%, 17.5%);
-  --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
+  --sidebar: hsl(220, 18%, 16%);
+  --sidebar-foreground: hsl(45, 100%, 95%);
+  --sidebar-primary: hsl(188, 85%, 55%);
+  --sidebar-primary-foreground: hsl(220, 20%, 12%);
+  --sidebar-accent: hsl(192, 100%, 75%);
+  --sidebar-accent-foreground: hsl(220, 20%, 12%);
+  --sidebar-border: hsl(220, 18%, 24%);
+  --sidebar-ring: hsl(188, 85%, 55%);
   
-  /* Status Colors - Subtle */
-  --success: hsl(142.1, 70.6%, 45.3%);
-  --success-foreground: hsl(144.9, 80.4%, 10%);
-  --warning: hsl(38, 92%, 50%);
-  --warning-foreground: hsl(48, 96%, 89%);
-  --info: hsl(217.2, 91.2%, 59.8%);
-  --info-foreground: hsl(222.2, 84%, 4.9%);
+  /* Shadows for dark mode */
+  --shadow-sm: 0 2px 4px 0 rgba(78, 215, 241, 0.2);
+  --shadow: 0 4px 8px 0 rgba(78, 215, 241, 0.25), 0 2px 4px 0 rgba(78, 215, 241, 0.2);
+  --shadow-md: 0 8px 16px 0 rgba(78, 215, 241, 0.3), 0 4px 8px 0 rgba(78, 215, 241, 0.25);
+  --shadow-lg: 0 16px 32px 0 rgba(78, 215, 241, 0.35), 0 8px 16px 0 rgba(78, 215, 241, 0.3);
+  --shadow-xl: 0 24px 48px 0 rgba(78, 215, 241, 0.4), 0 12px 24px 0 rgba(78, 215, 241, 0.35);
 }
 
 @layer base {
@@ -134,6 +151,7 @@
     @apply font-sans antialiased text-foreground;
     background: var(--background);
     min-height: 100vh;
+    font-family: var(--font-sans);
   }
 
   /* Proctoring styles */
@@ -157,39 +175,148 @@
     50% { opacity: 0.5; }
   }
 
+  /* Bento Card - Modern grid card with diary aesthetic */
+  .bento-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bento-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .bento-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+  }
+
+  .bento-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Diary paper effect */
+  .diary-paper {
+    background: linear-gradient(to bottom, 
+      var(--card) 0%, 
+      var(--card) calc(100% - 1px), 
+      var(--border) calc(100% - 1px), 
+      var(--border) 100%
+    );
+    background-size: 100% 2rem;
+    position: relative;
+  }
+
+  .diary-paper::before {
+    content: '';
+    position: absolute;
+    left: 3rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary);
+    opacity: 0.2;
+  }
+
+  /* Popup navbar effect */
+  .popup-nav {
+    border-radius: var(--radius);
+    margin: 1rem;
+    padding: 0.5rem 1.5rem;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Handwritten-style highlight */
+  .highlight-marker {
+    background: linear-gradient(120deg, transparent 0%, var(--warning) 0%);
+    background-size: 100% 60%;
+    background-repeat: no-repeat;
+    background-position: 0 85%;
+    padding: 0 0.25rem;
+  }
+
   /* Minimal UI Classes */
   .clean-card {
     background: var(--card);
-    border: 1px solid var(--border);
+    border: 2px solid var(--border);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow);
   }
 
   .hover-subtle {
-    transition: box-shadow 0.2s ease-in-out;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .hover-subtle:hover {
+    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
 
   .fade-in {
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.5s ease-out;
   }
 
   .focus-ring:focus {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
+    border-radius: 0.5rem;
   }
 
-  /* Simple animations */
+  /* Smooth animations */
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { 
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+  @keyframes slideInRight {
+    from {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+  }
+
+  .slide-in-left {
+    animation: slideInLeft 0.5s ease-out;
   }
 }
