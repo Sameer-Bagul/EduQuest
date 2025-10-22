@@ -226,6 +226,19 @@
     border-right: none; /* Remove border */
   }
 
+  /* Glassmorphism Header */
+  .glass-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(123, 44, 191, 0.2);
+  }
+
+  .dark .glass-header {
+    background: rgba(16, 0, 43, 0.4);
+    border: 1px solid rgba(123, 44, 191, 0.3);
+  }
+
   /* Glassmorphism Button */
   .glass-button {
     background: rgba(123, 44, 191, 0.1);

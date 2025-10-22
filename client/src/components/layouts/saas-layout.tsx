@@ -222,7 +222,7 @@ export function SaasLayout({ children }: SaasLayoutProps) {
 
       <SidebarInset>
         {/* Top Bar */}
-        <header className="glass-nav sticky top-0 z-40 flex h-16 items-center gap-4 px-6 border-b">
+        <header className="glass-header sticky top-0 z-40 flex h-16 items-center gap-4 px-4 mx-4 mt-4 rounded-2xl">
           <SidebarTrigger className="glass-button" />
           <div className="flex-1" />
           <ThemeToggle />
