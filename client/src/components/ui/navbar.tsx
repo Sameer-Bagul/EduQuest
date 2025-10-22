@@ -4,8 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { 
   GraduationCap, 
   LogOut, 
-  User, 
-  Settings,
   ChevronDown
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -75,20 +73,12 @@ export function Navbar({ title = "EduQuest", subtitle = "Digital Learning Platfo
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => setLocation('/profile')}
+                    onClick={() => setLocation(user?.role === 'teacher' ? '/teacher-dashboard' : '/student-dashboard')}
                     className="cursor-pointer"
-                    data-testid="button-profile"
+                    data-testid="button-dashboard"
                   >
-                    <User className="w-4 h-4 mr-2" />
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => setLocation('/settings')}
-                    className="cursor-pointer"
-                    data-testid="button-settings"
-                  >
-                    <Settings className="w-4 h-4 mr-2" />
-                    Settings
+                    <GraduationCap className="w-4 h-4 mr-2" />
+                    Dashboard
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem

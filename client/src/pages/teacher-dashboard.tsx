@@ -71,24 +71,24 @@ export default function TeacherDashboard() {
 
   return (
     <SaasLayout>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-theme">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header */}
           <div className="mb-10">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome back, <span className="text-gray-900">{user?.name}</span>
+            <h1 className="text-3xl font-bold text-theme mb-2">
+              Welcome back, <span className="text-theme">{user?.name}</span>
             </h1>
-            <p className="text-gray-600 text-lg">Here's what's happening with your classes today.</p>
+            <p className="text-theme-secondary text-lg">Here's what's happening with your classes today.</p>
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.totalAssignments}</div>
-                    <div className="text-sm text-gray-600">Total Assignments</div>
+                    <div className="text-2xl font-bold text-theme">{stats.totalAssignments}</div>
+                    <div className="text-sm text-theme-secondary">Total Assignments</div>
                   </div>
                   <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
                     <ClipboardList className="w-6 h-6 text-purple-600" />
@@ -97,12 +97,12 @@ export default function TeacherDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.activeStudents}</div>
-                    <div className="text-sm text-gray-600">Active Students</div>
+                    <div className="text-2xl font-bold text-theme">{stats.activeStudents}</div>
+                    <div className="text-sm text-theme-secondary">Active Students</div>
                   </div>
                   <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
                     <Users className="w-6 h-6 text-blue-600" />
@@ -111,12 +111,12 @@ export default function TeacherDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.pendingReviews}</div>
-                    <div className="text-sm text-gray-600">Pending Reviews</div>
+                    <div className="text-2xl font-bold text-theme">{stats.pendingReviews}</div>
+                    <div className="text-sm text-theme-secondary">Pending Reviews</div>
                   </div>
                   <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
                     <Clock className="w-6 h-6 text-orange-600" />
@@ -125,12 +125,12 @@ export default function TeacherDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.completionRate}%</div>
-                    <div className="text-sm text-gray-600">Completion Rate</div>
+                    <div className="text-2xl font-bold text-theme">{stats.completionRate}%</div>
+                    <div className="text-sm text-theme-secondary">Completion Rate</div>
                   </div>
                   <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
                     <Award className="w-6 h-6 text-green-600" />
@@ -144,15 +144,15 @@ export default function TeacherDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Assignments List */}
             <div className="lg:col-span-2">
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="bg-card border border-border shadow-sm">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-xl font-semibold text-gray-900 flex items-center">
+                      <CardTitle className="text-xl font-semibold text-theme flex items-center">
                         <BookOpen className="w-5 h-5 mr-2 text-purple-600" />
                         Your Assignments
                       </CardTitle>
-                      <CardDescription className="text-gray-600 mt-1">Manage and track all your assignments</CardDescription>
+                      <CardDescription className="text-theme-secondary mt-1">Manage and track all your assignments</CardDescription>
                     </div>
                     <Button 
                       onClick={() => setCreateModalOpen(true)}
@@ -173,11 +173,11 @@ export default function TeacherDashboard() {
                     </div>
                   ) : assignments.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <ClipboardList className="w-8 h-8 text-gray-400" />
+                      <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                        <ClipboardList className="w-8 h-8 text-muted-foreground" />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No assignments yet</h3>
-                      <p className="text-gray-600 mb-4">Create your first assignment to get started</p>
+                      <h3 className="text-lg font-semibold text-theme mb-2">No assignments yet</h3>
+                      <p className="text-theme-secondary mb-4">Create your first assignment to get started</p>
                       <Button 
                         onClick={() => setCreateModalOpen(true)}
                         className="bg-purple-600 hover:bg-purple-700 text-white"
@@ -193,30 +193,30 @@ export default function TeacherDashboard() {
                         return (
                           <Card 
                             key={assignment.id} 
-                            className="bg-white border border-gray-200 hover:border-purple-200 hover:shadow-sm transition-all cursor-pointer"
+                            className="bg-card border border-border hover:border-purple-200 hover:shadow-sm transition-all cursor-pointer"
                           >
                             <CardContent className="p-5">
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start gap-3 mb-3">
-                                    <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
                                       <GraduationCap className="w-5 h-5 text-purple-600" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <h3 className="font-semibold text-gray-900 mb-1 truncate">{assignment.title}</h3>
-                                      <p className="text-sm text-gray-600 line-clamp-2">{assignment.subjectName}</p>
+                                      <h3 className="font-semibold text-theme mb-1 truncate">{assignment.title}</h3>
+                                      <p className="text-sm text-theme-secondary line-clamp-2">{assignment.subjectName}</p>
                                     </div>
                                     <Badge variant={status.variant} className="flex-shrink-0">
                                       {status.label}
                                     </Badge>
                                   </div>
                                   
-                                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                                  <div className="flex flex-wrap items-center gap-4 text-sm text-theme-secondary">
                                     <div className="flex items-center">
                                       <Calendar className="w-4 h-4 mr-1" />
                                       {new Date(assignment.startDate).toLocaleDateString()}
                                     </div>
-                                    <Badge variant="outline" className="text-gray-600 border-gray-300">
+                                    <Badge variant="outline" className="text-theme-secondary border-border">
                                       {assignment.code}
                                     </Badge>
                                   </div>
@@ -230,7 +230,7 @@ export default function TeacherDashboard() {
                                       e.stopPropagation();
                                       setLocation(`/assignments/view/${assignment.id}`);
                                     }}
-                                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                                    className="text-theme-secondary hover:text-theme hover:bg-muted"
                                   >
                                     <Eye className="w-4 h-4" />
                                   </Button>
@@ -241,7 +241,7 @@ export default function TeacherDashboard() {
                                       e.stopPropagation();
                                       setLocation(`/assignments/edit/${assignment.id}`);
                                     }}
-                                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                                    className="text-theme-secondary hover:text-theme hover:bg-muted"
                                   >
                                     <Edit className="w-4 h-4" />
                                   </Button>
@@ -260,14 +260,14 @@ export default function TeacherDashboard() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Quick Actions */}
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="bg-card border border-border shadow-sm">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-gray-900">Quick Actions</CardTitle>
+                  <CardTitle className="text-lg font-semibold text-theme">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start h-10 border-gray-200 hover:bg-gray-50 text-gray-700"
+                    className="w-full justify-start h-10 border-border hover:bg-muted text-theme"
                     onClick={() => setCreateModalOpen(true)}
                   >
                     <Plus className="w-4 h-4 mr-3 text-purple-600" />
@@ -275,7 +275,7 @@ export default function TeacherDashboard() {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start h-10 border-gray-200 hover:bg-gray-50 text-gray-700"
+                    className="w-full justify-start h-10 border-border hover:bg-muted text-theme"
                     onClick={() => setLocation('/profile')}
                   >
                     <Users className="w-4 h-4 mr-3 text-blue-600" />
@@ -283,7 +283,7 @@ export default function TeacherDashboard() {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start h-10 border-gray-200 hover:bg-gray-50 text-gray-700"
+                    className="w-full justify-start h-10 border-border hover:bg-muted text-theme"
                   >
                     <BarChart3 className="w-4 h-4 mr-3 text-green-600" />
                     <span>Analytics</span>
@@ -292,13 +292,13 @@ export default function TeacherDashboard() {
               </Card>
 
               {/* Recent Activity */}
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="bg-card border border-border shadow-sm">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-gray-900">Recent Activity</CardTitle>
-                  <CardDescription className="text-gray-600">Latest updates from your classes</CardDescription>
+                  <CardTitle className="text-lg font-semibold text-theme">Recent Activity</CardTitle>
+                  <CardDescription className="text-theme-secondary">Latest updates from your classes</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-theme-secondary">
                     <p className="mb-2">No recent activity</p>
                     <p className="text-xs">Activity will appear here as students interact with your assignments</p>
                   </div>

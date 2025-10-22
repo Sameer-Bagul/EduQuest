@@ -1,16 +1,16 @@
 export default function ContactUs() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-theme py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow-lg rounded-lg">
+        <div className="bg-card border border-border shadow-lg rounded-lg">
           <div className="px-6 py-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">
+            <h1 className="text-3xl font-bold text-theme mb-8">
               Contact Us
             </h1>
 
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                <h2 className="text-xl font-semibold text-theme mb-6">
                   Get in Touch
                 </h2>
                 
@@ -22,8 +22,8 @@ export default function ContactUs() {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">Email</p>
-                      <p className="text-sm text-gray-600">sameerbagul2004@gmail.com</p>
+                      <p className="text-sm font-medium text-theme">Email</p>
+                      <p className="text-sm text-theme-secondary">sameerbagul2004@gmail.com</p>
                     </div>
                   </div>
 
@@ -34,8 +34,8 @@ export default function ContactUs() {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">Phone</p>
-                      <p className="text-sm text-gray-600">7841941033</p>
+                      <p className="text-sm font-medium text-theme">Phone</p>
+                      <p className="text-sm text-theme-secondary">7841941033</p>
                     </div>
                   </div>
 
@@ -46,68 +46,68 @@ export default function ContactUs() {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">Support Hours</p>
-                      <p className="text-sm text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                      <p className="text-sm text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
+                      <p className="text-sm font-medium text-theme">Support Hours</p>
+                      <p className="text-sm text-theme-secondary">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                      <p className="text-sm text-theme-secondary">Saturday: 10:00 AM - 4:00 PM</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                <h2 className="text-xl font-semibold text-theme mb-6">
                   Send us a Message
                 </h2>
                 
                 <form className="space-y-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="name" className="block text-sm font-medium text-theme mb-1">
                       Full Name
                     </label>
                     <input
                       type="text"
                       id="name"
                       name="name"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-card text-theme"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="email" className="block text-sm font-medium text-theme mb-1">
                       Email Address
                     </label>
                     <input
                       type="email"
                       id="email"
                       name="email"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-card text-theme"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="subject" className="block text-sm font-medium text-theme mb-1">
                       Subject
                     </label>
                     <input
                       type="text"
                       id="subject"
                       name="subject"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-card text-theme"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="message" className="block text-sm font-medium text-theme mb-1">
                       Message
                     </label>
                     <textarea
                       id="message"
                       name="message"
                       rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-card text-theme"
                       required
                     ></textarea>
                   </div>

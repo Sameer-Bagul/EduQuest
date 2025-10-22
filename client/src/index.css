@@ -5,143 +5,143 @@
 @tailwind utilities;
 
 :root {
-  /* Minimalistic Purple Glassmorphism Theme */
-  --background: hsl(348, 100%, 97%);
-  --foreground: hsl(273, 97%, 22%);
-  --card: hsla(0, 0%, 100%, 0.7);
-  --card-foreground: hsl(273, 97%, 22%);
-  --popover: hsla(0, 0%, 100%, 0.9);
-  --popover-foreground: hsl(273, 97%, 22%);
+  /* New Purple-Cyan Theme - Light Mode */
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(270, 100%, 14%);
+  --card: hsla(0, 0%, 100%, 0.95);
+  --card-foreground: hsl(270, 100%, 14%);
+  --popover: hsla(0, 0%, 100%, 0.98);
+  --popover-foreground: hsl(270, 100%, 14%);
   
-  /* Primary - Dark Purple (#3B0270) */
-  --primary: hsl(273, 97%, 22%);
+  /* Primary - Medium Purple (#7B2CBF) */
+  --primary: hsl(270, 100%, 47%);
   --primary-foreground: hsl(0, 0%, 100%);
   
-  /* Secondary - Bright Purple (#6F00FF) */
-  --secondary: hsl(266, 100%, 50%);
+  /* Secondary - Light Purple (#9D4EDD) */
+  --secondary: hsl(270, 100%, 60%);
   --secondary-foreground: hsl(0, 0%, 100%);
   
-  /* Accent - Light Purple (#E9B3FB) */
-  --accent: hsl(288, 85%, 85%);
-  --accent-foreground: hsl(273, 97%, 22%);
+  /* Accent - Light Purple (#C77DFF) */
+  --accent: hsl(270, 100%, 85%);
+  --accent-foreground: hsl(270, 100%, 21%);
   
-  /* Muted - Very Light Pink (#FFF1F1) */
-  --muted: hsl(0, 100%, 97%);
-  --muted-foreground: hsl(273, 50%, 50%);
+  /* Muted - Very Light Purple */
+  --muted: hsl(270, 100%, 95%);
+  --muted-foreground: hsl(270, 100%, 35%);
   
   --destructive: hsl(0, 72%, 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
   
-  --border: hsla(288, 85%, 85%, 0.3);
-  --input: hsla(288, 85%, 85%, 0.5);
-  --ring: hsl(266, 100%, 50%);
+  --border: hsla(270, 100%, 47%, 0.2);
+  --input: hsla(270, 100%, 47%, 0.1);
+  --ring: hsl(270, 100%, 47%);
   
   /* Success */
   --success: hsl(142, 71%, 45%);
   --success-foreground: hsl(0, 0%, 100%);
   
   /* Info */
-  --info: hsl(266, 100%, 50%);
+  --info: hsl(270, 100%, 47%);
   --info-foreground: hsl(0, 0%, 100%);
   
   /* Warning */
   --warning: hsl(45, 100%, 60%);
-  --warning-foreground: hsl(273, 97%, 22%);
+  --warning-foreground: hsl(270, 100%, 14%);
   
-  /* Charts */
-  --chart-1: hsl(273, 97%, 22%);
-  --chart-2: hsl(266, 100%, 50%);
-  --chart-3: hsl(288, 85%, 85%);
-  --chart-4: hsl(288, 70%, 70%);
-  --chart-5: hsl(288, 60%, 60%);
+  /* Charts - Purple gradient */
+  --chart-1: hsl(270, 100%, 21%);
+  --chart-2: hsl(270, 100%, 35%);
+  --chart-3: hsl(270, 100%, 47%);
+  --chart-4: hsl(270, 100%, 60%);
+  --chart-5: hsl(270, 100%, 75%);
   
   /* Sidebar */
-  --sidebar: hsla(273, 97%, 22%, 0.05);
-  --sidebar-foreground: hsl(273, 97%, 22%);
-  --sidebar-primary: hsl(266, 100%, 50%);
+  --sidebar: hsla(270, 100%, 47%, 0.05);
+  --sidebar-foreground: hsl(270, 100%, 14%);
+  --sidebar-primary: hsl(270, 100%, 47%);
   --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: hsl(288, 85%, 85%);
-  --sidebar-accent-foreground: hsl(273, 97%, 22%);
-  --sidebar-border: hsla(288, 85%, 85%, 0.2);
-  --sidebar-ring: hsl(266, 100%, 50%);
+  --sidebar-accent: hsl(270, 100%, 85%);
+  --sidebar-accent-foreground: hsl(270, 100%, 21%);
+  --sidebar-border: hsla(270, 100%, 47%, 0.1);
+  --sidebar-ring: hsl(270, 100%, 47%);
   
   /* Typography - Poppins */
   --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   --radius: 1.2rem;
   
-  /* Glassmorphism shadows */
-  --shadow-sm: 0 2px 8px 0 rgba(111, 0, 255, 0.05);
-  --shadow: 0 4px 12px 0 rgba(111, 0, 255, 0.08), 0 2px 6px 0 rgba(59, 2, 112, 0.05);
-  --shadow-md: 0 8px 20px 0 rgba(111, 0, 255, 0.12), 0 4px 10px 0 rgba(59, 2, 112, 0.08);
-  --shadow-lg: 0 16px 32px 0 rgba(111, 0, 255, 0.15), 0 8px 16px 0 rgba(59, 2, 112, 0.1);
-  --shadow-xl: 0 24px 48px 0 rgba(111, 0, 255, 0.2), 0 12px 24px 0 rgba(59, 2, 112, 0.15);
+  /* Updated shadows with new purple theme */
+  --shadow-sm: 0 2px 8px 0 hsla(270, 100%, 47%, 0.08);
+  --shadow: 0 4px 12px 0 hsla(270, 100%, 47%, 0.12), 0 2px 6px 0 hsla(270, 100%, 21%, 0.08);
+  --shadow-md: 0 8px 20px 0 hsla(270, 100%, 47%, 0.15), 0 4px 10px 0 hsla(270, 100%, 21%, 0.1);
+  --shadow-lg: 0 16px 32px 0 hsla(270, 100%, 47%, 0.2), 0 8px 16px 0 hsla(270, 100%, 21%, 0.15);
+  --shadow-xl: 0 24px 48px 0 hsla(270, 100%, 47%, 0.25), 0 12px 24px 0 hsla(270, 100%, 21%, 0.2);
 }
 
 .dark {
-  /* Dark Mode - Purple Glassmorphism */
-  --background: hsl(273, 97%, 8%);
-  --foreground: hsl(0, 100%, 97%);
-  --card: hsla(273, 97%, 15%, 0.7);
-  --card-foreground: hsl(0, 100%, 97%);
-  --popover: hsla(273, 97%, 15%, 0.9);
-  --popover-foreground: hsl(0, 100%, 97%);
+  /* New Purple-Cyan Theme - Dark Mode */
+  --background: #10002B;
+  --foreground: hsl(0, 0%, 97%);
+  --card: hsla(270, 100%, 8%, 0.8);
+  --card-foreground: hsl(0, 0%, 97%);
+  --popover: hsla(270, 100%, 8%, 0.9);
+  --popover-foreground: hsl(0, 0%, 97%);
   
-  /* Primary - Bright Purple for dark mode */
-  --primary: hsl(266, 100%, 50%);
-  --primary-foreground: hsl(0, 0%, 100%);
+  /* Primary - Light Purple for dark mode */
+  --primary: hsl(270, 100%, 60%);
+  --primary-foreground: hsl(270, 100%, 8%);
   
   /* Secondary - Lighter Purple */
-  --secondary: hsl(288, 85%, 70%);
-  --secondary-foreground: hsl(273, 97%, 8%);
+  --secondary: hsl(270, 100%, 75%);
+  --secondary-foreground: hsl(270, 100%, 8%);
   
   /* Accent - Light Purple */
-  --accent: hsl(288, 85%, 85%);
-  --accent-foreground: hsl(273, 97%, 8%);
+  --accent: hsl(270, 100%, 80%);
+  --accent-foreground: hsl(270, 100%, 8%);
   
-  --muted: hsla(273, 50%, 20%, 0.5);
-  --muted-foreground: hsl(288, 40%, 75%);
+  --muted: hsla(270, 100%, 8%, 0.5);
+  --muted-foreground: hsl(270, 100%, 60%);
   --destructive: hsl(0, 62%, 50%);
   --destructive-foreground: hsl(0, 0%, 100%);
   
-  --border: hsla(288, 85%, 85%, 0.15);
-  --input: hsla(288, 85%, 85%, 0.2);
-  --ring: hsl(266, 100%, 50%);
+  --border: hsla(270, 100%, 47%, 0.2);
+  --input: hsla(270, 100%, 47%, 0.3);
+  --ring: hsl(270, 100%, 60%);
   
   /* Success */
   --success: hsl(142, 71%, 50%);
   --success-foreground: hsl(0, 0%, 100%);
   
   /* Info */
-  --info: hsl(266, 100%, 50%);
+  --info: hsl(270, 100%, 60%);
   --info-foreground: hsl(0, 0%, 100%);
   
   /* Warning */
   --warning: hsl(45, 100%, 60%);
-  --warning-foreground: hsl(273, 97%, 8%);
+  --warning-foreground: hsl(270, 100%, 8%);
   
-  /* Charts */
-  --chart-1: hsl(266, 100%, 50%);
-  --chart-2: hsl(288, 85%, 70%);
-  --chart-3: hsl(288, 85%, 85%);
-  --chart-4: hsl(288, 70%, 65%);
-  --chart-5: hsl(288, 60%, 55%);
+  /* Charts - Purple gradient */
+  --chart-1: hsl(270, 100%, 35%);
+  --chart-2: hsl(270, 100%, 47%);
+  --chart-3: hsl(270, 100%, 60%);
+  --chart-4: hsl(270, 100%, 75%);
+  --chart-5: hsl(270, 100%, 80%);
   
   /* Sidebar */
-  --sidebar: hsla(273, 97%, 15%, 0.7);
-  --sidebar-foreground: hsl(0, 100%, 97%);
-  --sidebar-primary: hsl(266, 100%, 50%);
-  --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: hsl(288, 85%, 85%);
-  --sidebar-accent-foreground: hsl(273, 97%, 8%);
-  --sidebar-border: hsla(288, 85%, 85%, 0.1);
-  --sidebar-ring: hsl(266, 100%, 50%);
+  --sidebar: hsla(270, 100%, 8%, 0.8);
+  --sidebar-foreground: hsl(0, 0%, 97%);
+  --sidebar-primary: hsl(270, 100%, 60%);
+  --sidebar-primary-foreground: hsl(270, 100%, 8%);
+  --sidebar-accent: hsl(270, 100%, 80%);
+  --sidebar-accent-foreground: hsl(270, 100%, 8%);
+  --sidebar-border: hsla(270, 100%, 47%, 0.15);
+  --sidebar-ring: hsl(270, 100%, 60%);
   
-  /* Glassmorphism shadows for dark mode */
-  --shadow-sm: 0 2px 8px 0 rgba(111, 0, 255, 0.15);
-  --shadow: 0 4px 12px 0 rgba(111, 0, 255, 0.2), 0 2px 6px 0 rgba(233, 179, 251, 0.1);
-  --shadow-md: 0 8px 20px 0 rgba(111, 0, 255, 0.25), 0 4px 10px 0 rgba(233, 179, 251, 0.15);
-  --shadow-lg: 0 16px 32px 0 rgba(111, 0, 255, 0.3), 0 8px 16px 0 rgba(233, 179, 251, 0.2);
-  --shadow-xl: 0 24px 48px 0 rgba(111, 0, 255, 0.4), 0 12px 24px 0 rgba(233, 179, 251, 0.25);
+  /* Updated shadows for dark mode */
+  --shadow-sm: 0 2px 8px 0 hsla(270, 100%, 47%, 0.2);
+  --shadow: 0 4px 12px 0 hsla(270, 100%, 47%, 0.25), 0 2px 6px 0 hsla(270, 100%, 21%, 0.15);
+  --shadow-md: 0 8px 20px 0 hsla(270, 100%, 47%, 0.3), 0 4px 10px 0 hsla(270, 100%, 21%, 0.2);
+  --shadow-lg: 0 16px 32px 0 hsla(270, 100%, 47%, 0.35), 0 8px 16px 0 hsla(270, 100%, 21%, 0.25);
+  --shadow-xl: 0 24px 48px 0 hsla(270, 100%, 47%, 0.4), 0 12px 24px 0 hsla(270, 100%, 21%, 0.3);
 }
 
 @layer base {
@@ -182,21 +182,21 @@
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(123, 44, 191, 0.18);
     box-shadow: var(--shadow);
     border-radius: var(--radius);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark .glass-card {
-    background: rgba(59, 2, 112, 0.2);
-    border: 1px solid rgba(111, 0, 255, 0.2);
+    background: rgba(16, 0, 43, 0.3);
+    border: 1px solid rgba(123, 44, 191, 0.3);
   }
 
   .glass-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(111, 0, 255, 0.4);
+    border-color: rgba(123, 44, 191, 0.5);
   }
 
   /* Glassmorphism Navbar */
@@ -204,13 +204,13 @@
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(111, 0, 255, 0.1);
-    box-shadow: 0 4px 16px rgba(111, 0, 255, 0.08);
+    border-bottom: 1px solid rgba(123, 44, 191, 0.15);
+    box-shadow: 0 4px 16px hsla(270, 100%, 47%, 0.08);
   }
 
   .dark .glass-nav {
-    background: rgba(59, 2, 112, 0.3);
-    border-bottom: 1px solid rgba(111, 0, 255, 0.2);
+    background: rgba(16, 0, 43, 0.4);
+    border-bottom: 1px solid rgba(123, 44, 191, 0.25);
   }
 
   /* Glassmorphism Sidebar */
@@ -222,22 +222,22 @@
   }
 
   .dark .glass-sidebar {
-    background: rgba(59, 2, 112, 0.3);
+    background: rgba(16, 0, 43, 0.4);
     border-right: none; /* Remove border */
   }
 
   /* Glassmorphism Button */
   .glass-button {
-    background: rgba(111, 0, 255, 0.1);
+    background: rgba(123, 44, 191, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(111, 0, 255, 0.3);
+    border: 1px solid rgba(123, 44, 191, 0.3);
     transition: all 0.3s ease;
   }
 
   .glass-button:hover {
-    background: rgba(111, 0, 255, 0.2);
-    border-color: rgba(111, 0, 255, 0.5);
+    background: rgba(123, 44, 191, 0.2);
+    border-color: rgba(123, 44, 191, 0.5);
     transform: translateY(-2px);
   }
 
@@ -246,7 +246,7 @@
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(111, 0, 255, 0.15);
+    border: 1px solid rgba(123, 44, 191, 0.2);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -255,8 +255,8 @@
   }
 
   .dark .bento-card {
-    background: rgba(59, 2, 112, 0.2);
-    border: 1px solid rgba(111, 0, 255, 0.2);
+    background: rgba(16, 0, 43, 0.3);
+    border: 1px solid rgba(123, 44, 191, 0.3);
   }
 
   .bento-card::before {
@@ -266,7 +266,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, hsl(273, 97%, 22%), hsl(266, 100%, 50%), hsl(288, 85%, 85%));
+    background: linear-gradient(90deg, hsl(270, 100%, 21%), hsl(270, 100%, 47%), hsl(270, 100%, 60%));
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -274,13 +274,17 @@
   .bento-card:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow-xl);
-    border-color: rgba(111, 0, 255, 0.4);
+    border-color: rgba(123, 44, 191, 0.5);
   }
 
   /* Dashboard layout & cards: more white, softer shadows for a clean aesthetic */
   .dashboard-layout {
-    background: #ffffff; /* Pure white background */
+    background: var(--background);
     padding: 2rem 0;
+  }
+
+  .dark .dashboard-layout {
+    background: var(--background);
   }
 
   .dashboard-container {
@@ -292,18 +296,18 @@
   }
 
   .dashboard-card {
-    background: #ffffff; /* solid white for content */
+    background: var(--card);
     color: var(--card-foreground);
     border-radius: 1rem;
-    box-shadow: 0 4px 16px rgba(16,24,40,0.04);
-    border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
     transition: transform 0.22s cubic-bezier(.2,.8,.2,1), box-shadow 0.22s ease;
     padding: 0; /* cards use internal CardContent padding */
   }
 
   .dashboard-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(16,24,40,0.08);
+    box-shadow: var(--shadow-md);
   }
 
   /* Apply subtle padding to main dashboard sections */
@@ -336,7 +340,7 @@
   /* Minimal button - replace heavy gradients in dashboard area */
   .btn-minimal {
     background: transparent;
-    border: 1px solid rgba(16,24,40,0.06);
+    border: 1px solid var(--border);
     color: var(--foreground);
     padding: 0.5rem 0.875rem;
     border-radius: 0.75rem;
@@ -344,9 +348,9 @@
   }
 
   .btn-minimal:hover {
-    background: rgba(16,24,40,0.02);
+    background: var(--muted);
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(16,24,40,0.04);
+    box-shadow: var(--shadow-sm);
   }
 
   /* Muted icon container */
@@ -357,7 +361,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(16,24,40,0.03);
+    background: var(--muted);
     color: var(--primary);
   }
 
@@ -396,17 +400,12 @@
 
   /* Clean minimal card */
   .clean-card {
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(111, 0, 255, 0.1);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-  }
-
-  .dark .clean-card {
-    background: rgba(59, 2, 112, 0.15);
-    border: 1px solid rgba(111, 0, 255, 0.15);
   }
 
   .hover-subtle {
@@ -487,11 +486,11 @@
 
   /* Gradient background for sections */
   .gradient-purple {
-    background: linear-gradient(135deg, rgba(59, 2, 112, 0.05) 0%, rgba(111, 0, 255, 0.05) 50%, rgba(233, 179, 251, 0.05) 100%);
+    background: linear-gradient(135deg, hsla(270, 100%, 47%, 0.05) 0%, hsla(270, 100%, 60%, 0.05) 50%, hsla(270, 100%, 85%, 0.05) 100%);
   }
 
   .dark .gradient-purple {
-    background: linear-gradient(135deg, rgba(59, 2, 112, 0.2) 0%, rgba(111, 0, 255, 0.1) 50%, rgba(233, 179, 251, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(16, 0, 43, 0.2) 0%, hsla(270, 100%, 47%, 0.1) 50%, hsla(270, 100%, 80%, 0.05) 100%);
   }
 
   /* Scrollbar styling */
@@ -501,27 +500,68 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(111, 0, 255, 0.05);
+    background: hsla(270, 100%, 47%, 0.05);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(111, 0, 255, 0.3);
+    background: hsla(270, 100%, 47%, 0.3);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(111, 0, 255, 0.5);
+    background: hsla(270, 100%, 47%, 0.5);
   }
 
   .dark ::-webkit-scrollbar-track {
-    background: rgba(59, 2, 112, 0.2);
+    background: rgba(16, 0, 43, 0.2);
   }
 
   .dark ::-webkit-scrollbar-thumb {
-    background: rgba(111, 0, 255, 0.5);
+    background: hsla(270, 100%, 47%, 0.5);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsla(270, 100%, 47%, 0.05);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsla(270, 100%, 47%, 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsla(270, 100%, 47%, 0.5);
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background: rgba(16, 0, 43, 0.2);
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsla(270, 100%, 47%, 0.5);
   }
 
   .dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(111, 0, 255, 0.7);
+    background: hsla(270, 100%, 60%, 0.7);
+  }
+
+  /* Theme background utility class */
+  .bg-theme {
+    background: var(--background);
+  }
+
+  /* Theme text color utility classes */
+  .text-theme {
+    color: var(--foreground);
+  }
+
+  .text-theme-secondary {
+    color: var(--muted-foreground);
   }
 }

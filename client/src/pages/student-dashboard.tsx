@@ -134,26 +134,26 @@ export default function StudentDashboard() {
 
   return (
     <SaasLayout>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-theme">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header */}
           <div className="mb-10">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome back, <span className="text-gray-900">{user?.name}</span>
+            <h1 className="text-3xl font-bold text-theme mb-2">
+              Welcome back, <span className="text-theme">{user?.name}</span>
             </h1>
-            <p className="text-gray-600 text-lg">Ready to continue your learning journey?</p>
+            <p className="text-theme-secondary text-lg">Ready to continue your learning journey?</p>
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-2xl font-bold text-theme">
                       {walletLoading ? '...' : stats.tokenBalance}
                     </div>
-                    <div className="text-sm text-gray-600">Token Balance</div>
+                    <div className="text-sm text-theme-secondary">Token Balance</div>
                   </div>
                   <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
                     <Wallet className="w-6 h-6 text-purple-600" />
@@ -162,12 +162,12 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.completed}</div>
-                    <div className="text-sm text-gray-600">Completed</div>
+                    <div className="text-2xl font-bold text-theme">{stats.completed}</div>
+                    <div className="text-sm text-theme-secondary">Completed</div>
                   </div>
                   <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
                     <CheckCircle className="w-6 h-6 text-green-600" />
@@ -176,12 +176,12 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">{stats.averageScore}%</div>
-                    <div className="text-sm text-gray-600">Average Score</div>
+                    <div className="text-2xl font-bold text-theme">{stats.averageScore}%</div>
+                    <div className="text-sm text-theme-secondary">Average Score</div>
                   </div>
                   <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
                     <Trophy className="w-6 h-6 text-orange-600" />
@@ -190,12 +190,12 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <Card className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">7</div>
-                    <div className="text-sm text-gray-600">Day Streak</div>
+                    <div className="text-2xl font-bold text-theme">7</div>
+                    <div className="text-sm text-theme-secondary">Day Streak</div>
                   </div>
                   <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
                     <Target className="w-6 h-6 text-blue-600" />
@@ -210,13 +210,13 @@ export default function StudentDashboard() {
             {/* Join Assignment & Submissions */}
             <div className="lg:col-span-2">
               {/* Join Assignment */}
-              <Card className="bg-white border border-gray-200 shadow-sm mb-8">
+              <Card className="bg-card border border-border shadow-sm mb-8">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-xl font-semibold text-gray-900 flex items-center">
+                  <CardTitle className="text-xl font-semibold text-theme flex items-center">
                     <Plus className="w-5 h-5 mr-2 text-purple-600" />
                     Join New Assignment
                   </CardTitle>
-                  <CardDescription className="text-gray-600">Enter the assignment code provided by your teacher</CardDescription>
+                  <CardDescription className="text-theme-secondary">Enter the assignment code provided by your teacher</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-3">
@@ -241,15 +241,15 @@ export default function StudentDashboard() {
               </Card>
 
               {/* Submissions List */}
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="bg-card border border-border shadow-sm">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-xl font-semibold text-gray-900 flex items-center">
+                      <CardTitle className="text-xl font-semibold text-theme flex items-center">
                         <BookOpen className="w-5 h-5 mr-2 text-purple-600" />
                         Your Submissions
                       </CardTitle>
-                      <CardDescription className="text-gray-600 mt-1">Track your assignment history and scores</CardDescription>
+                      <CardDescription className="text-theme-secondary mt-1">Track your assignment history and scores</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -262,18 +262,18 @@ export default function StudentDashboard() {
                     </div>
                   ) : submissions.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <BookOpen className="w-8 h-8 text-gray-400" />
+                      <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                        <BookOpen className="w-8 h-8 text-muted-foreground" />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No submissions yet</h3>
-                      <p className="text-gray-600 mb-4">Join an assignment to get started</p>
+                      <h3 className="text-lg font-semibold text-theme mb-2">No submissions yet</h3>
+                      <p className="text-theme-secondary mb-4">Join an assignment to get started</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
                       {submissions.map((submission: any) => (
                         <Card
                           key={submission.id}
-                          className="bg-white border border-gray-200 hover:border-purple-200 hover:shadow-sm transition-all cursor-pointer"
+                          className="bg-card border border-border hover:border-purple-200 hover:shadow-sm transition-all cursor-pointer"
                           onClick={() => setLocation(`/assignment/${submission.assignment.code}`)}
                           data-testid={`card-submission-${submission.id}`}
                         >
@@ -285,10 +285,10 @@ export default function StudentDashboard() {
                                     <CheckCircle className="w-5 h-5 text-green-600" />
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <h3 className="font-semibold text-gray-900 mb-1 truncate">
+                                    <h3 className="font-semibold text-theme mb-1 truncate">
                                       {submission.assignment.title}
                                     </h3>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-theme-secondary">
                                       Submitted on {new Date(submission.createdAt).toLocaleDateString()}
                                     </p>
                                   </div>
@@ -305,12 +305,12 @@ export default function StudentDashboard() {
                                   </div>
                                 </div>
 
-                                <div className="flex items-center gap-4 text-sm text-gray-500">
+                                <div className="flex items-center gap-4 text-sm text-theme-secondary">
                                   <div className="flex items-center">
                                     <Calendar className="w-4 h-4 mr-1" />
                                     {new Date(submission.assignment.startDate).toLocaleDateString()}
                                   </div>
-                                  <Badge variant="outline" className="text-gray-600 border-gray-300">
+                                  <Badge variant="outline" className="text-theme-secondary border-border">
                                     {submission.assignment.code}
                                   </Badge>
                                 </div>
@@ -328,19 +328,19 @@ export default function StudentDashboard() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Wallet Card */}
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="bg-card border border-border shadow-sm">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-gray-900 flex items-center">
+                  <CardTitle className="text-lg font-semibold text-theme flex items-center">
                     <Wallet className="w-5 h-5 mr-2 text-purple-600" />
                     Token Wallet
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-center p-6 bg-purple-50 rounded-lg">
-                    <div className="text-4xl font-bold text-gray-900 mb-2">
+                    <div className="text-4xl font-bold text-theme mb-2">
                       {walletLoading ? '...' : stats.tokenBalance}
                     </div>
-                    <p className="text-sm text-gray-600 font-medium mb-4">Available Tokens</p>
+                    <p className="text-sm text-theme-secondary font-medium mb-4">Available Tokens</p>
                     <Button
                       onClick={() => setLocation('/profile?tab=wallet')}
                       className="w-full bg-purple-600 hover:bg-purple-700 text-white"
@@ -350,16 +350,16 @@ export default function StudentDashboard() {
                       Add Tokens
                     </Button>
                   </div>
-                  <p className="text-xs text-gray-500 text-center">
+                  <p className="text-xs text-muted-foreground text-center">
                     Tokens are used to take assignments
                   </p>
                 </CardContent>
               </Card>
 
               {/* Performance Card */}
-              <Card className="bg-white border border-gray-200 shadow-sm">
+              <Card className="bg-card border border-border shadow-sm">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-gray-900 flex items-center">
+                  <CardTitle className="text-lg font-semibold text-theme flex items-center">
                     <Award className="w-5 h-5 mr-2 text-orange-600" />
                     Performance
                   </CardTitle>
@@ -367,16 +367,16 @@ export default function StudentDashboard() {
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Average Score</span>
-                      <span className="text-lg font-bold text-gray-900">{stats.averageScore}%</span>
+                      <span className="text-sm text-theme-secondary">Average Score</span>
+                      <span className="text-lg font-bold text-theme">{stats.averageScore}%</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Completed</span>
-                      <span className="text-lg font-bold text-gray-900">{stats.completed}</span>
+                      <span className="text-sm text-theme-secondary">Completed</span>
+                      <span className="text-lg font-bold text-theme">{stats.completed}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Streak</span>
-                      <span className="text-lg font-bold text-gray-900">7 days</span>
+                      <span className="text-sm text-theme-secondary">Streak</span>
+                      <span className="text-lg font-bold text-theme">7 days</span>
                     </div>
                   </div>
                 </CardContent>
@@ -388,8 +388,8 @@ export default function StudentDashboard() {
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Trophy className="w-8 h-8 text-orange-600" />
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-2">Keep it up!</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-bold text-theme mb-2">Keep it up!</h3>
+                  <p className="text-sm text-theme-secondary">
                     You're on a 7-day learning streak
                   </p>
                 </CardContent>
@@ -399,36 +399,35 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      {/* Cost Dialog */}
       <Dialog open={showCostDialog} onOpenChange={setShowCostDialog}>
-        <DialogContent className="rounded-lg bg-white border border-gray-200">
+        <DialogContent className="rounded-lg bg-card border border-border">
           <DialogHeader>
-            <DialogTitle className="text-2xl text-gray-900">Assignment Details</DialogTitle>
-            <DialogDescription className="text-gray-600">Review the assignment information before joining</DialogDescription>
+            <DialogTitle className="text-2xl text-theme">Assignment Details</DialogTitle>
+            <DialogDescription className="text-theme-secondary">Review the assignment information before joining</DialogDescription>
           </DialogHeader>
 
           {assignmentPreview && costData && (
             <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">{assignmentPreview.title}</h3>
-                <p className="text-sm text-gray-600 mb-3">{assignmentPreview.subjectName}</p>
+              <div className="p-4 bg-muted rounded-lg">
+                <h3 className="font-semibold text-theme mb-2">{assignmentPreview.title}</h3>
+                <p className="text-sm text-theme-secondary mb-3">{assignmentPreview.subjectName}</p>
 
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-gray-600">Questions:</span>
-                    <div className="font-semibold text-gray-900">{costData.questionCount}</div>
+                    <span className="text-theme-secondary">Questions:</span>
+                    <div className="font-semibold text-theme">{costData.questionCount}</div>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 border-2 border-purple-200 rounded-lg bg-purple-50">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-600">Token Cost:</span>
+                  <span className="text-theme-secondary">Token Cost:</span>
                   <span className="text-2xl font-bold text-purple-600">{costData.tokensRequired} tokens</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Your Balance:</span>
-                  <span className="font-semibold text-gray-900">{stats.tokenBalance} tokens</span>
+                  <span className="text-theme-secondary">Your Balance:</span>
+                  <span className="font-semibold text-theme">{stats.tokenBalance} tokens</span>
                 </div>
               </div>
 
@@ -438,7 +437,7 @@ export default function StudentDashboard() {
                     <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                     <div className="text-sm">
                       <p className="font-semibold text-red-600 mb-1">Insufficient Tokens</p>
-                      <p className="text-gray-600">
+                      <p className="text-theme-secondary">
                         You need {costData.tokensRequired - stats.tokenBalance} more tokens to join this assignment.
                       </p>
                     </div>
@@ -452,7 +451,7 @@ export default function StudentDashboard() {
             <Button
               variant="outline"
               onClick={() => setShowCostDialog(false)}
-              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="border-border text-theme hover:bg-muted"
               data-testid="button-cancel-join"
             >
               Cancel

@@ -29,14 +29,14 @@ import {
   LayoutDashboard,
   ClipboardList,
   Plus,
-  User,
-  Settings,
   Wallet,
   BarChart3,
   LogOut,
   GraduationCap,
   BookOpen,
   ChevronDown,
+  User,
+  Settings,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -87,19 +87,6 @@ export function SaasLayout({ children }: SaasLayoutProps) {
     },
   ];
 
-  const commonNavItems = [
-    {
-      title: "Profile & Wallet",
-      icon: User,
-      url: "/profile",
-    },
-    {
-      title: "Settings",
-      icon: Settings,
-      url: "/settings",
-    },
-  ];
-
   const navItems = isTeacher ? teacherNavItems : studentNavItems;
 
   return (
@@ -145,27 +132,34 @@ export function SaasLayout({ children }: SaasLayoutProps) {
             </SidebarGroupContent>
           </SidebarGroup>
 
-          <SidebarSeparator className="my-4" />
-
           <SidebarGroup>
             <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Account
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="space-y-1">
-                {commonNavItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      onClick={() => setLocation(item.url)}
-                      isActive={location === item.url}
-                      className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
-                      data-testid={`sidebar-${item.title.toLowerCase()}`}
-                    >
-                      <item.icon className="w-4 h-4 mr-3" />
-                      <span className="font-medium">{item.title}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => setLocation('/profile')}
+                    isActive={location === '/profile'}
+                    className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
+                    data-testid="sidebar-profile"
+                  >
+                    <User className="w-4 h-4 mr-3" />
+                    <span className="font-medium">Profile & Wallet</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => setLocation('/settings')}
+                    isActive={location === '/settings'}
+                    className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
+                    data-testid="sidebar-settings"
+                  >
+                    <Settings className="w-4 h-4 mr-3" />
+                    <span className="font-medium">Settings</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -205,20 +199,12 @@ export function SaasLayout({ children }: SaasLayoutProps) {
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => setLocation('/profile')}
+                onClick={() => setLocation(isTeacher ? '/teacher-dashboard' : '/student-dashboard')}
                 className="cursor-pointer"
-                data-testid="dropdown-profile"
+                data-testid="dropdown-dashboard"
               >
-                <User className="w-4 h-4 mr-2" />
-                Profile & Wallet
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setLocation('/settings')}
-                className="cursor-pointer"
-                data-testid="dropdown-settings"
-              >
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
+                <LayoutDashboard className="w-4 h-4 mr-2" />
+                Dashboard
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

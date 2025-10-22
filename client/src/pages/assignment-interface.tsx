@@ -247,11 +247,11 @@ export default function AssignmentInterface() {
 
   if (error || !assignment) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="max-w-md">
+      <div className="min-h-screen flex items-center justify-center bg-theme">
+        <Card className="max-w-md bg-card border border-border">
           <CardContent className="p-6 text-center">
             <div className="text-lg font-medium text-red-600 mb-2">Assignment Not Available</div>
-            <p className="text-gray-600 mb-4">
+            <p className="text-theme-secondary mb-4">
               The assignment code is invalid or the assignment is not currently active.
             </p>
             <Button onClick={() => setLocation('/student-dashboard')}>
@@ -294,10 +294,10 @@ export default function AssignmentInterface() {
       </div>
 
       {/* Assignment Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-card shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl font-bold text-gray-900">{assignment.title}</h1>
-          <div className="mt-2 flex items-center space-x-6 text-sm text-gray-600">
+          <h1 className="text-2xl font-bold text-theme">{assignment.title}</h1>
+          <div className="mt-2 flex items-center space-x-6 text-sm text-theme-secondary">
             <div>Subject: <span className="font-medium">{assignment.subjectName} ({assignment.subjectCode})</span></div>
             <div>Faculty: <span className="font-medium">{assignment.facultyName}</span></div>
             <div>Questions: <span className="font-medium">{assignment.questions.length}</span></div>
@@ -328,8 +328,8 @@ export default function AssignmentInterface() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">Required Tokens:</span>
+                <div className="flex items-center justify-between p-3 bg-card rounded-lg border border-border">
+                  <span className="text-sm font-medium text-theme">Required Tokens:</span>
                   <div className="flex items-center">
                     <Wallet className="w-4 h-4 mr-1 text-blue-600" />
                     <span className="font-bold text-blue-700" data-testid="text-required-tokens">
@@ -338,12 +338,12 @@ export default function AssignmentInterface() {
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">Your Balance:</span>
+                <div className="flex items-center justify-between p-3 bg-card rounded-lg border border-border">
+                  <span className="text-sm font-medium text-theme">Your Balance:</span>
                   <div className="flex items-center">
-                    <Wallet className="w-4 h-4 mr-1 text-gray-600" />
+                    <Wallet className="w-4 h-4 mr-1 text-theme-secondary" />
                     {walletLoading ? (
-                      <span className="font-bold text-gray-500" data-testid="text-user-balance">Loading...</span>
+                      <span className="font-bold text-theme-secondary" data-testid="text-user-balance">Loading...</span>
                     ) : wallet ? (
                       <span className={`font-bold ${wallet.balance >= costData.tokensRequired ? 'text-green-600' : 'text-red-600'}`} data-testid="text-user-balance">
                         {wallet.balance}
@@ -355,9 +355,9 @@ export default function AssignmentInterface() {
                 </div>
                 
                 {costData.formattedCost && (
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Cost:</span>
-                    <span className="font-bold text-gray-700" data-testid="text-cost">
+                  <div className="flex items-center justify-between p-3 bg-card rounded-lg border border-border">
+                    <span className="text-sm font-medium text-theme">Cost:</span>
+                    <span className="font-bold text-theme" data-testid="text-cost">
                       {costData.formattedCost}
                     </span>
                   </div>
@@ -423,19 +423,19 @@ export default function AssignmentInterface() {
         {/* Progress Indicator */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-600">
+            <span className="text-sm font-medium text-theme-secondary">
               Question {currentQuestionIndex + 1} of {assignment.questions.length}
             </span>
-            <span className="text-sm text-gray-500">Progress</span>
+            <span className="text-sm text-theme-secondary">Progress</span>
           </div>
           <Progress value={progress} className="h-2" />
         </div>
 
         {/* Question Card */}
-        <Card className="mb-6">
+        <Card className="mb-6 bg-card border border-border">
           <CardContent className="p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-medium text-gray-900 mb-4">
+              <h2 className="text-xl font-medium text-theme mb-4">
                 {currentQuestion.text}
               </h2>
             </div>
