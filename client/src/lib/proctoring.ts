@@ -297,11 +297,12 @@ export class ProctoringManager {
     // Monitor for potential screen recording tools
     if ('mediaDevices' in navigator && 'getDisplayMedia' in navigator.mediaDevices) {
       const originalGetDisplayMedia = navigator.mediaDevices.getDisplayMedia;
-      navigator.mediaDevices.getDisplayMedia = function(...args) {
-        this.logEvent('screen_capture', { method: 'screen_recording' }, 'critical');
-        this.incrementSuspiciousScore(30);
-        return originalGetDisplayMedia.apply(navigator.mediaDevices, args);
-      }.bind(this);
+      const self = this;
+      navigator.mediaDevices.getDisplayMedia = function(options?: MediaStreamConstraints) {
+        self.logEvent('screen_capture', { method: 'screen_recording' }, 'critical');
+        self.incrementSuspiciousScore(30);
+        return originalGetDisplayMedia.call(navigator.mediaDevices, options);
+      };
     }
   }
 }

@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Plus, Trash2, Save, Clock, Users, BookOpen, Calendar, User, GraduationCap } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { api } from "@/lib/api";
+import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthContext } from "@/components/ui/auth-provider";
 
@@ -95,13 +95,13 @@ export default function EditAssignmentPage() {
 
   const updateMutation = useMutation({
     mutationFn: (data: UpdateAssignmentFormData) => 
-      api.request(`/api/assignments/${id}`, { method: 'PUT', body: data }),
-    onSuccess: (data) => {
+      apiRequest('PUT', `/api/assignments/${id}`, data),
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['/api/assignments/teacher'] });
       queryClient.invalidateQueries({ queryKey: ['/api/assignments', id] });
       toast({
         title: "✅ Success!",
-        description: `Assignment "${data.assignment.title}" updated successfully!`,
+        description: `Assignment "${data.assignment?.title || 'Assignment'}" updated successfully!`,
       });
       setLocation('/teacher-dashboard');
     },

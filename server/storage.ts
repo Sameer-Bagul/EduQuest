@@ -54,7 +54,9 @@ export interface IStorage {
   deductTokensForAssignment(userId: string, tokens: number, assignmentId: string): Promise<{wallet: TokenWallet, transaction: Transaction}>;
 }
 
-// Create storage instance with fallback
+// Create storage instance with fallback - lazy initialization
+let storageInstance: IStorage | null = null;
+
 function createStorage(): IStorage {
   // Try to use MongoDB if connection string is available
   if (process.env.MONGODB_URI) {
@@ -67,4 +69,21 @@ function createStorage(): IStorage {
   }
 }
 
-export const storage: IStorage = createStorage();
+function getStorage(): IStorage {
+  if (!storageInstance) {
+    storageInstance = createStorage();
+  }
+  return storageInstance;
+}
+
+// Export a getter instead of the instance directly
+export const storage: IStorage = new Proxy({} as IStorage, {
+  get(target, prop) {
+    const actualStorage = getStorage();
+    const value = (actualStorage as any)[prop];
+    if (typeof value === 'function') {
+      return value.bind(actualStorage);
+    }
+    return value;
+  }
+});

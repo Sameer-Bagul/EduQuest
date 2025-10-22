@@ -212,8 +212,8 @@ function analyzeContext(text1: string, text2: string): {
   const entities1 = doc1.topics().out('array');
   const entities2 = doc2.topics().out('array');
   
-  const ent1Set = new Set(entities1.map(e => e.toLowerCase()));
-  const ent2Set = new Set(entities2.map(e => e.toLowerCase()));
+  const ent1Set = new Set(entities1.map((e: string) => e.toLowerCase()));
+  const ent2Set = new Set(entities2.map((e: string) => e.toLowerCase()));
   
   const matched = Array.from(ent1Set).filter(e => ent2Set.has(e));
   const totalUnique = new Set([...Array.from(ent1Set), ...Array.from(ent2Set)]).size;

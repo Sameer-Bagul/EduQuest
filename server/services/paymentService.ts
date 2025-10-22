@@ -1,18 +1,24 @@
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 
-// Initialize RazorPay only if credentials are available
+// Initialize RazorPay only if credentials are available - lazy initialization
 let razorpay: Razorpay | null = null;
 
-if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
-  razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-  });
-  console.log('RazorPay initialized successfully');
-} else {
-  console.log('RazorPay credentials not found - payment functionality will be limited');
-  console.log('Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET environment variables to enable payments');
+function initializeRazorpay(): Razorpay | null {
+  if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
+    if (!razorpay) {
+      razorpay = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID,
+        key_secret: process.env.RAZORPAY_KEY_SECRET,
+      });
+      console.log('RazorPay initialized successfully');
+    }
+    return razorpay;
+  } else {
+    console.log('RazorPay credentials not found - payment functionality will be limited');
+    console.log('Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET environment variables to enable payments');
+    return null;
+  }
 }
 
 export interface TokenPurchaseRequest {
@@ -46,7 +52,8 @@ export class PaymentService {
 
   // Create RazorPay order
   async createOrder(tokens: number, currency: 'INR' | 'USD'): Promise<CreateOrderResponse> {
-    if (!razorpay) {
+    const razorpayInstance = initializeRazorpay();
+    if (!razorpayInstance) {
       throw new Error('RazorPay not initialized. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET environment variables.');
     }
 
@@ -60,7 +67,7 @@ export class PaymentService {
       payment_capture: 1,
     };
 
-    const order = await razorpay.orders.create(options);
+    const order = await razorpayInstance.orders.create(options);
 
     return {
       orderId: order.id,
@@ -82,10 +89,11 @@ export class PaymentService {
 
   // Get payment details from RazorPay
   async getPaymentDetails(paymentId: string) {
-    if (!razorpay) {
+    const razorpayInstance = initializeRazorpay();
+    if (!razorpayInstance) {
       throw new Error('RazorPay not initialized. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET environment variables.');
     }
-    return await razorpay.payments.fetch(paymentId);
+    return await razorpayInstance.payments.fetch(paymentId);
   }
 
   // Detect currency based on country (simplified geolocation)

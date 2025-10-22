@@ -113,14 +113,11 @@ const paymentSchema = new mongoose.Schema({
 });
 
 // Indexes
-assignmentSchema.index({ code: 1 });
 assignmentSchema.index({ teacherId: 1 });
 submissionSchema.index({ assignmentId: 1, studentId: 1 }, { unique: true });
-tokenWalletSchema.index({ userId: 1 });
 transactionSchema.index({ userId: 1 });
 transactionSchema.index({ assignmentId: 1 });
 paymentSchema.index({ userId: 1 });
-paymentSchema.index({ razorpayOrderId: 1 });
 
 const UserModel = mongoose.model('User', userSchema);
 const AssignmentModel = mongoose.model('Assignment', assignmentSchema);

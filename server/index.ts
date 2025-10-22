@@ -1,3 +1,7 @@
+// Load environment variables from .env file FIRST
+import { config } from "dotenv";
+config();
+
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { registerRoutes } from "./routes/index";
