@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuthContext } from "@/components/ui/auth-provider";
-import { Navbar } from "@/components/ui/navbar";
+import { SaasLayout } from "@/components/layouts/saas-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -167,14 +167,14 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar subtitle="Account Settings" />
-      
-      <div className="pt-28 pb-12 px-4">
+    <SaasLayout>
+      <div className="p-8 gradient-purple min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Settings</h1>
-            <p className="text-muted-foreground">Manage your account settings and preferences</p>
+          <div className="mb-8 slide-in-up">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Settings</span>
+            </h1>
+            <p className="text-muted-foreground text-lg">Manage your account settings and preferences</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -422,6 +422,6 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
-    </div>
+    </SaasLayout>
   );
 }

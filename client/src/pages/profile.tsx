@@ -17,7 +17,6 @@ import {
   Lock, 
   Camera, 
   Save, 
-  ArrowLeft, 
   Wallet, 
   Plus, 
   History, 
@@ -28,11 +27,11 @@ import {
   TrendingUp,
   Download
 } from "lucide-react";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/lib/api";
 import { queryClient } from "@/lib/queryClient";
+import { SaasLayout } from "@/components/layouts/saas-layout";
 
 declare global {
   interface Window {
@@ -352,31 +351,15 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                onClick={handleGoBack}
-                className="mr-4"
-                data-testid="button-back"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <h1 className="text-lg font-semibold text-foreground">
-                Account Dashboard
-              </h1>
-            </div>
-            <ThemeToggle />
+    <SaasLayout>
+      <div className="p-8 gradient-purple min-h-screen">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8 slide-in-up">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Account Dashboard</span>
+            </h1>
+            <p className="text-muted-foreground text-lg">Manage your profile, wallet, and account settings</p>
           </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="wallet" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="wallet" data-testid="tab-wallet">
@@ -830,7 +813,8 @@ export default function ProfilePage() {
             </Card>
           </TabsContent>
         </Tabs>
+        </div>
       </div>
-    </div>
+    </SaasLayout>
   );
 }
