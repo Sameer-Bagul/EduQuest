@@ -243,7 +243,7 @@
 
   /* Bento Card - Glassmorphism style */
   .bento-card {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(111, 0, 255, 0.15);
@@ -275,6 +275,90 @@
     transform: translateY(-6px);
     box-shadow: var(--shadow-xl);
     border-color: rgba(111, 0, 255, 0.4);
+  }
+
+  /* Dashboard layout & cards: more white, softer shadows for a clean aesthetic */
+  .dashboard-layout {
+    background: linear-gradient(180deg, var(--background) 0%, rgba(255,255,255,0.9) 100%);
+    padding: 3rem 0;
+  }
+
+  .dashboard-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .dashboard-card {
+    background: #ffffff; /* solid white for content */
+    color: var(--card-foreground);
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 20px rgba(16,24,40,0.04);
+    border: 1px solid rgba(16,24,40,0.03);
+    transition: transform 0.22s cubic-bezier(.2,.8,.2,1), box-shadow 0.22s ease;
+    padding: 0; /* cards use internal CardContent padding */
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(16,24,40,0.06);
+  }
+
+  /* Apply subtle padding to main dashboard sections */
+  .dashboard-header {
+    background: transparent;
+    margin-bottom: 1rem;
+    padding: 0.25rem 0;
+  }
+
+  /* Minimal stat widgets */
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 1rem;
+  }
+
+  .stat .stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+  }
+
+  .stat .stat-label {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+  }
+
+  /* Minimal button - replace heavy gradients in dashboard area */
+  .btn-minimal {
+    background: transparent;
+    border: 1px solid rgba(16,24,40,0.06);
+    color: var(--foreground);
+    padding: 0.5rem 0.875rem;
+    border-radius: 0.75rem;
+    transition: all 0.18s ease;
+  }
+
+  .btn-minimal:hover {
+    background: rgba(16,24,40,0.02);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(16,24,40,0.04);
+  }
+
+  /* Muted icon container */
+  .icon-muted {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(16,24,40,0.03);
+    color: var(--primary);
   }
 
   .bento-card:hover::before {

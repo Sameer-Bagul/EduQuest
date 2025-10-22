@@ -43,7 +43,7 @@ export function Navbar({ title = "EduQuest", subtitle = "Digital Learning Platfo
             onClick={() => setLocation(isAuthenticated ? (user?.role === 'teacher' ? '/teacher-dashboard' : '/student-dashboard') : '/')}
             data-testid="link-logo"
           >
-            <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mr-3 shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
+            <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center mr-3">
               <GraduationCap className="text-primary-foreground w-6 h-6" />
             </div>
             <div>
@@ -66,7 +66,7 @@ export function Navbar({ title = "EduQuest", subtitle = "Digital Learning Platfo
                       className="flex items-center space-x-2 h-11 px-3 rounded-xl hover:bg-accent/30 transition-all"
                       data-testid="button-user-menu"
                     >
-                      <div className="w-9 h-9 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl flex items-center justify-center border border-primary/40">
+                      <div className="w-9 h-9 icon-muted rounded-xl flex items-center justify-center border border-primary/40">
                         <span className="text-foreground text-sm font-semibold">
                           {user?.name?.charAt(0).toUpperCase()}
                         </span>
@@ -78,7 +78,7 @@ export function Navbar({ title = "EduQuest", subtitle = "Digital Learning Platfo
                       <Menu className="w-4 h-4 text-muted-foreground ml-1" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 rounded-xl glass-card border">
+                  <DropdownMenuContent align="end" className="w-56 rounded-xl dashboard-card border">
                     <div className="px-3 py-2">
                       <p className="text-sm font-semibold text-foreground">{user?.name}</p>
                       <p className="text-xs text-muted-foreground">{user?.email}</p>
@@ -114,7 +114,7 @@ export function Navbar({ title = "EduQuest", subtitle = "Digital Learning Platfo
                 
                 <Badge 
                   variant="secondary" 
-                  className="hidden md:inline-flex rounded-lg px-3 py-1 bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/30"
+                  className="hidden md:inline-flex rounded-lg px-3 py-1 bg-transparent border border-primary/30"
                   data-testid="badge-user-role"
                 >
                   {user?.role === 'teacher' ? 'Teacher' : 'Student'}
@@ -125,14 +125,14 @@ export function Navbar({ title = "EduQuest", subtitle = "Digital Learning Platfo
                 <Button 
                   variant="ghost" 
                   onClick={() => setLocation('/login')}
-                  className="rounded-xl glass-button hover:scale-105 transition-all"
+                  className="rounded-xl btn-minimal hover:scale-105 transition-all"
                   data-testid="button-signin"
                 >
                   Sign In
                 </Button>
                 <Button 
                   onClick={() => setLocation('/register')}
-                  className="rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                  className="rounded-xl btn-minimal shadow-sm hover:shadow-md hover:scale-105 transition-all"
                   data-testid="button-getstarted"
                 >
                   Get Started

@@ -71,20 +71,20 @@ export default function TeacherDashboard() {
 
   return (
     <SaasLayout>
-      <div className="p-8 gradient-purple min-h-screen">
-        <div className="max-w-7xl mx-auto">
+      <div className="dashboard-layout min-h-screen">
+        <div className="dashboard-container">
           {/* Header */}
-          <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 slide-in-up">
+          <div className="dashboard-header mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 slide-in-up">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-                Welcome back, <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{user?.name}</span>
+                Welcome back, <span className="text-foreground">{user?.name}</span>
               </h1>
               <p className="text-muted-foreground text-lg">Here's what's happening with your classes today.</p>
             </div>
             <Button 
               onClick={() => setCreateModalOpen(true)}
               size="lg"
-              className="rounded-2xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-xl hover:shadow-2xl hover:scale-105 transition-all h-12 px-6"
+              className="btn-minimal h-12 px-6"
               data-testid="button-create-assignment"
             >
               <Plus className="w-5 h-5 mr-2" />
@@ -94,52 +94,51 @@ export default function TeacherDashboard() {
 
           {/* Stats Grid - Bento Style */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="bento-card slide-in-up" data-testid="card-total-assignments">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl flex items-center justify-center border border-primary/40">
-                    <ClipboardList className="w-6 h-6 text-primary" />
+            <Card className="dashboard-card slide-in-up" data-testid="card-total-assignments">
+              <CardContent className="p-5 stat">
+                <div className="flex items-center gap-4">
+                  <div className="icon-muted"><ClipboardList className="w-5 h-5" /></div>
+                  <div>
+                    <div className="stat-number">{stats.totalAssignments}</div>
+                    <div className="stat-label">Total Assignments</div>
                   </div>
-                  <TrendingUp className="w-5 h-5 text-success" />
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">{stats.totalAssignments}</div>
-                <p className="text-sm text-muted-foreground font-medium">Total Assignments</p>
               </CardContent>
             </Card>
 
-            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.1s' }} data-testid="card-active-students">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-success/30 to-primary/30 rounded-2xl flex items-center justify-center border border-success/40">
-                    <Users className="w-6 h-6 text-success" />
+            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.1s' }} data-testid="card-active-students">
+              <CardContent className="p-5 stat">
+                <div className="flex items-center gap-4">
+                  <div className="icon-muted"><Users className="w-5 h-5" /></div>
+                  <div>
+                    <div className="stat-number">{stats.activeStudents}</div>
+                    <div className="stat-label">Active Students</div>
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">{stats.activeStudents}</div>
-                <p className="text-sm text-muted-foreground font-medium">Active Students</p>
               </CardContent>
             </Card>
 
-            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.2s' }} data-testid="card-pending-reviews">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-warning/30 to-accent/30 rounded-2xl flex items-center justify-center border border-warning/40">
-                    <Clock className="w-6 h-6 text-warning" />
+            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.2s' }} data-testid="card-pending-reviews">
+              <CardContent className="p-5 stat">
+                <div className="flex items-center gap-4">
+                  <div className="icon-muted"><Clock className="w-5 h-5" /></div>
+                  <div>
+                    <div className="stat-number">{stats.pendingReviews}</div>
+                    <div className="stat-label">Pending Reviews</div>
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">{stats.pendingReviews}</div>
-                <p className="text-sm text-muted-foreground font-medium">Pending Reviews</p>
               </CardContent>
             </Card>
 
-            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.3s' }} data-testid="card-completion-rate">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-accent/30 to-secondary/30 rounded-2xl flex items-center justify-center border border-accent/40">
-                    <Award className="w-6 h-6 text-accent" />
+            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.3s' }} data-testid="card-completion-rate">
+              <CardContent className="p-5 stat">
+                <div className="flex items-center gap-4">
+                  <div className="icon-muted"><Award className="w-5 h-5" /></div>
+                  <div>
+                    <div className="stat-number">{stats.completionRate}%</div>
+                    <div className="stat-label">Completion Rate</div>
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">{stats.completionRate}%</div>
-                <p className="text-sm text-muted-foreground font-medium">Completion Rate</p>
               </CardContent>
             </Card>
           </div>
@@ -148,7 +147,7 @@ export default function TeacherDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Assignments List - Takes 2 columns */}
             <div className="lg:col-span-2">
-              <Card className="bento-card slide-in-left">
+              <Card className="dashboard-card slide-in-left">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -161,27 +160,27 @@ export default function TeacherDashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {isLoading ? (
+                      {isLoading ? (
                     <div className="space-y-3">
                       {[1, 2, 3].map((i) => (
                         <div key={i} className="h-24 bg-muted/30 rounded-xl animate-pulse" />
                       ))}
                     </div>
-                  ) : assignments.length === 0 ? (
+                      ) : assignments.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <div className="w-16 h-16 icon-muted rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <ClipboardList className="w-8 h-8 text-primary" />
                       </div>
                       <h3 className="text-lg font-semibold text-foreground mb-2">No assignments yet</h3>
                       <p className="text-muted-foreground mb-4">Create your first assignment to get started</p>
-                      <Button 
-                        onClick={() => setCreateModalOpen(true)}
-                        className="rounded-xl bg-gradient-to-r from-primary to-secondary"
-                        data-testid="button-create-first"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Create Assignment
-                      </Button>
+                        <Button 
+                          onClick={() => setCreateModalOpen(true)}
+                          className="btn-minimal"
+                          data-testid="button-create-first"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Create Assignment
+                        </Button>
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -190,14 +189,14 @@ export default function TeacherDashboard() {
                         return (
                           <Card 
                             key={assignment.id} 
-                            className="glass-card border hover:scale-[1.02] transition-all cursor-pointer group"
+                            className="dashboard-card border hover:scale-[1.02] transition-all cursor-pointer group"
                             data-testid={`card-assignment-${assignment.id}`}
                           >
                             <CardContent className="p-5">
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start gap-3 mb-3">
-                                    <div className="w-10 h-10 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-primary/40">
+                                    <div className="w-10 h-10 icon-muted rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                                       <GraduationCap className="w-5 h-5 text-primary" />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -228,7 +227,7 @@ export default function TeacherDashboard() {
                                       e.stopPropagation();
                                       setLocation(`/assignments/view/${assignment.id}`);
                                     }}
-                                    className="rounded-xl glass-button"
+                                    className="rounded-xl btn-minimal"
                                     data-testid={`button-view-${assignment.id}`}
                                   >
                                     <Eye className="w-4 h-4" />
@@ -240,7 +239,7 @@ export default function TeacherDashboard() {
                                       e.stopPropagation();
                                       setLocation(`/assignments/edit/${assignment.id}`);
                                     }}
-                                    className="rounded-xl glass-button"
+                                    className="rounded-xl btn-minimal"
                                     data-testid={`button-edit-${assignment.id}`}
                                   >
                                     <Edit className="w-4 h-4" />
@@ -260,14 +259,14 @@ export default function TeacherDashboard() {
             {/* Sidebar - Quick Actions & Insights */}
             <div className="space-y-6">
               {/* Quick Actions */}
-              <Card className="bento-card slide-in-right">
+              <Card className="dashboard-card slide-in-right">
                 <CardHeader>
                   <CardTitle className="text-xl">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start rounded-xl h-12 glass-button"
+                    className="w-full justify-start rounded-xl h-12 btn-minimal"
                     onClick={() => setCreateModalOpen(true)}
                     data-testid="button-quick-create"
                   >
@@ -276,7 +275,7 @@ export default function TeacherDashboard() {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start rounded-xl h-12 glass-button"
+                    className="w-full justify-start rounded-xl h-12 btn-minimal"
                     onClick={() => setLocation('/profile')}
                     data-testid="button-quick-students"
                   >
@@ -285,7 +284,7 @@ export default function TeacherDashboard() {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start rounded-xl h-12 glass-button"
+                    className="w-full justify-start rounded-xl h-12 btn-minimal"
                     data-testid="button-quick-analytics"
                   >
                     <BarChart3 className="w-5 h-5 mr-3 text-warning" />
@@ -295,7 +294,7 @@ export default function TeacherDashboard() {
               </Card>
 
               {/* Recent Activity */}
-              <Card className="bento-card slide-in-right" style={{ animationDelay: '0.1s' }}>
+              <Card className="dashboard-card slide-in-right" style={{ animationDelay: '0.1s' }}>
                 <CardHeader>
                   <CardTitle className="text-xl">Recent Activity</CardTitle>
                   <CardDescription>Latest updates from your classes</CardDescription>

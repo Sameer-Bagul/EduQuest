@@ -134,22 +134,22 @@ export default function StudentDashboard() {
 
   return (
     <SaasLayout>
-      <div className="p-8 gradient-purple min-h-screen">
-        <div className="max-w-7xl mx-auto">
+      <div className="dashboard-layout min-h-screen">
+        <div className="dashboard-container">
           {/* Header */}
-          <div className="mb-8 slide-in-up">
+          <div className="dashboard-header mb-8 slide-in-up">
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-              Welcome back, <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{user?.name}</span>
+              Welcome back, <span className="text-foreground">{user?.name}</span>
             </h1>
             <p className="text-muted-foreground text-lg">Ready to continue your learning journey?</p>
           </div>
 
           {/* Stats Grid - Bento Style */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="bento-card slide-in-up" data-testid="card-token-balance">
+            <Card className="dashboard-card slide-in-up" data-testid="card-token-balance">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl flex items-center justify-center border border-primary/40">
+                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-primary/40">
                     <Wallet className="w-6 h-6 text-primary" />
                   </div>
                   <TrendingUp className="w-5 h-5 text-success" />
@@ -161,10 +161,10 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.1s' }} data-testid="card-completed">
+            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.1s' }} data-testid="card-completed">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-success/30 to-primary/30 rounded-2xl flex items-center justify-center border border-success/40">
+                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-success/40">
                     <CheckCircle className="w-6 h-6 text-success" />
                   </div>
                 </div>
@@ -173,10 +173,10 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.2s' }} data-testid="card-average-score">
+            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.2s' }} data-testid="card-average-score">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-warning/30 to-accent/30 rounded-2xl flex items-center justify-center border border-warning/40">
+                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-warning/40">
                     <Trophy className="w-6 h-6 text-warning" />
                   </div>
                 </div>
@@ -185,10 +185,10 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.3s' }} data-testid="card-streak">
+            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.3s' }} data-testid="card-streak">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-accent/30 to-secondary/30 rounded-2xl flex items-center justify-center border border-accent/40">
+                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-accent/40">
                     <Target className="w-6 h-6 text-accent" />
                   </div>
                 </div>
@@ -202,7 +202,7 @@ export default function StudentDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Join Assignment - Large Card */}
             <div className="lg:col-span-2">
-              <Card className="bento-card mb-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20 slide-in-left">
+              <Card className="dashboard-card mb-6 slide-in-left">
                 <CardHeader>
                   <CardTitle className="text-2xl flex items-center">
                     <Plus className="w-6 h-6 mr-2 text-primary" />
@@ -220,20 +220,20 @@ export default function StudentDashboard() {
                       className="h-12 text-lg rounded-xl border-2"
                       data-testid="input-assignment-code"
                     />
-                    <Button 
-                      onClick={handleJoinAssignment}
-                      size="lg"
-                      className="rounded-xl h-12 px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
-                      data-testid="button-join-assignment"
-                    >
-                      Join
-                    </Button>
+                      <Button
+                        onClick={handleJoinAssignment}
+                        size="lg"
+                        className="btn-minimal h-12 px-8"
+                        data-testid="button-join-assignment"
+                      >
+                        Join
+                      </Button>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Submissions List */}
-              <Card className="bento-card slide-in-left" style={{ animationDelay: '0.1s' }}>
+              <Card className="dashboard-card slide-in-left" style={{ animationDelay: '0.1s' }}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -265,7 +265,7 @@ export default function StudentDashboard() {
                       {submissions.map((submission: any) => (
                         <Card 
                           key={submission.id}
-                          className="glass-card border hover:scale-[1.02] transition-all cursor-pointer group"
+                          className="dashboard-card border hover:scale-[1.02] transition-all cursor-pointer group"
                           onClick={() => setLocation(`/assignment/${submission.assignment.code}`)}
                           data-testid={`card-submission-${submission.id}`}
                         >
