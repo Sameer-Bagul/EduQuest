@@ -215,15 +215,15 @@
 
   /* Glassmorphism Sidebar */
   .glass-sidebar {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(111, 0, 255, 0.1);
+    border-right: none; /* Remove border */
   }
 
   .dark .glass-sidebar {
     background: rgba(59, 2, 112, 0.3);
-    border-right: 1px solid rgba(111, 0, 255, 0.2);
+    border-right: none; /* Remove border */
   }
 
   /* Glassmorphism Button */
@@ -279,31 +279,31 @@
 
   /* Dashboard layout & cards: more white, softer shadows for a clean aesthetic */
   .dashboard-layout {
-    background: linear-gradient(180deg, var(--background) 0%, rgba(255,255,255,0.9) 100%);
-    padding: 3rem 0;
+    background: #ffffff; /* Pure white background */
+    padding: 2rem 0;
   }
 
   .dashboard-container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .dashboard-card {
     background: #ffffff; /* solid white for content */
     color: var(--card-foreground);
-    border-radius: 0.75rem;
-    box-shadow: 0 6px 20px rgba(16,24,40,0.04);
-    border: 1px solid rgba(16,24,40,0.03);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(16,24,40,0.04);
+    border: 1px solid rgba(16,24,40,0.06);
     transition: transform 0.22s cubic-bezier(.2,.8,.2,1), box-shadow 0.22s ease;
     padding: 0; /* cards use internal CardContent padding */
   }
 
   .dashboard-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(16,24,40,0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16,24,40,0.08);
   }
 
   /* Apply subtle padding to main dashboard sections */

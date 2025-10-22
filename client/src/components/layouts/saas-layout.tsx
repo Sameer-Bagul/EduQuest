@@ -85,26 +85,11 @@ export function SaasLayout({ children }: SaasLayoutProps) {
       icon: LayoutDashboard,
       url: "/student-dashboard",
     },
-    {
-      title: "My Submissions",
-      icon: BookOpen,
-      url: "/student-dashboard",
-    },
-    {
-      title: "Wallet",
-      icon: Wallet,
-      url: "/profile?tab=wallet",
-    },
-    {
-      title: "Analytics",
-      icon: BarChart3,
-      url: "/student-dashboard",
-    },
   ];
 
   const commonNavItems = [
     {
-      title: "Profile",
+      title: "Profile & Wallet",
       icon: User,
       url: "/profile",
     },
@@ -136,23 +121,23 @@ export function SaasLayout({ children }: SaasLayoutProps) {
           <SidebarSeparator />
         </SidebarHeader>
 
-        <SidebarContent className="px-2">
+        <SidebarContent className="px-4">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider">
+            <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Main Menu
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="space-y-1">
                 {navItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       onClick={() => setLocation(item.url)}
                       isActive={location === item.url}
-                      className="glass-button my-0.5"
+                      className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
                       data-testid={`sidebar-${item.title.toLowerCase().replace(' ', '-')}`}
                     >
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.title}</span>
+                      <item.icon className="w-4 h-4 mr-3" />
+                      <span className="font-medium">{item.title}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -160,24 +145,24 @@ export function SaasLayout({ children }: SaasLayoutProps) {
             </SidebarGroupContent>
           </SidebarGroup>
 
-          <SidebarSeparator className="my-2" />
+          <SidebarSeparator className="my-4" />
 
           <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider">
+            <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Account
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="space-y-1">
                 {commonNavItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       onClick={() => setLocation(item.url)}
                       isActive={location === item.url}
-                      className="glass-button my-0.5"
+                      className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
                       data-testid={`sidebar-${item.title.toLowerCase()}`}
                     >
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.title}</span>
+                      <item.icon className="w-4 h-4 mr-3" />
+                      <span className="font-medium">{item.title}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -225,7 +210,7 @@ export function SaasLayout({ children }: SaasLayoutProps) {
                 data-testid="dropdown-profile"
               >
                 <User className="w-4 h-4 mr-2" />
-                Profile
+                Profile & Wallet
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setLocation('/settings')}

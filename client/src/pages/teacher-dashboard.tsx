@@ -71,72 +71,69 @@ export default function TeacherDashboard() {
 
   return (
     <SaasLayout>
-      <div className="dashboard-layout min-h-screen">
-        <div className="dashboard-container">
+      <div className="min-h-screen bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header */}
-          <div className="dashboard-header mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 slide-in-up">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-                Welcome back, <span className="text-foreground">{user?.name}</span>
-              </h1>
-              <p className="text-muted-foreground text-lg">Here's what's happening with your classes today.</p>
-            </div>
-            <Button 
-              onClick={() => setCreateModalOpen(true)}
-              size="lg"
-              className="btn-minimal h-12 px-6"
-              data-testid="button-create-assignment"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Create Assignment
-            </Button>
+          <div className="mb-10">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome back, <span className="text-gray-900">{user?.name}</span>
+            </h1>
+            <p className="text-gray-600 text-lg">Here's what's happening with your classes today.</p>
           </div>
 
-          {/* Stats Grid - Bento Style */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="dashboard-card slide-in-up" data-testid="card-total-assignments">
-              <CardContent className="p-5 stat">
-                <div className="flex items-center gap-4">
-                  <div className="icon-muted"><ClipboardList className="w-5 h-5" /></div>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="stat-number">{stats.totalAssignments}</div>
-                    <div className="stat-label">Total Assignments</div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.totalAssignments}</div>
+                    <div className="text-sm text-gray-600">Total Assignments</div>
+                  </div>
+                  <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+                    <ClipboardList className="w-6 h-6 text-purple-600" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.1s' }} data-testid="card-active-students">
-              <CardContent className="p-5 stat">
-                <div className="flex items-center gap-4">
-                  <div className="icon-muted"><Users className="w-5 h-5" /></div>
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="stat-number">{stats.activeStudents}</div>
-                    <div className="stat-label">Active Students</div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.activeStudents}</div>
+                    <div className="text-sm text-gray-600">Active Students</div>
+                  </div>
+                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                    <Users className="w-6 h-6 text-blue-600" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.2s' }} data-testid="card-pending-reviews">
-              <CardContent className="p-5 stat">
-                <div className="flex items-center gap-4">
-                  <div className="icon-muted"><Clock className="w-5 h-5" /></div>
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="stat-number">{stats.pendingReviews}</div>
-                    <div className="stat-label">Pending Reviews</div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.pendingReviews}</div>
+                    <div className="text-sm text-gray-600">Pending Reviews</div>
+                  </div>
+                  <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+                    <Clock className="w-6 h-6 text-orange-600" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.3s' }} data-testid="card-completion-rate">
-              <CardContent className="p-5 stat">
-                <div className="flex items-center gap-4">
-                  <div className="icon-muted"><Award className="w-5 h-5" /></div>
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="stat-number">{stats.completionRate}%</div>
-                    <div className="stat-label">Completion Rate</div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.completionRate}%</div>
+                    <div className="text-sm text-gray-600">Completion Rate</div>
+                  </div>
+                  <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                    <Award className="w-6 h-6 text-green-600" />
                   </div>
                 </div>
               </CardContent>
@@ -144,43 +141,50 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Assignments List - Takes 2 columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Assignments List */}
             <div className="lg:col-span-2">
-              <Card className="dashboard-card slide-in-left">
+              <Card className="bg-white border border-gray-200 shadow-sm">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-2xl flex items-center">
-                        <BookOpen className="w-6 h-6 mr-2 text-primary" />
+                      <CardTitle className="text-xl font-semibold text-gray-900 flex items-center">
+                        <BookOpen className="w-5 h-5 mr-2 text-purple-600" />
                         Your Assignments
                       </CardTitle>
-                      <CardDescription className="mt-1">Manage and track all your assignments</CardDescription>
+                      <CardDescription className="text-gray-600 mt-1">Manage and track all your assignments</CardDescription>
                     </div>
+                    <Button 
+                      onClick={() => setCreateModalOpen(true)}
+                      size="sm"
+                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create
+                    </Button>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                      {isLoading ? (
+                  {isLoading ? (
                     <div className="space-y-3">
                       {[1, 2, 3].map((i) => (
-                        <div key={i} className="h-24 bg-muted/30 rounded-xl animate-pulse" />
+                        <div key={i} className="h-20 bg-gray-50 rounded-lg animate-pulse" />
                       ))}
                     </div>
-                      ) : assignments.length === 0 ? (
+                  ) : assignments.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 icon-muted rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <ClipboardList className="w-8 h-8 text-primary" />
+                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <ClipboardList className="w-8 h-8 text-gray-400" />
                       </div>
-                      <h3 className="text-lg font-semibold text-foreground mb-2">No assignments yet</h3>
-                      <p className="text-muted-foreground mb-4">Create your first assignment to get started</p>
-                        <Button 
-                          onClick={() => setCreateModalOpen(true)}
-                          className="btn-minimal"
-                          data-testid="button-create-first"
-                        >
-                          <Plus className="w-4 h-4 mr-2" />
-                          Create Assignment
-                        </Button>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No assignments yet</h3>
+                      <p className="text-gray-600 mb-4">Create your first assignment to get started</p>
+                      <Button 
+                        onClick={() => setCreateModalOpen(true)}
+                        className="bg-purple-600 hover:bg-purple-700 text-white"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create Assignment
+                      </Button>
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -189,31 +193,30 @@ export default function TeacherDashboard() {
                         return (
                           <Card 
                             key={assignment.id} 
-                            className="dashboard-card border hover:scale-[1.02] transition-all cursor-pointer group"
-                            data-testid={`card-assignment-${assignment.id}`}
+                            className="bg-white border border-gray-200 hover:border-purple-200 hover:shadow-sm transition-all cursor-pointer"
                           >
                             <CardContent className="p-5">
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start gap-3 mb-3">
-                                    <div className="w-10 h-10 icon-muted rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                                      <GraduationCap className="w-5 h-5 text-primary" />
+                                    <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                      <GraduationCap className="w-5 h-5 text-purple-600" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <h3 className="font-semibold text-foreground mb-1 truncate">{assignment.title}</h3>
-                                      <p className="text-sm text-muted-foreground line-clamp-2">{assignment.subjectName}</p>
+                                      <h3 className="font-semibold text-gray-900 mb-1 truncate">{assignment.title}</h3>
+                                      <p className="text-sm text-gray-600 line-clamp-2">{assignment.subjectName}</p>
                                     </div>
-                                    <Badge variant={status.variant} className="flex-shrink-0 rounded-lg">
+                                    <Badge variant={status.variant} className="flex-shrink-0">
                                       {status.label}
                                     </Badge>
                                   </div>
                                   
-                                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                                     <div className="flex items-center">
                                       <Calendar className="w-4 h-4 mr-1" />
                                       {new Date(assignment.startDate).toLocaleDateString()}
                                     </div>
-                                    <Badge variant="outline" className="rounded-lg">
+                                    <Badge variant="outline" className="text-gray-600 border-gray-300">
                                       {assignment.code}
                                     </Badge>
                                   </div>
@@ -221,26 +224,24 @@ export default function TeacherDashboard() {
                                 
                                 <div className="flex gap-2 flex-shrink-0">
                                   <Button
-                                    variant="outline"
+                                    variant="ghost"
                                     size="sm"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setLocation(`/assignments/view/${assignment.id}`);
                                     }}
-                                    className="rounded-xl btn-minimal"
-                                    data-testid={`button-view-${assignment.id}`}
+                                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                                   >
                                     <Eye className="w-4 h-4" />
                                   </Button>
                                   <Button
-                                    variant="outline"
+                                    variant="ghost"
                                     size="sm"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setLocation(`/assignments/edit/${assignment.id}`);
                                     }}
-                                    className="rounded-xl btn-minimal"
-                                    data-testid={`button-edit-${assignment.id}`}
+                                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                                   >
                                     <Edit className="w-4 h-4" />
                                   </Button>
@@ -256,51 +257,48 @@ export default function TeacherDashboard() {
               </Card>
             </div>
 
-            {/* Sidebar - Quick Actions & Insights */}
+            {/* Sidebar */}
             <div className="space-y-6">
               {/* Quick Actions */}
-              <Card className="dashboard-card slide-in-right">
-                <CardHeader>
-                  <CardTitle className="text-xl">Quick Actions</CardTitle>
+              <Card className="bg-white border border-gray-200 shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-gray-900">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start rounded-xl h-12 btn-minimal"
+                    className="w-full justify-start h-10 border-gray-200 hover:bg-gray-50 text-gray-700"
                     onClick={() => setCreateModalOpen(true)}
-                    data-testid="button-quick-create"
                   >
-                    <Plus className="w-5 h-5 mr-3 text-primary" />
-                    <span className="font-medium">New Assignment</span>
+                    <Plus className="w-4 h-4 mr-3 text-purple-600" />
+                    <span>New Assignment</span>
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start rounded-xl h-12 btn-minimal"
+                    className="w-full justify-start h-10 border-gray-200 hover:bg-gray-50 text-gray-700"
                     onClick={() => setLocation('/profile')}
-                    data-testid="button-quick-students"
                   >
-                    <Users className="w-5 h-5 mr-3 text-success" />
-                    <span className="font-medium">View Students</span>
+                    <Users className="w-4 h-4 mr-3 text-blue-600" />
+                    <span>View Students</span>
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start rounded-xl h-12 btn-minimal"
-                    data-testid="button-quick-analytics"
+                    className="w-full justify-start h-10 border-gray-200 hover:bg-gray-50 text-gray-700"
                   >
-                    <BarChart3 className="w-5 h-5 mr-3 text-warning" />
-                    <span className="font-medium">Analytics</span>
+                    <BarChart3 className="w-4 h-4 mr-3 text-green-600" />
+                    <span>Analytics</span>
                   </Button>
                 </CardContent>
               </Card>
 
               {/* Recent Activity */}
-              <Card className="dashboard-card slide-in-right" style={{ animationDelay: '0.1s' }}>
-                <CardHeader>
-                  <CardTitle className="text-xl">Recent Activity</CardTitle>
-                  <CardDescription>Latest updates from your classes</CardDescription>
+              <Card className="bg-white border border-gray-200 shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-gray-900">Recent Activity</CardTitle>
+                  <CardDescription className="text-gray-600">Latest updates from your classes</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-gray-600">
                     <p className="mb-2">No recent activity</p>
                     <p className="text-xs">Activity will appear here as students interact with your assignments</p>
                   </div>

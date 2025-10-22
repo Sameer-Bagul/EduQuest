@@ -134,81 +134,89 @@ export default function StudentDashboard() {
 
   return (
     <SaasLayout>
-      <div className="dashboard-layout min-h-screen">
-        <div className="dashboard-container">
+      <div className="min-h-screen bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Header */}
-          <div className="dashboard-header mb-8 slide-in-up">
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-              Welcome back, <span className="text-foreground">{user?.name}</span>
+          <div className="mb-10">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome back, <span className="text-gray-900">{user?.name}</span>
             </h1>
-            <p className="text-muted-foreground text-lg">Ready to continue your learning journey?</p>
+            <p className="text-gray-600 text-lg">Ready to continue your learning journey?</p>
           </div>
 
-          {/* Stats Grid - Bento Style */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="dashboard-card slide-in-up" data-testid="card-token-balance">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-primary/40">
-                    <Wallet className="w-6 h-6 text-primary" />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-gray-900">
+                      {walletLoading ? '...' : stats.tokenBalance}
+                    </div>
+                    <div className="text-sm text-gray-600">Token Balance</div>
                   </div>
-                  <TrendingUp className="w-5 h-5 text-success" />
+                  <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+                    <Wallet className="w-6 h-6 text-purple-600" />
+                  </div>
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">
-                  {walletLoading ? '...' : stats.tokenBalance}
-                </div>
-                <p className="text-sm text-muted-foreground font-medium">Token Balance</p>
               </CardContent>
             </Card>
 
-            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.1s' }} data-testid="card-completed">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-success/40">
-                    <CheckCircle className="w-6 h-6 text-success" />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.completed}</div>
+                    <div className="text-sm text-gray-600">Completed</div>
+                  </div>
+                  <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                    <CheckCircle className="w-6 h-6 text-green-600" />
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">{stats.completed}</div>
-                <p className="text-sm text-muted-foreground font-medium">Completed</p>
               </CardContent>
             </Card>
 
-            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.2s' }} data-testid="card-average-score">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-warning/40">
-                    <Trophy className="w-6 h-6 text-warning" />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-gray-900">{stats.averageScore}%</div>
+                    <div className="text-sm text-gray-600">Average Score</div>
+                  </div>
+                  <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+                    <Trophy className="w-6 h-6 text-orange-600" />
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">{stats.averageScore}%</div>
-                <p className="text-sm text-muted-foreground font-medium">Average Score</p>
               </CardContent>
             </Card>
 
-            <Card className="dashboard-card slide-in-up" style={{ animationDelay: '0.3s' }} data-testid="card-streak">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 icon-muted rounded-2xl flex items-center justify-center border border-accent/40">
-                    <Target className="w-6 h-6 text-accent" />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-gray-900">7</div>
+                    <div className="text-sm text-gray-600">Day Streak</div>
+                  </div>
+                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                    <Target className="w-6 h-6 text-blue-600" />
                   </div>
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-1">7</div>
-                <p className="text-sm text-muted-foreground font-medium">Day Streak</p>
               </CardContent>
             </Card>
           </div>
 
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Join Assignment - Large Card */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Join Assignment & Submissions */}
             <div className="lg:col-span-2">
-              <Card className="dashboard-card mb-6 slide-in-left">
-                <CardHeader>
-                  <CardTitle className="text-2xl flex items-center">
-                    <Plus className="w-6 h-6 mr-2 text-primary" />
+              {/* Join Assignment */}
+              <Card className="bg-white border border-gray-200 shadow-sm mb-8">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-xl font-semibold text-gray-900 flex items-center">
+                    <Plus className="w-5 h-5 mr-2 text-purple-600" />
                     Join New Assignment
                   </CardTitle>
-                  <CardDescription>Enter the assignment code provided by your teacher</CardDescription>
+                  <CardDescription className="text-gray-600">Enter the assignment code provided by your teacher</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex gap-3">
@@ -217,31 +225,31 @@ export default function StudentDashboard() {
                       value={assignmentCode}
                       onChange={(e) => setAssignmentCode(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleJoinAssignment()}
-                      className="h-12 text-lg rounded-xl border-2"
+                      className="h-12 text-lg rounded-lg border-gray-300 focus:border-purple-500 focus:ring-purple-500"
                       data-testid="input-assignment-code"
                     />
-                      <Button
-                        onClick={handleJoinAssignment}
-                        size="lg"
-                        className="btn-minimal h-12 px-8"
-                        data-testid="button-join-assignment"
-                      >
-                        Join
-                      </Button>
+                    <Button
+                      onClick={handleJoinAssignment}
+                      size="lg"
+                      className="bg-purple-600 hover:bg-purple-700 text-white h-12 px-8"
+                      data-testid="button-join-assignment"
+                    >
+                      Join
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Submissions List */}
-              <Card className="dashboard-card slide-in-left" style={{ animationDelay: '0.1s' }}>
-                <CardHeader>
+              <Card className="bg-white border border-gray-200 shadow-sm">
+                <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-2xl flex items-center">
-                        <BookOpen className="w-6 h-6 mr-2 text-primary" />
+                      <CardTitle className="text-xl font-semibold text-gray-900 flex items-center">
+                        <BookOpen className="w-5 h-5 mr-2 text-purple-600" />
                         Your Submissions
                       </CardTitle>
-                      <CardDescription className="mt-1">Track your assignment history and scores</CardDescription>
+                      <CardDescription className="text-gray-600 mt-1">Track your assignment history and scores</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -249,23 +257,23 @@ export default function StudentDashboard() {
                   {isLoading ? (
                     <div className="space-y-3">
                       {[1, 2, 3].map((i) => (
-                        <div key={i} className="h-24 bg-muted/30 rounded-xl animate-pulse" />
+                        <div key={i} className="h-20 bg-gray-50 rounded-lg animate-pulse" />
                       ))}
                     </div>
                   ) : submissions.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <BookOpen className="w-8 h-8 text-primary" />
+                      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <BookOpen className="w-8 h-8 text-gray-400" />
                       </div>
-                      <h3 className="text-lg font-semibold text-foreground mb-2">No submissions yet</h3>
-                      <p className="text-muted-foreground mb-4">Join an assignment to get started</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No submissions yet</h3>
+                      <p className="text-gray-600 mb-4">Join an assignment to get started</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
                       {submissions.map((submission: any) => (
-                        <Card 
+                        <Card
                           key={submission.id}
-                          className="dashboard-card border hover:scale-[1.02] transition-all cursor-pointer group"
+                          className="bg-white border border-gray-200 hover:border-purple-200 hover:shadow-sm transition-all cursor-pointer"
                           onClick={() => setLocation(`/assignment/${submission.assignment.code}`)}
                           data-testid={`card-submission-${submission.id}`}
                         >
@@ -273,22 +281,22 @@ export default function StudentDashboard() {
                             <div className="flex items-start justify-between gap-4">
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-start gap-3 mb-3">
-                                  <div className="w-10 h-10 bg-gradient-to-br from-success/30 to-primary/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-success/40">
-                                    <CheckCircle className="w-5 h-5 text-success" />
+                                  <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <CheckCircle className="w-5 h-5 text-green-600" />
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <h3 className="font-semibold text-foreground mb-1 truncate">
+                                    <h3 className="font-semibold text-gray-900 mb-1 truncate">
                                       {submission.assignment.title}
                                     </h3>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm text-gray-600">
                                       Submitted on {new Date(submission.createdAt).toLocaleDateString()}
                                     </p>
                                   </div>
                                   <div className="text-right flex-shrink-0">
-                                    <div className="text-2xl font-bold text-primary">
+                                    <div className="text-2xl font-bold text-purple-600">
                                       {Math.round(submission.totalAwarded * 100)}%
                                     </div>
-                                    <div className="flex items-center text-warning mt-1">
+                                    <div className="flex items-center text-orange-600 mt-1">
                                       <Star className="w-4 h-4 fill-current mr-1" />
                                       <span className="text-sm font-medium">
                                         {submission.totalAwarded.toFixed(2)}
@@ -296,13 +304,13 @@ export default function StudentDashboard() {
                                     </div>
                                   </div>
                                 </div>
-                                
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+
+                                <div className="flex items-center gap-4 text-sm text-gray-500">
                                   <div className="flex items-center">
                                     <Calendar className="w-4 h-4 mr-1" />
                                     {new Date(submission.assignment.startDate).toLocaleDateString()}
                                   </div>
-                                  <Badge variant="outline" className="rounded-lg">
+                                  <Badge variant="outline" className="text-gray-600 border-gray-300">
                                     {submission.assignment.code}
                                   </Badge>
                                 </div>
@@ -317,71 +325,71 @@ export default function StudentDashboard() {
               </Card>
             </div>
 
-            {/* Sidebar - Wallet & Quick Actions */}
+            {/* Sidebar */}
             <div className="space-y-6">
               {/* Wallet Card */}
-              <Card className="bento-card slide-in-right">
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center">
-                    <Wallet className="w-5 h-5 mr-2 text-primary" />
+              <Card className="bg-white border border-gray-200 shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-gray-900 flex items-center">
+                    <Wallet className="w-5 h-5 mr-2 text-purple-600" />
                     Token Wallet
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="text-center p-6 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl border-2 border-primary/20">
-                    <div className="text-4xl font-bold text-foreground mb-2">
+                  <div className="text-center p-6 bg-purple-50 rounded-lg">
+                    <div className="text-4xl font-bold text-gray-900 mb-2">
                       {walletLoading ? '...' : stats.tokenBalance}
                     </div>
-                    <p className="text-sm text-muted-foreground font-medium mb-4">Available Tokens</p>
-                    <Button 
+                    <p className="text-sm text-gray-600 font-medium mb-4">Available Tokens</p>
+                    <Button
                       onClick={() => setLocation('/profile?tab=wallet')}
-                      className="w-full rounded-xl bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:scale-105 transition-all"
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white"
                       data-testid="button-add-tokens"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Tokens
                     </Button>
                   </div>
-                  <p className="text-xs text-muted-foreground text-center">
+                  <p className="text-xs text-gray-500 text-center">
                     Tokens are used to take assignments
                   </p>
                 </CardContent>
               </Card>
 
               {/* Performance Card */}
-              <Card className="bento-card slide-in-right" style={{ animationDelay: '0.1s' }}>
-                <CardHeader>
-                  <CardTitle className="text-xl flex items-center">
-                    <Award className="w-5 h-5 mr-2 text-warning" />
+              <Card className="bg-white border border-gray-200 shadow-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-gray-900 flex items-center">
+                    <Award className="w-5 h-5 mr-2 text-orange-600" />
                     Performance
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Average Score</span>
-                      <span className="text-lg font-bold text-foreground">{stats.averageScore}%</span>
+                      <span className="text-sm text-gray-600">Average Score</span>
+                      <span className="text-lg font-bold text-gray-900">{stats.averageScore}%</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Completed</span>
-                      <span className="text-lg font-bold text-foreground">{stats.completed}</span>
+                      <span className="text-sm text-gray-600">Completed</span>
+                      <span className="text-lg font-bold text-gray-900">{stats.completed}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Streak</span>
-                      <span className="text-lg font-bold text-foreground">7 days</span>
+                      <span className="text-sm text-gray-600">Streak</span>
+                      <span className="text-lg font-bold text-gray-900">7 days</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Achievement Badge */}
-              <Card className="bento-card bg-gradient-to-br from-warning/5 to-accent/5 border-2 border-warning/20 slide-in-right" style={{ animationDelay: '0.2s' }}>
+              <Card className="bg-orange-50 border border-orange-200 shadow-sm">
                 <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-warning/20 to-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-warning/30">
-                    <Trophy className="w-8 h-8 text-warning" />
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Trophy className="w-8 h-8 text-orange-600" />
                   </div>
-                  <h3 className="font-bold text-foreground mb-2">Keep it up!</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-bold text-gray-900 mb-2">Keep it up!</h3>
+                  <p className="text-sm text-gray-600">
                     You're on a 7-day learning streak
                   </p>
                 </CardContent>
@@ -393,44 +401,44 @@ export default function StudentDashboard() {
 
       {/* Cost Dialog */}
       <Dialog open={showCostDialog} onOpenChange={setShowCostDialog}>
-        <DialogContent className="rounded-2xl glass-card">
+        <DialogContent className="rounded-lg bg-white border border-gray-200">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Assignment Details</DialogTitle>
-            <DialogDescription>Review the assignment information before joining</DialogDescription>
+            <DialogTitle className="text-2xl text-gray-900">Assignment Details</DialogTitle>
+            <DialogDescription className="text-gray-600">Review the assignment information before joining</DialogDescription>
           </DialogHeader>
-          
+
           {assignmentPreview && costData && (
             <div className="space-y-4">
-              <div className="p-4 bg-muted/30 rounded-xl">
-                <h3 className="font-semibold text-foreground mb-2">{assignmentPreview.title}</h3>
-                <p className="text-sm text-muted-foreground mb-3">{assignmentPreview.subjectName}</p>
-                
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h3 className="font-semibold text-gray-900 mb-2">{assignmentPreview.title}</h3>
+                <p className="text-sm text-gray-600 mb-3">{assignmentPreview.subjectName}</p>
+
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-muted-foreground">Questions:</span>
-                    <div className="font-semibold text-foreground">{costData.questionCount}</div>
+                    <span className="text-gray-600">Questions:</span>
+                    <div className="font-semibold text-gray-900">{costData.questionCount}</div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 border-2 border-primary/20 rounded-xl bg-primary/5">
+              <div className="p-4 border-2 border-purple-200 rounded-lg bg-purple-50">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-muted-foreground">Token Cost:</span>
-                  <span className="text-2xl font-bold text-primary">{costData.tokensRequired} tokens</span>
+                  <span className="text-gray-600">Token Cost:</span>
+                  <span className="text-2xl font-bold text-purple-600">{costData.tokensRequired} tokens</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Your Balance:</span>
-                  <span className="font-semibold text-foreground">{stats.tokenBalance} tokens</span>
+                  <span className="text-gray-600">Your Balance:</span>
+                  <span className="font-semibold text-gray-900">{stats.tokenBalance} tokens</span>
                 </div>
               </div>
 
               {wallet && stats.tokenBalance < costData.tokensRequired && (
-                <div className="p-4 border-2 border-destructive/20 rounded-xl bg-destructive/5">
+                <div className="p-4 border-2 border-red-200 rounded-lg bg-red-50">
                   <div className="flex items-start space-x-3">
-                    <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                    <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                     <div className="text-sm">
-                      <p className="font-semibold text-destructive mb-1">Insufficient Tokens</p>
-                      <p className="text-muted-foreground">
+                      <p className="font-semibold text-red-600 mb-1">Insufficient Tokens</p>
+                      <p className="text-gray-600">
                         You need {costData.tokensRequired - stats.tokenBalance} more tokens to join this assignment.
                       </p>
                     </div>
@@ -441,17 +449,17 @@ export default function StudentDashboard() {
           )}
 
           <DialogFooter className="flex gap-2 sm:gap-0">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => setShowCostDialog(false)}
-              className="rounded-xl glass-button"
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
               data-testid="button-cancel-join"
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={handleConfirmJoin}
-              className="rounded-xl bg-gradient-to-r from-primary to-secondary"
+              className="bg-purple-600 hover:bg-purple-700 text-white"
               data-testid="button-confirm-join"
             >
               Join Assignment
