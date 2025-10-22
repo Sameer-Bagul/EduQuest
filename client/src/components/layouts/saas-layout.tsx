@@ -27,10 +27,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   LayoutDashboard,
-  ClipboardList,
   Plus,
   Wallet,
-  BarChart3,
   LogOut,
   GraduationCap,
   BookOpen,
@@ -66,16 +64,6 @@ export function SaasLayout({ children }: SaasLayoutProps) {
       title: "Create Assignment",
       icon: Plus,
       url: "/create-assignment",
-    },
-    {
-      title: "My Assignments",
-      icon: ClipboardList,
-      url: "/teacher-dashboard",
-    },
-    {
-      title: "Analytics",
-      icon: BarChart3,
-      url: "/teacher-dashboard",
     },
   ];
 
@@ -120,7 +108,7 @@ export function SaasLayout({ children }: SaasLayoutProps) {
                     <SidebarMenuButton
                       onClick={() => setLocation(item.url)}
                       isActive={location === item.url}
-                      className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
+                      className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors"
                       data-testid={`sidebar-${item.title.toLowerCase().replace(' ', '-')}`}
                     >
                       <item.icon className="w-4 h-4 mr-3" />
@@ -142,7 +130,7 @@ export function SaasLayout({ children }: SaasLayoutProps) {
                   <SidebarMenuButton
                     onClick={() => setLocation('/profile')}
                     isActive={location === '/profile'}
-                    className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
+                    className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors "
                     data-testid="sidebar-profile"
                   >
                     <User className="w-4 h-4 mr-3" />
@@ -153,7 +141,7 @@ export function SaasLayout({ children }: SaasLayoutProps) {
                   <SidebarMenuButton
                     onClick={() => setLocation('/settings')}
                     isActive={location === '/settings'}
-                    className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors border-0"
+                    className="w-full justify-start h-10 px-3 rounded-lg hover:bg-muted/50 transition-colors "
                     data-testid="sidebar-settings"
                   >
                     <Settings className="w-4 h-4 mr-3" />
