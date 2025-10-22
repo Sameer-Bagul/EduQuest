@@ -1,12 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 export function useAuth() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const loginSuccessShown = useRef(false);
+  const registerSuccessShown = useRef(false);
 
-  const { data: user, isLoading, error } = useQuery({
+  const { data: user, isLoading, error, refetch } = useQuery({
     queryKey: ['/api/auth/me'],
     retry: false,
     queryFn: async () => {
@@ -27,14 +30,36 @@ export function useAuth() {
     }
   });
 
+  // Show success toasts when authentication is confirmed
+  useEffect(() => {
+    if (user?.user && !isLoading) {
+      // Check if this is a result of a recent login/register
+      const isRecentLogin = loginSuccessShown.current === false;
+      const isRecentRegister = registerSuccessShown.current === false;
+
+      if (isRecentLogin) {
+        loginSuccessShown.current = true;
+        toast({
+          title: "Success",
+          description: "Logged in successfully",
+        });
+      } else if (isRecentRegister) {
+        registerSuccessShown.current = true;
+        toast({
+          title: "Success",
+          description: "Account created successfully",
+        });
+      }
+    }
+  }, [user, isLoading, toast]);
+
   const loginMutation = useMutation({
     mutationFn: api.login,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
-      });
+    onSuccess: async () => {
+      // Reset the flag to allow showing success toast
+      loginSuccessShown.current = false;
+      // Invalidate and refetch the user query to verify authentication worked
+      await refetch();
     },
     onError: (error: any) => {
       toast({
@@ -47,12 +72,11 @@ export function useAuth() {
 
   const registerMutation = useMutation({
     mutationFn: api.register,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/auth/me'] });
-      toast({
-        title: "Success",
-        description: "Account created successfully",
-      });
+    onSuccess: async () => {
+      // Reset the flag to allow showing success toast
+      registerSuccessShown.current = false;
+      // Invalidate and refetch the user query to verify authentication worked
+      await refetch();
     },
     onError: (error: any) => {
       toast({
@@ -66,11 +90,25 @@ export function useAuth() {
   const logoutMutation = useMutation({
     mutationFn: api.logout,
     onSuccess: () => {
+      // Reset flags for next login/register
+      loginSuccessShown.current = false;
+      registerSuccessShown.current = false;
       queryClient.setQueryData(['/api/auth/me'], null);
       queryClient.clear();
       toast({
         title: "Success",
         description: "Logged out successfully",
+      });
+    },
+    onError: (error: any) => {
+      // Even if logout API fails, clear local state
+      loginSuccessShown.current = false;
+      registerSuccessShown.current = false;
+      queryClient.setQueryData(['/api/auth/me'], null);
+      queryClient.clear();
+      toast({
+        title: "Logged Out",
+        description: "You have been logged out",
       });
     },
   });
@@ -85,5 +123,6 @@ export function useAuth() {
     isLoggingIn: loginMutation.isPending,
     isRegistering: registerMutation.isPending,
     isLoggingOut: logoutMutation.isPending,
+    refetchUser: refetch,
   };
 }

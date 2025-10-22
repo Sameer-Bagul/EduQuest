@@ -6,9 +6,10 @@ export interface TokenPayload {
   id: string;
   email: string;
   role: 'teacher' | 'student';
+  name: string;
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-key';
+const JWT_SECRET = '29f5f506971d8ec66e86e538c865c5f752bf12ae2ca81b62d60da274bc249213c8f41591fcb14e8911198209c67431e2fe692e5dc256c4fbef8667cb02a72512';
 const SALT_ROUNDS = 12;
 
 export async function hashPassword(password: string): Promise<string> {

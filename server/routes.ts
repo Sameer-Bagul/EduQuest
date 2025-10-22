@@ -47,7 +47,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // Generate token and set cookie
-      const token = generateToken({ id: user.id, role: user.role, email: user.email });
+      const token = generateToken({ id: user.id, role: user.role, email: user.email, name: user.name });
       setAuthCookie(res, token);
 
       res.json({ 
@@ -85,7 +85,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Generate token and set cookie
-      const token = generateToken({ id: user.id, role: user.role, email: user.email });
+      const token = generateToken({ id: user.id, role: user.role, email: user.email, name: user.name });
       setAuthCookie(res, token);
 
       res.json({ 
@@ -111,7 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ 
       user: { 
         id: req.user!.id, 
-        name: req.user!.email, // Using email as name fallback 
+        name: req.user!.name,
         email: req.user!.email, 
         role: req.user!.role 
       } 

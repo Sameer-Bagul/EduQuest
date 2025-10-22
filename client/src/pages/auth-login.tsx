@@ -9,21 +9,34 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function AuthLoginPage() {
   const [, setLocation] = useLocation();
-  const { user, isAuthenticated, login, isLoggingIn } = useAuthContext();
+  const { user, isAuthenticated, login, isLoggingIn, isLoading } = useAuthContext();
 
   useEffect(() => {
-    if (isAuthenticated && user) {
+    // Only redirect when we have confirmed authentication and user data is loaded
+    if (isAuthenticated && user && !isLoading) {
       if (user.role === 'teacher') {
         setLocation('/teacher-dashboard');
       } else {
         setLocation('/student-dashboard');
       }
     }
-  }, [isAuthenticated, user, setLocation]);
+  }, [isAuthenticated, user, isLoading, setLocation]);
 
   const handleLoginSubmit = (data: { email: string; password: string }) => {
     login(data);
   };
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -58,8 +71,8 @@ export default function AuthLoginPage() {
 
           <Card className="clean-card">
             <CardContent className="p-6">
-              <LoginForm 
-                onSubmit={handleLoginSubmit} 
+              <LoginForm
+                onSubmit={handleLoginSubmit}
                 isLoading={isLoggingIn}
               />
 
