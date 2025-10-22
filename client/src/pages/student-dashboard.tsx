@@ -18,13 +18,12 @@ import {
   TrendingUp,
   BookOpen,
   Calendar,
-  Clock,
   Award
 } from "lucide-react";
 import { useAuthContext } from "@/components/ui/auth-provider";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/lib/api";
-import { Navbar } from "@/components/ui/navbar";
+import { SaasLayout } from "@/components/layouts/saas-layout";
 
 export default function StudentDashboard() {
   const [assignmentCode, setAssignmentCode] = useState("");
@@ -62,15 +61,6 @@ export default function StudentDashboard() {
     averageScore: submissions.length > 0 
       ? Math.round(submissions.reduce((acc: number, sub: any) => acc + sub.totalAwarded, 0) / submissions.length * 100)
       : 0,
-  };
-
-  const formatCurrency = (amount: number, currency?: string) => {
-    const curr = currency || user?.currency || 'USD';
-    if (curr === 'INR') {
-      return `₹${amount.toFixed(2)}`;
-    } else {
-      return `$${amount.toFixed(2)}`;
-    }
   };
 
   const handleJoinAssignment = async () => {
@@ -143,25 +133,23 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar subtitle="Student Portal" />
-      
-      <div className="pt-28 pb-12 px-4 sm:px-6 lg:px-8">
+    <SaasLayout>
+      <div className="p-8 gradient-purple min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-8 slide-in-up">
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
-              Welcome back, <span className="highlight-marker">{user?.name}</span>
+              Welcome back, <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{user?.name}</span>
             </h1>
             <p className="text-muted-foreground text-lg">Ready to continue your learning journey?</p>
           </div>
 
           {/* Stats Grid - Bento Style */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="bento-card" data-testid="card-token-balance">
+            <Card className="bento-card slide-in-up" data-testid="card-token-balance">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center border-2 border-primary/30">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl flex items-center justify-center border border-primary/40">
                     <Wallet className="w-6 h-6 text-primary" />
                   </div>
                   <TrendingUp className="w-5 h-5 text-success" />
@@ -173,10 +161,10 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bento-card" data-testid="card-completed">
+            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.1s' }} data-testid="card-completed">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-success/20 to-primary/20 rounded-2xl flex items-center justify-center border-2 border-success/30">
+                  <div className="w-12 h-12 bg-gradient-to-br from-success/30 to-primary/30 rounded-2xl flex items-center justify-center border border-success/40">
                     <CheckCircle className="w-6 h-6 text-success" />
                   </div>
                 </div>
@@ -185,10 +173,10 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bento-card" data-testid="card-average-score">
+            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.2s' }} data-testid="card-average-score">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-warning/20 to-accent/20 rounded-2xl flex items-center justify-center border-2 border-warning/30">
+                  <div className="w-12 h-12 bg-gradient-to-br from-warning/30 to-accent/30 rounded-2xl flex items-center justify-center border border-warning/40">
                     <Trophy className="w-6 h-6 text-warning" />
                   </div>
                 </div>
@@ -197,10 +185,10 @@ export default function StudentDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bento-card" data-testid="card-streak">
+            <Card className="bento-card slide-in-up" style={{ animationDelay: '0.3s' }} data-testid="card-streak">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-accent/20 to-secondary/20 rounded-2xl flex items-center justify-center border-2 border-accent/30">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent/30 to-secondary/30 rounded-2xl flex items-center justify-center border border-accent/40">
                     <Target className="w-6 h-6 text-accent" />
                   </div>
                 </div>
@@ -214,7 +202,7 @@ export default function StudentDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Join Assignment - Large Card */}
             <div className="lg:col-span-2">
-              <Card className="bento-card mb-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20">
+              <Card className="bento-card mb-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20 slide-in-left">
                 <CardHeader>
                   <CardTitle className="text-2xl flex items-center">
                     <Plus className="w-6 h-6 mr-2 text-primary" />
@@ -235,7 +223,7 @@ export default function StudentDashboard() {
                     <Button 
                       onClick={handleJoinAssignment}
                       size="lg"
-                      className="rounded-xl h-12 px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                      className="rounded-xl h-12 px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
                       data-testid="button-join-assignment"
                     >
                       Join
@@ -245,7 +233,7 @@ export default function StudentDashboard() {
               </Card>
 
               {/* Submissions List */}
-              <Card className="bento-card">
+              <Card className="bento-card slide-in-left" style={{ animationDelay: '0.1s' }}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -266,8 +254,8 @@ export default function StudentDashboard() {
                     </div>
                   ) : submissions.length === 0 ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <BookOpen className="w-8 h-8 text-muted-foreground" />
+                      <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <BookOpen className="w-8 h-8 text-primary" />
                       </div>
                       <h3 className="text-lg font-semibold text-foreground mb-2">No submissions yet</h3>
                       <p className="text-muted-foreground mb-4">Join an assignment to get started</p>
@@ -277,7 +265,7 @@ export default function StudentDashboard() {
                       {submissions.map((submission: any) => (
                         <Card 
                           key={submission.id}
-                          className="hover-subtle border-2 cursor-pointer group"
+                          className="glass-card border hover:scale-[1.02] transition-all cursor-pointer group"
                           onClick={() => setLocation(`/assignment/${submission.assignment.code}`)}
                           data-testid={`card-submission-${submission.id}`}
                         >
@@ -285,7 +273,7 @@ export default function StudentDashboard() {
                             <div className="flex items-start justify-between gap-4">
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-start gap-3 mb-3">
-                                  <div className="w-10 h-10 bg-gradient-to-br from-success/20 to-primary/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                  <div className="w-10 h-10 bg-gradient-to-br from-success/30 to-primary/30 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-success/40">
                                     <CheckCircle className="w-5 h-5 text-success" />
                                   </div>
                                   <div className="flex-1 min-w-0">
@@ -293,7 +281,7 @@ export default function StudentDashboard() {
                                       {submission.assignment.title}
                                     </h3>
                                     <p className="text-sm text-muted-foreground">
-                                      Submitted on {new Date(submission.submittedAt).toLocaleDateString()}
+                                      Submitted on {new Date(submission.createdAt).toLocaleDateString()}
                                     </p>
                                   </div>
                                   <div className="text-right flex-shrink-0">
@@ -332,7 +320,7 @@ export default function StudentDashboard() {
             {/* Sidebar - Wallet & Quick Actions */}
             <div className="space-y-6">
               {/* Wallet Card */}
-              <Card className="bento-card">
+              <Card className="bento-card slide-in-right">
                 <CardHeader>
                   <CardTitle className="text-xl flex items-center">
                     <Wallet className="w-5 h-5 mr-2 text-primary" />
@@ -347,7 +335,7 @@ export default function StudentDashboard() {
                     <p className="text-sm text-muted-foreground font-medium mb-4">Available Tokens</p>
                     <Button 
                       onClick={() => setLocation('/profile?tab=wallet')}
-                      className="w-full rounded-xl bg-gradient-to-r from-primary to-secondary"
+                      className="w-full rounded-xl bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:scale-105 transition-all"
                       data-testid="button-add-tokens"
                     >
                       <Plus className="w-4 h-4 mr-2" />
@@ -361,7 +349,7 @@ export default function StudentDashboard() {
               </Card>
 
               {/* Performance Card */}
-              <Card className="bento-card">
+              <Card className="bento-card slide-in-right" style={{ animationDelay: '0.1s' }}>
                 <CardHeader>
                   <CardTitle className="text-xl flex items-center">
                     <Award className="w-5 h-5 mr-2 text-warning" />
@@ -387,7 +375,7 @@ export default function StudentDashboard() {
               </Card>
 
               {/* Achievement Badge */}
-              <Card className="bento-card bg-gradient-to-br from-warning/5 to-accent/5 border-2 border-warning/20">
+              <Card className="bento-card bg-gradient-to-br from-warning/5 to-accent/5 border-2 border-warning/20 slide-in-right" style={{ animationDelay: '0.2s' }}>
                 <CardContent className="p-6 text-center">
                   <div className="w-16 h-16 bg-gradient-to-br from-warning/20 to-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-warning/30">
                     <Trophy className="w-8 h-8 text-warning" />
@@ -405,7 +393,7 @@ export default function StudentDashboard() {
 
       {/* Cost Dialog */}
       <Dialog open={showCostDialog} onOpenChange={setShowCostDialog}>
-        <DialogContent className="rounded-2xl">
+        <DialogContent className="rounded-2xl glass-card">
           <DialogHeader>
             <DialogTitle className="text-2xl">Assignment Details</DialogTitle>
             <DialogDescription>Review the assignment information before joining</DialogDescription>
@@ -415,13 +403,9 @@ export default function StudentDashboard() {
             <div className="space-y-4">
               <div className="p-4 bg-muted/30 rounded-xl">
                 <h3 className="font-semibold text-foreground mb-2">{assignmentPreview.title}</h3>
-                <p className="text-sm text-muted-foreground mb-3">{assignmentPreview.description}</p>
+                <p className="text-sm text-muted-foreground mb-3">{assignmentPreview.subjectName}</p>
                 
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Duration:</span>
-                    <div className="font-semibold text-foreground">{assignmentPreview.duration} min</div>
-                  </div>
                   <div>
                     <span className="text-muted-foreground">Questions:</span>
                     <div className="font-semibold text-foreground">{costData.questionCount}</div>
@@ -460,7 +444,7 @@ export default function StudentDashboard() {
             <Button 
               variant="outline" 
               onClick={() => setShowCostDialog(false)}
-              className="rounded-xl"
+              className="rounded-xl glass-button"
               data-testid="button-cancel-join"
             >
               Cancel
@@ -475,6 +459,6 @@ export default function StudentDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </SaasLayout>
   );
 }
