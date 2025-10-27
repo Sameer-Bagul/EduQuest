@@ -90,7 +90,6 @@ export default function TeacherDashboard() {
 
           <MainContent
             leftContent={<TeacherAssignmentsList />}
-            rightContent={<TeacherQuickActions />}
           />
         </div>
       </div>

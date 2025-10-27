@@ -13,10 +13,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Plus, Trash2, Save, Clock, Users, BookOpen, Calendar, User, GraduationCap } from "lucide-react";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthContext } from "@/components/ui/auth-provider";
+import { SaasLayout } from "@/components/layouts/saas-layout";
 
 const updateAssignmentSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
@@ -177,38 +177,31 @@ export default function EditAssignmentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                onClick={handleGoBack}
-                className="mr-4"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Dashboard
-              </Button>
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3">
-                <GraduationCap className="text-primary-foreground w-4 h-4" />
-              </div>
-              <h1 className="text-lg font-semibold text-foreground">
-                Edit Assignment
-              </h1>
+    <SaasLayout>
+      <div className="min-h-screen bg-background">
+        {/* Page Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              variant="ghost"
+              onClick={handleGoBack}
+              className="btn-minimal"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <GraduationCap className="text-primary-foreground w-4 h-4" />
             </div>
-            <div className="flex items-center space-x-3">
-              <Badge variant="secondary">Teacher</Badge>
-              <ThemeToggle />
-            </div>
+            <h1 className="text-2xl font-bold text-foreground">
+              Edit Assignment
+            </h1>
           </div>
         </div>
-      </header>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {/* Assignment Overview Card */}
             <Card className="hover-subtle">
               <CardHeader>
@@ -490,7 +483,8 @@ export default function EditAssignmentPage() {
             </Card>
           </form>
         </Form>
+        </div>
       </div>
-    </div>
+    </SaasLayout>
   );
 }
