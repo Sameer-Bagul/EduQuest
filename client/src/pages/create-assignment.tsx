@@ -109,16 +109,13 @@ export default function CreateAssignmentPage() {
   const getTokenRequirements = () => {
     const questionCount = questions.filter(q => q.text.trim()).length;
     const tokensRequired = Math.ceil(questionCount / 4);
-    const currency = user?.currency || 'USD';
-    const pricePerToken = currency === 'INR' ? 2 : 0.023;
-    const totalCost = tokensRequired * pricePerToken;
+    const totalCost = tokensRequired * 2;
     
     return {
       questionCount,
       tokensRequired,
       totalCost,
-      currency,
-      formattedCost: currency === 'INR' ? `₹${totalCost.toFixed(2)}` : `$${totalCost.toFixed(2)}`
+      formattedCost: `₹${totalCost.toFixed(2)}`
     };
   };
 
@@ -382,7 +379,7 @@ export default function CreateAssignmentPage() {
                   </div>
                 </div>
                 <div className="mt-3 text-xs text-blue-600">
-                  <p>💡 Students will need {tokenInfo.tokensRequired} token{tokenInfo.tokensRequired !== 1 ? 's' : ''} to access this assignment ({tokenInfo.formattedCost} in {tokenInfo.currency})</p>
+                  <p>💡 Students will need {tokenInfo.tokensRequired} token{tokenInfo.tokensRequired !== 1 ? 's' : ''} to access this assignment ({tokenInfo.formattedCost})</p>
                 </div>
               </CardContent>
             </Card>
