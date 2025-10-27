@@ -366,7 +366,7 @@ export default function CreateAssignmentPage() {
                     )}
                   />
                 </div>
-              </CardContent>
+              </CardContent> 
             </Card>
 
             {/* Token Requirements Preview */}
