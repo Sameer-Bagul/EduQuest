@@ -50,7 +50,7 @@ const assignmentSchema = new mongoose.Schema({
 
 const submissionSchema = new mongoose.Schema({
   _id: { type: String, default: () => randomUUID() },
-  assignmentId: String,
+  assignmentId: { type: String, ref: 'Assignment' },
   studentId: String,
   answers: [{
     questionId: String,
@@ -276,8 +276,14 @@ export class MongoStorage implements IStorage {
 
   async getSubmissionsByStudent(studentId: string): Promise<Submission[]> {
     await this.connect();
-    const submissions = await SubmissionModel.find({ studentId });
-    return submissions.map(transformDoc);
+    const submissions = await SubmissionModel.find({ studentId }).populate('assignmentId');
+    return submissions.map(submission => {
+      const obj = transformDoc(submission);
+      // Rename assignmentId to assignment for frontend compatibility
+      obj.assignment = obj.assignmentId;
+      delete obj.assignmentId;
+      return obj;
+    });
   }
 
   async getSubmissionByAssignmentAndStudent(assignmentId: string, studentId: string): Promise<Submission | undefined> {

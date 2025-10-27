@@ -28,7 +28,7 @@ A comprehensive educational assignment platform with voice-to-text capabilities,
 - **JWT** authentication with HTTP-only cookies
 - **bcrypt** for password hashing
 - **Zod** for validation
-- **In-memory storage** (easily replaceable with PostgreSQL)
+- **MongoDB Atlas** for data persistence
 
 ## Quick Start
 
@@ -143,6 +143,7 @@ npm start
 NODE_ENV=production
 PORT=5000
 JWT_SECRET=your-secret-key
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/eduquest
 CORS_ORIGIN=*
 USE_CRON_FALLBACK=true
 
@@ -150,6 +151,10 @@ USE_CRON_FALLBACK=true
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_OAUTH_CALLBACK_URL=https://your-domain.com/api/auth/google/callback
+
+# Optional: Razorpay Payment Gateway
+RAZORPAY_KEY_ID=your-razorpay-key-id
+RAZORPAY_KEY_SECRET=your-razorpay-key-secret
 ```
 
 ## Features in Detail

@@ -1,13 +1,12 @@
-import { 
-  type User, type InsertUser, 
-  type Assignment, type InsertAssignment, 
+import {
+  type User, type InsertUser,
+  type Assignment, type InsertAssignment,
   type Submission, type InsertSubmission,
   type TokenWallet, type InsertTokenWallet,
   type Transaction, type InsertTransaction,
   type Payment, type InsertPayment
 } from "@shared/schema";
 import { MongoStorage } from "./storage/mongodb-simple";
-import { MemoryStorage } from "./storage/memory-fallback";
 
 export interface IStorage {
   // User operations
@@ -54,19 +53,16 @@ export interface IStorage {
   deductTokensForAssignment(userId: string, tokens: number, assignmentId: string): Promise<{wallet: TokenWallet, transaction: Transaction}>;
 }
 
-// Create storage instance with fallback - lazy initialization
+// Create storage instance - MongoDB only
 let storageInstance: IStorage | null = null;
 
 function createStorage(): IStorage {
-  // Try to use MongoDB if connection string is available
-  if (process.env.MONGODB_URI) {
-    console.log('Using MongoDB storage');
-    return new MongoStorage();
-  } else {
-    console.log('MONGODB_URI not found - using memory storage (temporary fallback)');
-    console.log('To use MongoDB, set the MONGODB_URI environment variable');
-    return new MemoryStorage();
+  if (!process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is required. Please set your MongoDB Atlas connection string.');
   }
+
+  console.log('Using MongoDB Atlas storage');
+  return new MongoStorage();
 }
 
 function getStorage(): IStorage {

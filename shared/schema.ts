@@ -67,6 +67,7 @@ export const insertAssignmentSchema = z.object({
 export const submissionSchema = z.object({
   id: z.string(),
   assignmentId: z.string(),
+  assignment: z.any().optional(), // Populated assignment data
   studentId: z.string(),
   answers: z.array(z.object({
     questionId: z.string(),
