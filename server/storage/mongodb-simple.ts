@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
   googleId: { type: String, sparse: true },
   passwordHash: String,
   country: String,
-  currency: { type: String, enum: ['INR', 'USD'] },
 }, { 
   timestamps: true,
   _id: false
@@ -86,7 +85,6 @@ const transactionSchema = new mongoose.Schema({
   type: { type: String, enum: ['purchase', 'deduction'], required: true },
   tokens: { type: Number, required: true },
   amount: Number,
-  currency: { type: String, enum: ['INR', 'USD'] },
   assignmentId: String,
   paymentId: String,
   description: String,
@@ -104,7 +102,6 @@ const paymentSchema = new mongoose.Schema({
   razorpayPaymentId: String,
   razorpaySignature: String,
   amount: { type: Number, required: true },
-  currency: { type: String, enum: ['INR', 'USD'], required: true },
   tokens: { type: Number, required: true },
   status: { type: String, enum: ['created', 'paid', 'failed', 'cancelled'], default: 'created' },
 }, { 

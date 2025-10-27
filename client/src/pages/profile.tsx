@@ -56,7 +56,7 @@ export default function ProfilePage() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>("");
   const [buyTokensOpen, setBuyTokensOpen] = useState(false);
-  const [selectedTokens, setSelectedTokens] = useState<number>(10);
+  const [customTokenAmount, setCustomTokenAmount] = useState<string>("10");
 
   // Fetch wallet data
   const { data: wallet, isLoading: walletLoading } = useQuery({
@@ -258,7 +258,16 @@ export default function ProfilePage() {
   };
 
   const handleBuyTokens = () => {
-    purchaseTokensMutation.mutate(selectedTokens);
+    const tokens = parseInt(customTokenAmount);
+    if (tokens > 0 && tokens <= 1000) {
+      purchaseTokensMutation.mutate(tokens);
+    } else {
+      toast({
+        title: "Invalid Amount",
+        description: "Please enter a valid token amount (1-1000)",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleRazorpayPayment = (orderData: any) => {
@@ -314,12 +323,8 @@ export default function ProfilePage() {
     rzp.open();
   };
 
-  const formatCurrency = (amount: number, currency: string) => {
-    if (currency === 'INR') {
-      return `₹${amount.toFixed(2)}`;
-    } else {
-      return `$${amount.toFixed(2)}`;
-    }
+  const formatCurrency = (amount: number) => {
+    return `₹${amount.toFixed(2)}`;
   };
 
   const formatDate = (dateString: string) => {
@@ -340,10 +345,8 @@ export default function ProfilePage() {
     }
   };
 
-  const getTokenPackagePrice = (tokens: number) => {
-    const currency = user?.currency || 'USD';
-    const basePrice = currency === 'INR' ? 2 : 0.023;
-    return tokens * basePrice;
+  const getTokenPrice = (tokens: number) => {
+    return tokens * 2;
   };
 
   if (!isAuthenticated || !user) {
@@ -404,28 +407,25 @@ export default function ProfilePage() {
                 </CardContent>
               </Card>
 
-              {/* Currency Info Card */}
+              {/* Pricing Info Card */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    {user.currency === 'INR' ? <IndianRupee className="w-5 h-5 mr-2" /> : <DollarSign className="w-5 h-5 mr-2" />}
+                    <IndianRupee className="w-5 h-5 mr-2" />
                     Token Pricing
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex justify-between">
                     <span>Price per token:</span>
-                    <span className="font-semibold">
-                      {user.currency === 'INR' ? '₹2.00' : '$0.023'}
-                    </span>
+                    <span className="font-semibold">₹2.00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Your currency:</span>
-                    <Badge variant="outline">{user.currency || 'USD'}</Badge>
+                    <span>Questions per token:</span>
+                    <span className="font-semibold">4 questions</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Country:</span>
-                    <span>{user.country || 'Unknown'}</span>
+                  <div className="text-sm text-muted-foreground mt-2">
+                    All prices are in Indian Rupees (₹)
                   </div>
                 </CardContent>
               </Card>
@@ -436,53 +436,82 @@ export default function ProfilePage() {
               <CardHeader>
                 <CardTitle>Purchase Tokens</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Buy E-paper Tokens to access assignments
+                  Buy E-paper Tokens to access assignments. 1 token = ₹2, 1 token = 4 questions
                 </p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[10, 25, 50, 100].map((tokens) => (
-                    <Card 
-                      key={tokens} 
-                      className={`cursor-pointer transition-colors ${
-                        selectedTokens === tokens ? 'ring-2 ring-blue-500' : 'hover:bg-muted'
-                      }`}
-                      onClick={() => setSelectedTokens(tokens)}
-                      data-testid={`card-token-package-${tokens}`}
-                    >
-                      <CardContent className="p-4 text-center">
-                        <div className="text-2xl font-bold">{tokens}</div>
-                        <div className="text-sm text-muted-foreground">tokens</div>
-                        <div className="text-lg font-semibold mt-1">
-                          {formatCurrency(getTokenPackagePrice(tokens), user.currency || 'USD')}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="token-amount">Number of Tokens (1-1000)</Label>
+                    <Input
+                      id="token-amount"
+                      type="number"
+                      min="1"
+                      max="1000"
+                      value={customTokenAmount}
+                      onChange={(e) => setCustomTokenAmount(e.target.value)}
+                      placeholder="Enter number of tokens"
+                      className="mt-2"
+                      data-testid="input-token-amount"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-4 gap-2">
+                    {[10, 25, 50, 100].map((amount) => (
+                      <Button
+                        key={amount}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setCustomTokenAmount(amount.toString())}
+                        data-testid={`button-quick-${amount}`}
+                      >
+                        {amount}
+                      </Button>
+                    ))}
+                  </div>
+
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm">Tokens:</span>
+                      <span className="font-semibold">{customTokenAmount || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm">Total Amount:</span>
+                      <span className="font-semibold text-lg">{formatCurrency(getTokenPrice(parseInt(customTokenAmount) || 0))}</span>
+                    </div>
+                    <div className="flex justify-between text-muted-foreground text-sm">
+                      <span>Can answer:</span>
+                      <span>{(parseInt(customTokenAmount) || 0) * 4} questions</span>
+                    </div>
+                  </div>
                 </div>
                 
                 <Dialog open={buyTokensOpen} onOpenChange={setBuyTokensOpen}>
                   <DialogTrigger asChild>
                     <Button className="w-full mt-4" size="lg" data-testid="button-buy-tokens">
                       <Plus className="w-4 h-4 mr-2" />
-                      Buy {selectedTokens} Tokens for {formatCurrency(getTokenPackagePrice(selectedTokens), user.currency || 'USD')}
+                      Buy {customTokenAmount || 0} Tokens for {formatCurrency(getTokenPrice(parseInt(customTokenAmount) || 0))}
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>Confirm Token Purchase</DialogTitle>
                       <DialogDescription>
-                        You're about to purchase {selectedTokens} E-paper Tokens for {formatCurrency(getTokenPackagePrice(selectedTokens), user.currency || 'USD')}.
+                        You're about to purchase {customTokenAmount} E-paper Tokens for {formatCurrency(getTokenPrice(parseInt(customTokenAmount) || 0))}.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div className="flex justify-between p-4 bg-muted rounded-lg">
                         <span>Tokens:</span>
-                        <span className="font-semibold">{selectedTokens}</span>
+                        <span className="font-semibold">{customTokenAmount}</span>
                       </div>
                       <div className="flex justify-between p-4 bg-muted rounded-lg">
                         <span>Total Amount:</span>
-                        <span className="font-semibold">{formatCurrency(getTokenPackagePrice(selectedTokens), user.currency || 'USD')}</span>
+                        <span className="font-semibold">{formatCurrency(getTokenPrice(parseInt(customTokenAmount) || 0))}</span>
+                      </div>
+                      <div className="flex justify-between p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                        <span className="text-sm">Can answer:</span>
+                        <span className="font-semibold">{(parseInt(customTokenAmount) || 0) * 4} questions</span>
                       </div>
                     </div>
                     <DialogFooter>
@@ -551,8 +580,8 @@ export default function ProfilePage() {
                             {transaction.type === 'purchase' ? '+' : '-'}{transaction.tokens}
                           </TableCell>
                           <TableCell>
-                            {transaction.amount && transaction.currency ? 
-                              formatCurrency(transaction.amount, transaction.currency) : 
+                            {transaction.amount ? 
+                              formatCurrency(transaction.amount) : 
                               '-'
                             }
                           </TableCell>
@@ -593,7 +622,6 @@ export default function ProfilePage() {
                       <TableRow>
                         <TableHead>Date</TableHead>
                         <TableHead>Amount</TableHead>
-                        <TableHead>Currency</TableHead>
                         <TableHead>Tokens</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Actions</TableHead>
@@ -604,10 +632,7 @@ export default function ProfilePage() {
                         <TableRow key={payment.id} data-testid={`row-payment-${payment.id}`}>
                           <TableCell>{formatDate(payment.createdAt)}</TableCell>
                           <TableCell className="font-medium">
-                            {formatCurrency(payment.amount, payment.currency)}
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{payment.currency}</Badge>
+                            {formatCurrency(payment.amount)}
                           </TableCell>
                           <TableCell>{payment.tokens}</TableCell>
                           <TableCell>

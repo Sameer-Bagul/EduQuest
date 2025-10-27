@@ -8,8 +8,7 @@ export const userSchema = z.object({
   role: z.enum(['teacher', 'student']),
   googleId: z.string().optional(),
   passwordHash: z.string().optional(),
-  country: z.string().optional(), // For currency detection
-  currency: z.enum(['INR', 'USD']).optional(), // Based on geolocation
+  country: z.string().optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -21,7 +20,6 @@ export const insertUserSchema = z.object({
   googleId: z.string().optional(),
   passwordHash: z.string().optional(),
   country: z.string().optional(),
-  currency: z.enum(['INR', 'USD']).optional(),
 });
 
 // Assignment Schema
@@ -127,8 +125,7 @@ export const transactionSchema = z.object({
   userId: z.string(),
   type: z.enum(['purchase', 'deduction']), // Purchase tokens or deduct for assignment
   tokens: z.number(), // Number of tokens involved
-  amount: z.number().optional(), // Money amount for purchases
-  currency: z.enum(['INR', 'USD']).optional(),
+  amount: z.number().optional(), // Money amount for purchases in Rs
   assignmentId: z.string().optional(), // For deductions
   paymentId: z.string().optional(), // Link to payment record
   description: z.string().optional(),
@@ -142,7 +139,6 @@ export const insertTransactionSchema = z.object({
   type: z.enum(['purchase', 'deduction']),
   tokens: z.number(),
   amount: z.number().optional(),
-  currency: z.enum(['INR', 'USD']).optional(),
   assignmentId: z.string().optional(),
   paymentId: z.string().optional(),
   description: z.string().optional(),
@@ -156,8 +152,7 @@ export const paymentSchema = z.object({
   razorpayOrderId: z.string(),
   razorpayPaymentId: z.string().optional(),
   razorpaySignature: z.string().optional(),
-  amount: z.number(), // Amount in smallest currency unit (paise/cents)
-  currency: z.enum(['INR', 'USD']),
+  amount: z.number(), // Amount in paise (1 Rs = 100 paise)
   tokens: z.number(), // Number of tokens purchased
   status: z.enum(['created', 'paid', 'failed', 'cancelled']),
   createdAt: z.string(),
@@ -168,7 +163,6 @@ export const insertPaymentSchema = z.object({
   userId: z.string(),
   razorpayOrderId: z.string(),
   amount: z.number(),
-  currency: z.enum(['INR', 'USD']),
   tokens: z.number(),
   status: z.enum(['created', 'paid', 'failed', 'cancelled']).default('created'),
 });

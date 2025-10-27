@@ -6,7 +6,6 @@ import { tokenPurchaseSchema, verifyPaymentSchema } from '@shared/schema';
 import { z } from 'zod';
 
 export class PaymentController {
-  // Create payment order for token purchase
   static async createTokenPurchaseOrder(req: AuthenticatedRequest, res: Response) {
     try {
       const userId = req.user?.id;
@@ -14,32 +13,19 @@ export class PaymentController {
         return res.status(401).json({ error: 'Authentication required' });
       }
 
-      // Validate request body
       const result = tokenPurchaseSchema.safeParse(req.body);
       if (!result.success) {
         return res.status(400).json({ error: 'Invalid request', details: result.error });
       }
 
       const { tokens } = result.data;
-      
-      // Get user to determine currency
-      const user = await storage.getUser(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
 
-      // Detect currency based on user's country
-      const currency = user.currency || paymentService.detectCurrency(user.country);
+      const order = await paymentService.createOrder(tokens);
 
-      // Create RazorPay order
-      const order = await paymentService.createOrder(tokens, currency);
-
-      // Store payment record
       const payment = await storage.createPayment({
         userId,
         razorpayOrderId: order.orderId,
         amount: order.amount,
-        currency,
         tokens,
         status: 'created',
       });
@@ -58,7 +44,6 @@ export class PaymentController {
     }
   }
 
-  // Verify payment and credit tokens
   static async verifyPayment(req: AuthenticatedRequest, res: Response) {
     try {
       const userId = req.user?.id;
@@ -66,7 +51,6 @@ export class PaymentController {
         return res.status(401).json({ error: 'Authentication required' });
       }
 
-      // Validate request body
       const result = verifyPaymentSchema.safeParse(req.body);
       if (!result.success) {
         return res.status(400).json({ error: 'Invalid payment verification data', details: result.error });
@@ -74,13 +58,11 @@ export class PaymentController {
 
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = result.data;
 
-      // Verify payment signature
       const isValid = paymentService.verifyPayment(razorpay_order_id, razorpay_payment_id, razorpay_signature);
       if (!isValid) {
         return res.status(400).json({ error: 'Invalid payment signature' });
       }
 
-      // Get payment record
       const payment = await storage.getPaymentByOrderId(razorpay_order_id);
       if (!payment) {
         return res.status(404).json({ error: 'Payment record not found' });
@@ -94,30 +76,25 @@ export class PaymentController {
         return res.status(400).json({ error: 'Payment already processed' });
       }
 
-      // Update payment record
       await storage.updatePayment(payment.id, {
         razorpayPaymentId: razorpay_payment_id,
         razorpaySignature: razorpay_signature,
         status: 'paid',
       });
 
-      // Get or create token wallet
       let wallet = await storage.getTokenWallet(userId);
       if (!wallet) {
         wallet = await storage.createTokenWallet({ userId, balance: 0 });
       }
 
-      // Credit tokens to wallet
       const newBalance = wallet.balance + payment.tokens;
       const updatedWallet = await storage.updateTokenBalance(userId, newBalance);
 
-      // Create transaction record
       await storage.createTransaction({
         userId,
         type: 'purchase',
         tokens: payment.tokens,
-        amount: payment.amount / 100, // Convert from smallest unit
-        currency: payment.currency,
+        amount: payment.amount / 100,
         paymentId: payment.id,
         description: `Token purchase: ${payment.tokens} tokens`,
         balanceAfter: newBalance,
@@ -135,7 +112,6 @@ export class PaymentController {
     }
   }
 
-  // Get user's payment history
   static async getPaymentHistory(req: AuthenticatedRequest, res: Response) {
     try {
       const userId = req.user?.id;
@@ -147,8 +123,8 @@ export class PaymentController {
       
       res.json(payments.map(payment => ({
         id: payment.id,
-        amount: payment.amount / 100, // Convert to main currency unit
-        currency: payment.currency,
+        amount: payment.amount / 100,
+        currency: 'INR',
         tokens: payment.tokens,
         status: payment.status,
         createdAt: payment.createdAt,
@@ -159,7 +135,6 @@ export class PaymentController {
     }
   }
 
-  // Get user's transaction history
   static async getTransactionHistory(req: AuthenticatedRequest, res: Response) {
     try {
       const userId = req.user?.id;
@@ -176,7 +151,6 @@ export class PaymentController {
     }
   }
 
-  // Get user's token wallet
   static async getTokenWallet(req: AuthenticatedRequest, res: Response) {
     try {
       const userId = req.user?.id;
@@ -186,7 +160,6 @@ export class PaymentController {
 
       let wallet = await storage.getTokenWallet(userId);
       if (!wallet) {
-        // Create wallet if doesn't exist
         wallet = await storage.createTokenWallet({ userId, balance: 0 });
       }
 
@@ -197,7 +170,6 @@ export class PaymentController {
     }
   }
 
-  // Calculate tokens required for assignment
   static async calculateAssignmentCost(req: AuthenticatedRequest, res: Response) {
     try {
       const { assignmentId } = req.params;
@@ -208,24 +180,14 @@ export class PaymentController {
       }
 
       const tokensRequired = paymentService.calculateTokensRequired(assignment.questions.length);
-      
-      // Get user's currency for cost display
-      const userId = req.user?.id;
-      let currency: 'INR' | 'USD' = 'USD';
-      
-      if (userId) {
-        const user = await storage.getUser(userId);
-        currency = user?.currency || paymentService.detectCurrency(user?.country);
-      }
-
-      const cost = paymentService.calculateTokenCost(tokensRequired, currency);
+      const cost = paymentService.calculateTokenCost(tokensRequired);
 
       res.json({
         tokensRequired,
         cost,
-        currency,
+        currency: 'INR',
         questionCount: assignment.questions.length,
-        formattedCost: paymentService.formatCurrency(cost, currency),
+        formattedCost: paymentService.formatCurrency(cost),
       });
     } catch (error) {
       console.error('Calculate assignment cost error:', error);
