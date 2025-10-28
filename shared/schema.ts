@@ -23,7 +23,7 @@ export const userSchema = z.object({
   id: z.string(),
   name: z.string(),
   email: z.string().email(),
-  role: z.enum(['teacher', 'student']),
+  role: z.enum(['teacher', 'student', 'admin']),
   collegeId: z.string().optional(),
   googleId: z.string().optional(),
   passwordHash: z.string().optional(),
@@ -37,7 +37,7 @@ export const userSchema = z.object({
 export const insertUserSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  role: z.enum(['teacher', 'student']),
+  role: z.enum(['teacher', 'student', 'admin']),
   collegeId: z.string().optional(),
   googleId: z.string().optional(),
   passwordHash: z.string().optional(),
@@ -129,6 +129,20 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
+});
+
+export const adminLoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
+export const adminCreateUserSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(6),
+  role: z.enum(['teacher', 'student', 'admin']),
+  collegeId: z.string().optional(),
+  tokenBalance: z.number().default(0),
 });
 
 // Token Wallet Schema

@@ -192,6 +192,241 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.redirect('/login?google_auth=success');
   });
 
+  // Admin routes - protected by admin role
+  const requireAdmin = [requireAuth, requireRole('admin')];
+
+  // Admin login
+  app.post('/api/admin/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await storage.getUserByEmail(email);
+      
+      if (!user || !user.passwordHash || user.role !== 'admin') {
+        return res.status(401).json({ error: 'Invalid admin credentials' });
+      }
+
+      const validPassword = await comparePassword(password, user.passwordHash);
+      if (!validPassword) {
+        return res.status(401).json({ error: 'Invalid admin credentials' });
+      }
+
+      const token = generateToken({ id: user.id, role: user.role, email: user.email, name: user.name });
+      setAuthCookie(res, token);
+
+      res.json({ 
+        user: { 
+          id: user.id, 
+          name: user.name, 
+          email: user.email, 
+          role: user.role 
+        } 
+      });
+    } catch (error) {
+      console.error('Admin login error:', error);
+      res.status(500).json({ error: 'Login failed' });
+    }
+  });
+
+  // Admin dashboard stats
+  app.get('/api/admin/stats', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const stats = await storage.getAdminStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Get admin stats error:', error);
+      res.status(500).json({ error: 'Failed to fetch stats' });
+    }
+  });
+
+  // Admin college stats
+  app.get('/api/admin/college-stats', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const stats = await storage.getCollegeStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Get college stats error:', error);
+      res.status(500).json({ error: 'Failed to fetch college stats' });
+    }
+  });
+
+  // Admin revenue stats
+  app.get('/api/admin/revenue-stats', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const stats = await storage.getRevenueByMonth();
+      res.json(stats);
+    } catch (error) {
+      console.error('Get revenue stats error:', error);
+      res.status(500).json({ error: 'Failed to fetch revenue stats' });
+    }
+  });
+
+  // Admin user management
+  app.get('/api/admin/users', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const { role } = req.query;
+      let users;
+      
+      if (role && ['teacher', 'student', 'admin'].includes(role as string)) {
+        users = await storage.getUsersByRole(role as 'teacher' | 'student' | 'admin');
+      } else {
+        users = await storage.getAllUsers();
+      }
+      
+      res.json(users);
+    } catch (error) {
+      console.error('Get users error:', error);
+      res.status(500).json({ error: 'Failed to fetch users' });
+    }
+  });
+
+  app.get('/api/admin/users/:id', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const user = await storage.getUser(req.params.id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error('Get user error:', error);
+      res.status(500).json({ error: 'Failed to fetch user' });
+    }
+  });
+
+  app.post('/api/admin/users', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const { name, email, password, role, collegeId, tokenBalance } = req.body;
+
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(409).json({ error: 'Email already in use' });
+      }
+
+      const passwordHash = await hashPassword(password);
+      const user = await storage.createUser({
+        name,
+        email,
+        role,
+        collegeId,
+        passwordHash,
+        tokenBalance: tokenBalance || 0,
+        totalAssignments: 0,
+      });
+
+      res.json(user);
+    } catch (error) {
+      console.error('Create user error:', error);
+      res.status(500).json({ error: 'Failed to create user' });
+    }
+  });
+
+  app.patch('/api/admin/users/:id', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const { name, email, role, collegeId, tokenBalance } = req.body;
+      const updates: any = {};
+      
+      if (name !== undefined) updates.name = name;
+      if (email !== undefined) updates.email = email;
+      if (role !== undefined) updates.role = role;
+      if (collegeId !== undefined) updates.collegeId = collegeId;
+      if (tokenBalance !== undefined) updates.tokenBalance = tokenBalance;
+      
+      const user = await storage.updateUser(req.params.id, updates);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      
+      res.json(user);
+    } catch (error) {
+      console.error('Update user error:', error);
+      res.status(500).json({ error: 'Failed to update user' });
+    }
+  });
+
+  app.delete('/api/admin/users/:id', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const success = await storage.deleteUser(req.params.id);
+      if (!success) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete user error:', error);
+      res.status(500).json({ error: 'Failed to delete user' });
+    }
+  });
+
+  // Admin college management
+  app.post('/api/admin/colleges', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const college = await storage.createCollege(req.body);
+      res.json(college);
+    } catch (error) {
+      console.error('Create college error:', error);
+      res.status(500).json({ error: 'Failed to create college' });
+    }
+  });
+
+  app.patch('/api/admin/colleges/:id', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const college = await storage.updateCollege(req.params.id, req.body);
+      if (!college) {
+        return res.status(404).json({ error: 'College not found' });
+      }
+      res.json(college);
+    } catch (error) {
+      console.error('Update college error:', error);
+      res.status(500).json({ error: 'Failed to update college' });
+    }
+  });
+
+  app.delete('/api/admin/colleges/:id', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const success = await storage.deleteCollege(req.params.id);
+      if (!success) {
+        return res.status(404).json({ error: 'College not found' });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete college error:', error);
+      res.status(500).json({ error: 'Failed to delete college' });
+    }
+  });
+
+  // Admin assignment management
+  app.get('/api/admin/assignments', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const assignments = await storage.getAllAssignments();
+      res.json(assignments);
+    } catch (error) {
+      console.error('Get all assignments error:', error);
+      res.status(500).json({ error: 'Failed to fetch assignments' });
+    }
+  });
+
+  app.delete('/api/admin/assignments/:id', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const success = await storage.deleteAssignment(req.params.id);
+      if (!success) {
+        return res.status(404).json({ error: 'Assignment not found' });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete assignment error:', error);
+      res.status(500).json({ error: 'Failed to delete assignment' });
+    }
+  });
+
+  // Admin submission management
+  app.get('/api/admin/submissions', requireAdmin, async (req: AuthenticatedRequest, res) => {
+    try {
+      const submissions = await storage.getAllSubmissions();
+      res.json(submissions);
+    } catch (error) {
+      console.error('Get all submissions error:', error);
+      res.status(500).json({ error: 'Failed to fetch submissions' });
+    }
+  });
+
   // Configure multer for avatar uploads
   const upload = multer({ 
     storage: multer.memoryStorage(),

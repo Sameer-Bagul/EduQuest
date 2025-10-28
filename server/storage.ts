@@ -15,13 +15,18 @@ export interface IStorage {
   getAllColleges(): Promise<College[]>;
   searchColleges(query: string): Promise<College[]>;
   createCollege(college: InsertCollege): Promise<College>;
+  updateCollege(id: string, updates: Partial<College>): Promise<College | undefined>;
+  deleteCollege(id: string): Promise<boolean>;
   
   // User operations
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByGoogleId(googleId: string): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
+  getUsersByRole(role: 'teacher' | 'student' | 'admin'): Promise<User[]>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, updates: Partial<User>): Promise<User | undefined>;
+  deleteUser(id: string): Promise<boolean>;
 
   // Assignment operations
   getAssignment(id: string): Promise<Assignment | undefined>;
@@ -58,6 +63,32 @@ export interface IStorage {
 
   // Atomic operations for token system
   deductTokensForAssignment(userId: string, tokens: number, assignmentId: string): Promise<{wallet: TokenWallet, transaction: Transaction}>;
+  
+  // Admin analytics operations
+  getAdminStats(): Promise<{
+    totalUsers: number;
+    totalTeachers: number;
+    totalStudents: number;
+    totalColleges: number;
+    totalAssignments: number;
+    totalSubmissions: number;
+    totalRevenue: number;
+  }>;
+  getCollegeStats(): Promise<Array<{
+    collegeId: string;
+    collegeName: string;
+    userCount: number;
+    teacherCount: number;
+    studentCount: number;
+    revenue: number;
+  }>>;
+  getRevenueByMonth(): Promise<Array<{
+    month: string;
+    revenue: number;
+    transactions: number;
+  }>>;
+  getAllAssignments(): Promise<Assignment[]>;
+  getAllSubmissions(): Promise<Submission[]>;
 }
 
 // Create storage instance - MongoDB only
