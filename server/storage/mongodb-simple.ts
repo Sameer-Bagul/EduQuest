@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   _id: { type: String, default: () => randomUUID() },
   name: String,
   email: { type: String, unique: true },
-  role: { type: String, enum: ['teacher', 'student'] },
+  role: { type: String, enum: ['teacher', 'student', 'admin'] },
   collegeId: String,
   googleId: { type: String, sparse: true },
   passwordHash: String,
@@ -203,6 +203,18 @@ export class MongoStorage implements IStorage {
     return transformDoc(college);
   }
 
+  async updateCollege(id: string, updates: Partial<College>): Promise<College | undefined> {
+    await this.connect();
+    const college = await CollegeModel.findByIdAndUpdate(id, updates, { new: true });
+    return transformDoc(college);
+  }
+
+  async deleteCollege(id: string): Promise<boolean> {
+    await this.connect();
+    const result = await CollegeModel.findByIdAndDelete(id);
+    return !!result;
+  }
+
   // User operations
   async getUser(id: string): Promise<User | undefined> {
     await this.connect();
@@ -233,6 +245,24 @@ export class MongoStorage implements IStorage {
     await this.connect();
     const user = await UserModel.findByIdAndUpdate(id, updates, { new: true });
     return transformDoc(user);
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    await this.connect();
+    const users = await UserModel.find().sort({ createdAt: -1 });
+    return users.map(transformDoc);
+  }
+
+  async getUsersByRole(role: 'teacher' | 'student' | 'admin'): Promise<User[]> {
+    await this.connect();
+    const users = await UserModel.find({ role }).sort({ createdAt: -1 });
+    return users.map(transformDoc);
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    await this.connect();
+    const result = await UserModel.findByIdAndDelete(id);
+    return !!result;
   }
 
   // Assignment operations
@@ -473,5 +503,149 @@ export class MongoStorage implements IStorage {
     } finally {
       await session.endSession();
     }
+  }
+
+  // Admin analytics operations
+  async getAdminStats(): Promise<{
+    totalUsers: number;
+    totalTeachers: number;
+    totalStudents: number;
+    totalColleges: number;
+    totalAssignments: number;
+    totalSubmissions: number;
+    totalRevenue: number;
+  }> {
+    await this.connect();
+
+    const [
+      totalUsers,
+      totalTeachers,
+      totalStudents,
+      totalColleges,
+      totalAssignments,
+      totalSubmissions,
+      revenueResult
+    ] = await Promise.all([
+      UserModel.countDocuments(),
+      UserModel.countDocuments({ role: 'teacher' }),
+      UserModel.countDocuments({ role: 'student' }),
+      CollegeModel.countDocuments(),
+      AssignmentModel.countDocuments(),
+      SubmissionModel.countDocuments(),
+      PaymentModel.aggregate([
+        { $match: { status: 'paid' } },
+        { $group: { _id: null, total: { $sum: '$amount' } } }
+      ])
+    ]);
+
+    const totalRevenue = revenueResult[0]?.total || 0;
+
+    return {
+      totalUsers,
+      totalTeachers,
+      totalStudents,
+      totalColleges,
+      totalAssignments,
+      totalSubmissions,
+      totalRevenue: totalRevenue / 100,
+    };
+  }
+
+  async getCollegeStats(): Promise<Array<{
+    collegeId: string;
+    collegeName: string;
+    userCount: number;
+    teacherCount: number;
+    studentCount: number;
+    revenue: number;
+  }>> {
+    await this.connect();
+
+    const colleges = await CollegeModel.find();
+    const stats = await Promise.all(
+      colleges.map(async (college) => {
+        const collegeId = college._id;
+        const [userCount, teacherCount, studentCount, revenueResult] = await Promise.all([
+          UserModel.countDocuments({ collegeId }),
+          UserModel.countDocuments({ collegeId, role: 'teacher' }),
+          UserModel.countDocuments({ collegeId, role: 'student' }),
+          PaymentModel.aggregate([
+            {
+              $lookup: {
+                from: 'users',
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'user'
+              }
+            },
+            { $unwind: '$user' },
+            { $match: { 'user.collegeId': collegeId, status: 'paid' } },
+            { $group: { _id: null, total: { $sum: '$amount' } } }
+          ])
+        ]);
+
+        return {
+          collegeId,
+          collegeName: college.name,
+          userCount,
+          teacherCount,
+          studentCount,
+          revenue: (revenueResult[0]?.total || 0) / 100,
+        };
+      })
+    );
+
+    return stats.sort((a, b) => b.revenue - a.revenue);
+  }
+
+  async getRevenueByMonth(): Promise<Array<{
+    month: string;
+    revenue: number;
+    transactions: number;
+  }>> {
+    await this.connect();
+
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+    const result = await PaymentModel.aggregate([
+      {
+        $match: {
+          status: 'paid',
+          createdAt: { $gte: sixMonthsAgo }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' }
+          },
+          revenue: { $sum: '$amount' },
+          transactions: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { '_id.year': 1, '_id.month': 1 }
+      }
+    ]);
+
+    return result.map(item => ({
+      month: `${item._id.year}-${String(item._id.month).padStart(2, '0')}`,
+      revenue: item.revenue / 100,
+      transactions: item.transactions
+    }));
+  }
+
+  async getAllAssignments(): Promise<Assignment[]> {
+    await this.connect();
+    const assignments = await AssignmentModel.find().sort({ createdAt: -1 });
+    return assignments.map(transformDoc);
+  }
+
+  async getAllSubmissions(): Promise<Submission[]> {
+    await this.connect();
+    const submissions = await SubmissionModel.find().sort({ createdAt: -1 });
+    return submissions.map(transformDoc);
   }
 }
