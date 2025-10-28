@@ -1,4 +1,5 @@
 import {
+  type College, type InsertCollege,
   type User, type InsertUser,
   type Assignment, type InsertAssignment,
   type Submission, type InsertSubmission,
@@ -9,6 +10,12 @@ import {
 import { MongoStorage } from "./storage/mongodb-simple";
 
 export interface IStorage {
+  // College operations
+  getCollege(id: string): Promise<College | undefined>;
+  getAllColleges(): Promise<College[]>;
+  searchColleges(query: string): Promise<College[]>;
+  createCollege(college: InsertCollege): Promise<College>;
+  
   // User operations
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;

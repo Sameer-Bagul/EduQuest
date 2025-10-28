@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface LoginFormProps {
   onSubmit: (data: { email: string; password: string }) => void;
@@ -36,42 +38,42 @@ export function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-2">
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-2">
+        <Label htmlFor="login-email" className="text-sm font-medium">
           Email Address
-        </label>
-        <input
+        </Label>
+        <Input
           id="login-email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="john.doe@example.com"
+          className="h-11"
           data-testid="input-login-email"
         />
         {errors.email && (
-          <p className="mt-1 text-sm text-red-600" data-testid="error-login-email">
+          <p className="text-sm text-red-600" data-testid="error-login-email">
             {errors.email}
           </p>
         )}
       </div>
 
-      <div>
-        <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="space-y-2">
+        <Label htmlFor="login-password" className="text-sm font-medium">
           Password
-        </label>
-        <input
+        </Label>
+        <Input
           id="login-password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="h-11"
           data-testid="input-login-password"
         />
         {errors.password && (
-          <p className="mt-1 text-sm text-red-600" data-testid="error-login-password">
+          <p className="text-sm text-red-600" data-testid="error-login-password">
             {errors.password}
           </p>
         )}
@@ -79,7 +81,7 @@ export function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
 
       <Button
         type="submit"
-        className="w-full bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+        className="w-full h-11 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
         disabled={isLoading}
         data-testid="button-login-submit"
       >

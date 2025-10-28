@@ -9,6 +9,8 @@ import { calculateSimilarity } from "./services/similarity";
 import { PaymentController } from "./controllers/paymentController";
 import { paymentService } from "./services/paymentService";
 import { registerSchema, loginSchema, insertAssignmentSchema, insertSubmissionSchema } from "@shared/schema";
+import { analyzeAnswer } from "./services/similarity";
+import { generateStudentFeedback, generateTeacherReport, detectPlagiarismAcrossSubmissions } from "./services/feedbackGenerator";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -21,6 +23,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     credentials: true
   }));
 
+  // College routes
+  app.get('/api/colleges', async (req, res) => {
+    try {
+      const query = req.query.q as string;
+      let colleges;
+      
+      if (query && query.trim()) {
+        colleges = await storage.searchColleges(query.trim());
+      } else {
+        colleges = await storage.getAllColleges();
+      }
+      
+      res.json(colleges);
+    } catch (error) {
+      console.error('Get colleges error:', error);
+      res.status(500).json({ error: 'Failed to fetch colleges' });
+    }
+  });
+
+  app.get('/api/colleges/:id', async (req, res) => {
+    try {
+      const college = await storage.getCollege(req.params.id);
+      if (!college) {
+        return res.status(404).json({ error: 'College not found' });
+      }
+      res.json(college);
+    } catch (error) {
+      console.error('Get college error:', error);
+      res.status(500).json({ error: 'Failed to fetch college' });
+    }
+  });
+
   // Auth routes
   app.post('/api/auth/register', async (req, res) => {
     try {
@@ -29,12 +63,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Invalid input', details: parsed.error });
       }
 
-      const { name, email, password, role } = parsed.data;
+      const { name, email, password, role, collegeId } = parsed.data;
 
       // Check if user exists
       const existingUser = await storage.getUserByEmail(email);
       if (existingUser) {
         return res.status(409).json({ error: 'Email already in use' });
+      }
+
+      // Verify college exists
+      const college = await storage.getCollege(collegeId);
+      if (!college) {
+        return res.status(400).json({ error: 'Invalid college selected' });
       }
 
       // Hash password and create user
@@ -43,7 +83,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         name,
         email,
         role,
-        passwordHash
+        collegeId,
+        passwordHash,
+        tokenBalance: 0,
+        totalAssignments: 0,
       });
 
       // Generate token and set cookie
@@ -55,7 +98,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           id: user.id, 
           name: user.name, 
           email: user.email, 
-          role: user.role 
+          role: user.role,
+          collegeId: user.collegeId,
         } 
       });
     } catch (error) {
@@ -107,15 +151,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ success: true });
   });
 
-  app.get('/api/auth/me', requireAuth, (req: AuthenticatedRequest, res) => {
-    res.json({ 
-      user: { 
-        id: req.user!.id, 
-        name: req.user!.name,
-        email: req.user!.email, 
-        role: req.user!.role 
-      } 
-    });
+  app.get('/api/auth/me', requireAuth, async (req: AuthenticatedRequest, res) => {
+    try {
+      const user = await storage.getUser(req.user!.id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      
+      res.json({ 
+        user: { 
+          id: user.id, 
+          name: user.name,
+          email: user.email, 
+          role: user.role,
+          collegeId: user.collegeId,
+          tokenBalance: user.tokenBalance,
+          totalAssignments: user.totalAssignments,
+        } 
+      });
+    } catch (error) {
+      console.error('Get user error:', error);
+      res.status(500).json({ error: 'Failed to fetch user' });
+    }
   });
 
   // Google OAuth routes (simplified - in production, use passport-google-oauth20)
@@ -574,21 +631,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
         throw error;
       }
 
-      // Grade answers using NLP similarity
+      // Grade answers using advanced NLP analysis
       const threshold = 0.70;
       const marksPerQuestion = 1;
 
+      // Enhanced scoring with detailed feedback
       const scores = await Promise.all(
         answers.map(async (answer) => {
           const question = assignment.questions.find(q => q.id === answer.questionId);
           if (!question) {
-            return { questionId: answer.questionId, similarity: 0, awarded: 0 };
+            return { 
+              questionId: answer.questionId, 
+              similarity: 0, 
+              awarded: 0,
+              feedback: {
+                overallScore: 0,
+                strengths: [],
+                improvements: ['Answer not found'],
+                keywordAnalysis: { matched: [], missed: [], suggestions: [] },
+                detailedComments: 'Question not found in assignment',
+                plagiarismRisk: 'low' as const
+              }
+            };
           }
 
-          const similarity = await calculateSimilarity(answer.text, question.answerKey);
+          // Perform comprehensive analysis
+          const analysis = analyzeAnswer(answer.text, question.answerKey);
+          const similarity = analysis.overallSimilarity;
           const awarded = similarity >= threshold ? marksPerQuestion : 0;
 
-          return { questionId: answer.questionId, similarity, awarded };
+          // Generate detailed student feedback
+          const feedback = generateStudentFeedback(
+            answer.text,
+            question.answerKey,
+            similarity,
+            analysis
+          );
+
+          return { 
+            questionId: answer.questionId, 
+            similarity, 
+            awarded,
+            feedback,
+            analysis: {
+              cosineSimilarity: analysis.cosineSimilarity,
+              semanticSimilarity: analysis.semanticSimilarity,
+              keywordMatch: analysis.keywordMatch,
+              contextualAccuracy: analysis.contextualAccuracy
+            }
+          };
         })
       );
 
@@ -599,7 +690,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         assignmentId: assignment.id,
         studentId: req.user!.id,
         answers,
-        scores,
+        scores: scores.map(s => ({ questionId: s.questionId, similarity: s.similarity, awarded: s.awarded })),
         totalAwarded
       });
 
@@ -608,7 +699,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         scores, 
         totalAwarded,
         tokensDeducted: tokensRequired,
-        newTokenBalance: tokenDeduction.wallet.balance
+        newTokenBalance: tokenDeduction.wallet.balance,
+        detailedFeedback: scores.map(s => ({
+          questionId: s.questionId,
+          feedback: s.feedback,
+          analysis: s.analysis
+        }))
       });
     } catch (error) {
       console.error('Submit assignment error:', error);
@@ -636,6 +732,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Teacher report endpoint with plagiarism detection
+  app.get('/api/assignments/:assignmentId/report', requireAuth, requireRole('teacher'), async (req, res) => {
+    try {
+      const assignment = await storage.getAssignment(req.params.assignmentId);
+      if (!assignment) {
+        return res.status(404).json({ error: 'Assignment not found' });
+      }
+
+      const submissions = await storage.getSubmissionsByAssignment(req.params.assignmentId);
+      
+      // Generate reports for each question
+      const questionReports = assignment.questions.map(question => {
+        const questionSubmissions = submissions.map(sub => {
+          const answer = sub.answers.find(a => a.questionId === question.id);
+          const score = sub.scores.find(s => s.questionId === question.id);
+          
+          return {
+            studentId: sub.studentId,
+            answer: answer?.text || '',
+            score: score?.awarded || 0,
+            similarity: score?.similarity || 0
+          };
+        }).filter(s => s.answer);
+
+        return generateTeacherReport(
+          question.id,
+          question.text,
+          questionSubmissions
+        );
+      });
+
+      // Detect plagiarism across submissions for each question
+      const plagiarismReports = assignment.questions.map(question => {
+        const questionSubmissions = submissions.map(sub => ({
+          studentId: sub.studentId,
+          answer: sub.answers.find(a => a.questionId === question.id)?.text || ''
+        })).filter(s => s.answer);
+
+        const plagiarismCases = detectPlagiarismAcrossSubmissions(questionSubmissions);
+        
+        return {
+          questionId: question.id,
+          questionText: question.text,
+          plagiarismCases: plagiarismCases.slice(0, 10) // Top 10 suspicious cases
+        };
+      });
+
+      res.json({
+        assignment: {
+          id: assignment.id,
+          title: assignment.title,
+          code: assignment.code
+        },
+        totalSubmissions: submissions.length,
+        questionReports,
+        plagiarismReports: plagiarismReports.filter(r => r.plagiarismCases.length > 0)
+      });
+    } catch (error) {
+      console.error('Get assignment report error:', error);
+      res.status(500).json({ error: 'Failed to generate report' });
+    }
+  });
+
   // Auto-cleanup job for expired assignments
   if (process.env.USE_CRON_FALLBACK === 'true') {
     setInterval(async () => {
@@ -650,6 +809,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }, 24 * 60 * 60 * 1000); // Run daily
   }
+
+  // Seed colleges if database is empty
+  async function seedColleges() {
+    try {
+      const colleges = await storage.getAllColleges();
+      if (colleges.length === 0) {
+        console.log('Seeding colleges...');
+        const sampleColleges = [
+          { name: 'Massachusetts Institute of Technology', location: 'Cambridge, MA', country: 'United States', type: 'university' as const },
+          { name: 'Stanford University', location: 'Stanford, CA', country: 'United States', type: 'university' as const },
+          { name: 'Harvard University', location: 'Cambridge, MA', country: 'United States', type: 'university' as const },
+          { name: 'University of California, Berkeley', location: 'Berkeley, CA', country: 'United States', type: 'university' as const },
+          { name: 'Indian Institute of Technology Bombay', location: 'Mumbai', country: 'India', type: 'institute' as const },
+          { name: 'Indian Institute of Technology Delhi', location: 'New Delhi', country: 'India', type: 'institute' as const },
+          { name: 'Indian Institute of Technology Madras', location: 'Chennai', country: 'India', type: 'institute' as const },
+          { name: 'University of Oxford', location: 'Oxford', country: 'United Kingdom', type: 'university' as const },
+          { name: 'University of Cambridge', location: 'Cambridge', country: 'United Kingdom', type: 'university' as const },
+          { name: 'National University of Singapore', location: 'Singapore', country: 'Singapore', type: 'university' as const },
+          { name: 'Tsinghua University', location: 'Beijing', country: 'China', type: 'university' as const },
+          { name: 'University of Toronto', location: 'Toronto', country: 'Canada', type: 'university' as const },
+          { name: 'Delhi University', location: 'New Delhi', country: 'India', type: 'university' as const },
+          { name: 'Mumbai University', location: 'Mumbai', country: 'India', type: 'university' as const },
+          { name: 'Bangalore University', location: 'Bangalore', country: 'India', type: 'university' as const },
+        ];
+
+        for (const college of sampleColleges) {
+          await storage.createCollege(college);
+        }
+        console.log('Colleges seeded successfully!');
+      }
+    } catch (error) {
+      console.error('Error seeding colleges:', error);
+    }
+  }
+
+  // Seed colleges on startup
+  await seedColleges();
 
   const httpServer = createServer(app);
   return httpServer;

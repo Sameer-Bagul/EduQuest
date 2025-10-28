@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { 
+  type College, type InsertCollege,
   type User, type InsertUser, 
   type Assignment, type InsertAssignment, 
   type Submission, type InsertSubmission,
@@ -10,15 +11,30 @@ import {
 import { randomUUID } from "crypto";
 import type { IStorage } from "../storage";
 
+// College Schema
+const collegeSchema = new mongoose.Schema({
+  _id: { type: String, default: () => randomUUID() },
+  name: { type: String, required: true },
+  location: String,
+  country: String,
+  type: { type: String, enum: ['university', 'college', 'institute'] },
+}, { 
+  timestamps: true,
+  _id: false
+});
+
 // Simple MongoDB connection and models
 const userSchema = new mongoose.Schema({
   _id: { type: String, default: () => randomUUID() },
   name: String,
   email: { type: String, unique: true },
   role: { type: String, enum: ['teacher', 'student'] },
+  collegeId: String,
   googleId: { type: String, sparse: true },
   passwordHash: String,
   country: String,
+  tokenBalance: { type: Number, default: 0 },
+  totalAssignments: { type: Number, default: 0 },
 }, { 
   timestamps: true,
   _id: false
@@ -110,12 +126,14 @@ const paymentSchema = new mongoose.Schema({
 });
 
 // Indexes
+collegeSchema.index({ name: 1 });
 assignmentSchema.index({ teacherId: 1 });
 submissionSchema.index({ assignmentId: 1, studentId: 1 }, { unique: true });
 transactionSchema.index({ userId: 1 });
 transactionSchema.index({ assignmentId: 1 });
 paymentSchema.index({ userId: 1 });
 
+const CollegeModel = mongoose.model('College', collegeSchema);
 const UserModel = mongoose.model('User', userSchema);
 const AssignmentModel = mongoose.model('Assignment', assignmentSchema);
 const SubmissionModel = mongoose.model('Submission', submissionSchema);
@@ -155,6 +173,34 @@ export class MongoStorage implements IStorage {
 
   private generateAssignmentCode(): string {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
+  }
+
+  // College operations
+  async getCollege(id: string): Promise<College | undefined> {
+    await this.connect();
+    const college = await CollegeModel.findById(id);
+    return transformDoc(college);
+  }
+
+  async getAllColleges(): Promise<College[]> {
+    await this.connect();
+    const colleges = await CollegeModel.find().sort({ name: 1 });
+    return colleges.map(transformDoc);
+  }
+
+  async searchColleges(query: string): Promise<College[]> {
+    await this.connect();
+    const colleges = await CollegeModel.find({
+      name: { $regex: query, $options: 'i' }
+    }).sort({ name: 1 }).limit(50);
+    return colleges.map(transformDoc);
+  }
+
+  async createCollege(insertCollege: InsertCollege): Promise<College> {
+    await this.connect();
+    const college = new CollegeModel(insertCollege);
+    await college.save();
+    return transformDoc(college);
   }
 
   // User operations

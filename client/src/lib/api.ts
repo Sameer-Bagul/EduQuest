@@ -10,6 +10,7 @@ export interface RegisterData {
   email: string;
   password: string;
   role: 'teacher' | 'student';
+  collegeId: string;
 }
 
 export interface CreateAssignmentData {

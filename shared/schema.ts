@@ -1,14 +1,35 @@
 import { z } from "zod";
 
-// User Schema
+// College Schema
+export const collegeSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  location: z.string().optional(),
+  country: z.string().optional(),
+  type: z.enum(['university', 'college', 'institute']).optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+export const insertCollegeSchema = z.object({
+  name: z.string().min(2),
+  location: z.string().optional(),
+  country: z.string().optional(),
+  type: z.enum(['university', 'college', 'institute']).optional(),
+});
+
+// User Schema (Enhanced with college reference and role-specific fields)
 export const userSchema = z.object({
   id: z.string(),
   name: z.string(),
   email: z.string().email(),
   role: z.enum(['teacher', 'student']),
+  collegeId: z.string().optional(),
   googleId: z.string().optional(),
   passwordHash: z.string().optional(),
   country: z.string().optional(),
+  tokenBalance: z.number().default(0),
+  totalAssignments: z.number().default(0),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -17,9 +38,12 @@ export const insertUserSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   role: z.enum(['teacher', 'student']),
+  collegeId: z.string().optional(),
   googleId: z.string().optional(),
   passwordHash: z.string().optional(),
   country: z.string().optional(),
+  tokenBalance: z.number().default(0),
+  totalAssignments: z.number().default(0),
 });
 
 // Assignment Schema
@@ -99,6 +123,7 @@ export const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   role: z.enum(['teacher', 'student']),
+  collegeId: z.string().min(1, "College is required"),
 });
 
 export const loginSchema = z.object({
@@ -181,6 +206,8 @@ export const tokenPurchaseSchema = z.object({
 });
 
 // Type exports
+export type College = z.infer<typeof collegeSchema>;
+export type InsertCollege = z.infer<typeof insertCollegeSchema>;
 export type User = z.infer<typeof userSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Assignment = z.infer<typeof assignmentSchema>;

@@ -22,7 +22,7 @@ export default function AuthRegisterPage() {
     }
   }, [isAuthenticated, user, isLoading, setLocation]);
 
-  const handleRegisterSubmit = (data: { name: string; email: string; password: string; role: 'teacher' | 'student' }) => {
+  const handleRegisterSubmit = (data: { name: string; email: string; password: string; role: 'teacher' | 'student'; collegeId: string }) => {
     register(data);
   };
 
