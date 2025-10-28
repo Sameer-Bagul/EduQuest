@@ -13,8 +13,6 @@ import { DashboardHeader, StatsGrid, MainContent } from "@/components/dashboard"
 import { TeacherAssignmentsList, TeacherQuickActions } from "@/components/dashboard/teacher";
 
 export default function TeacherDashboard() {
-  // navigation only: use page-based create flow
-  // removed modal state; create uses dedicated page (/create-assignment)
   const [, setLocation] = useLocation();
   const { user, isAuthenticated } = useAuthContext();
 
@@ -45,29 +43,29 @@ export default function TeacherDashboard() {
       value: stats.totalAssignments,
       label: "Total Assignments",
       icon: BookOpen,
-      iconColor: "text-purple-600",
-      bgColor: "bg-purple-50"
+      iconColor: "text-primary dark:text-accent",
+      bgColor: "bg-primary/10 dark:bg-accent/10"
     },
     {
       value: stats.activeStudents,
       label: "Active Students",
       icon: Users,
-      iconColor: "text-blue-600",
-      bgColor: "bg-blue-50"
+      iconColor: "text-secondary dark:text-secondary",
+      bgColor: "bg-secondary/10 dark:bg-secondary/10"
     },
     {
       value: stats.pendingReviews,
       label: "Pending Reviews",
       icon: TrendingUp,
-      iconColor: "text-orange-600",
-      bgColor: "bg-orange-50"
+      iconColor: "text-warning dark:text-warning",
+      bgColor: "bg-warning/10 dark:bg-warning/10"
     },
     {
       value: `${stats.completionRate}%`,
       label: "Completion Rate",
       icon: Award,
-      iconColor: "text-green-600",
-      bgColor: "bg-green-50"
+      iconColor: "text-success dark:text-success",
+      bgColor: "bg-success/10 dark:bg-success/10"
     }
   ];
 
@@ -77,13 +75,13 @@ export default function TeacherDashboard() {
 
   return (
     <SaasLayout>
-      <div className="min-h-screen bg-theme">
+      <div className="min-h-screen bg-background dark:bg-background">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <DashboardHeader
             title="Welcome back,"
             subtitle="Here's what's happening with your classes today."
           >
-            <span className="text-theme">{user?.name}</span>
+            <span className="text-foreground dark:text-foreground">{user?.name}</span>
           </DashboardHeader>
 
           <StatsGrid stats={statsCards} />

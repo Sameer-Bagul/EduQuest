@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Plus, Trash2, Save, Clock, Users, BookOpen, Calendar, User, GraduationCap, Wallet, Calculator } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Save, Clock, Users, BookOpen, Calendar, User, GraduationCap, Wallet, Calculator, Sparkles } from "lucide-react";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthContext } from "@/components/ui/auth-provider";
@@ -43,7 +43,6 @@ export default function CreateAssignmentPage() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Redirect if not authenticated or not a teacher
   useEffect(() => {
     if (!isAuthenticated) {
       setLocation('/login');
@@ -66,14 +65,14 @@ export default function CreateAssignmentPage() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/assignments/teacher'] });
       toast({
-        title: "🎉 Success!",
+        title: "Success!",
         description: `Assignment "${data.assignment.title}" created successfully with code: ${data.assignment.code}`,
       });
       setLocation('/teacher-dashboard');
     },
     onError: (error: any) => {
       toast({
-        title: "❌ Error",
+        title: "Error",
         description: error.message || "Failed to create assignment",
         variant: "destructive",
       });
@@ -105,7 +104,6 @@ export default function CreateAssignmentPage() {
     createMutation.mutate(data);
   };
 
-  // Calculate token requirements preview
   const getTokenRequirements = () => {
     const questionCount = questions.filter(q => q.text.trim()).length;
     const tokensRequired = Math.ceil(questionCount / 4);
@@ -131,374 +129,399 @@ export default function CreateAssignmentPage() {
 
   return (
     <SaasLayout>
-      <div className="min-h-screen bg-background">
-        {/* Page Header */}
-        {/* <div className="mb-8">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <GraduationCap className="text-primary-foreground w-4 h-4" />
+      <div className="min-h-screen bg-background dark:bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header Section */}
+          <div className="mb-8 fade-in">
+            <Button
+              variant="ghost"
+              onClick={handleGoBack}
+              className="mb-4 text-muted-foreground dark:text-muted-foreground hover:text-primary dark:hover:text-accent"
+              data-testid="button-back"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-accent/20 dark:to-secondary/20 rounded-2xl flex items-center justify-center border border-primary/30 dark:border-accent/30">
+                <Sparkles className="w-6 h-6 text-primary dark:text-accent" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground dark:text-foreground">Create New Assignment</h1>
+                <p className="text-muted-foreground dark:text-muted-foreground">Design engaging assignments for your students</p>
+              </div>
             </div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Create New Assignment
-            </h1>
           </div>
-        </div> */}
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* Assignment Overview Card */}
-            <Card className="hover-subtle">
-              <CardHeader>
-                <CardTitle className="flex items-center text-foreground">
-                  <BookOpen className="w-5 h-5 mr-3 text-primary" />
-                  Assignment Details
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-foreground font-medium">Assignment Title</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter assignment title" 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="mode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-foreground font-medium">Assignment Mode</FormLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Assignment Details Card */}
+              <Card className="glass-card hover-lift border-primary/20 dark:border-accent/20 slide-in-up">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-foreground dark:text-foreground">
+                    <BookOpen className="w-5 h-5 mr-3 text-primary dark:text-accent" />
+                    Assignment Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium">Assignment Title</FormLabel>
                           <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select mode" />
-                            </SelectTrigger>
+                            <Input 
+                              placeholder="e.g., Introduction to Quantum Physics" 
+                              {...field}
+                              className="glass-effect text-foreground dark:text-foreground"
+                              data-testid="input-title"
+                            />
                           </FormControl>
-                          <SelectContent>
-                            <SelectItem value="voice">🎤 Voice Only</SelectItem>
-                            <SelectItem value="voice_text">🎤📝 Voice + Text</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-            {/* Institution Details Card */}
-            <Card className="hover-subtle">
-              <CardHeader>
-                <CardTitle className="flex items-center text-foreground">
-                  <User className="w-5 h-5 mr-3 text-primary" />
-                  Institution & Subject Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="facultyName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Faculty Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter faculty name" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="collegeName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">College Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter college name" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="subjectName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Subject Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter subject name" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="subjectCode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium">Subject Code</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter subject code" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-green-500 transition-colors"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Scheduling Card */}
-            <Card className="hover-subtle">
-              <CardHeader>
-                <CardTitle className="flex items-center text-foreground">
-                  <Calendar className="w-5 h-5 mr-3 text-primary" />
-                  Assignment Schedule
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="startDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium flex items-center">
-                          <Clock className="w-4 h-4 mr-2 text-purple-600" />
-                          Start Date & Time
-                        </FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="datetime-local" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-purple-500 transition-colors"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="endDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-700 font-medium flex items-center">
-                          <Clock className="w-4 h-4 mr-2 text-purple-600" />
-                          End Date & Time
-                        </FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="datetime-local" 
-                            {...field} 
-                            className="bg-white/80 border-gray-200 focus:border-purple-500 transition-colors"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </CardContent> 
-            </Card>
-
-            {/* Token Requirements Preview */}
-            <Card className="hover-subtle border-blue-200 bg-blue-50">
-              <CardHeader>
-                <CardTitle className="flex items-center text-foreground">
-                  <Calculator className="w-5 h-5 mr-3 text-blue-600" />
-                  Student Token Requirements
-                  <Badge variant="outline" className="ml-3 border-blue-300 text-blue-700">
-                    Preview
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="text-center p-3 bg-white rounded-lg">
-                    <div className="text-sm text-gray-600">Questions</div>
-                    <div className="text-lg font-bold text-blue-700" data-testid="text-question-count">
-                      {tokenInfo.questionCount}
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="mode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium">Assignment Mode</FormLabel>
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <FormControl>
+                              <SelectTrigger className="glass-effect text-foreground dark:text-foreground" data-testid="select-mode">
+                                <SelectValue placeholder="Select mode" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="glass-card">
+                              <SelectItem value="voice">🎤 Voice Only</SelectItem>
+                              <SelectItem value="voice_text">🎤📝 Voice + Text</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <div className="text-center p-3 bg-white rounded-lg">
-                    <div className="text-sm text-gray-600">Tokens Required</div>
-                    <div className="text-lg font-bold text-blue-700 flex items-center justify-center" data-testid="text-tokens-preview">
-                      <Wallet className="w-4 h-4 mr-1" />
-                      {tokenInfo.tokensRequired}
-                    </div>
-                  </div>
-                  <div className="text-center p-3 bg-white rounded-lg">
-                    <div className="text-sm text-gray-600">Student Cost</div>
-                    <div className="text-lg font-bold text-blue-700" data-testid="text-cost-preview">
-                      {tokenInfo.formattedCost}
-                    </div>
-                  </div>
-                  <div className="text-center p-3 bg-white rounded-lg">
-                    <div className="text-sm text-gray-600">Calculation</div>
-                    <div className="text-xs text-gray-500">1 token = 4 questions</div>
-                  </div>
-                </div>
-                <div className="mt-3 text-xs text-blue-600">
-                  <p>💡 Students will need {tokenInfo.tokensRequired} token{tokenInfo.tokensRequired !== 1 ? 's' : ''} to access this assignment ({tokenInfo.formattedCost})</p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Questions Card */}
-            <Card className="hover-subtle">
-              <CardHeader>
-                <CardTitle className="flex items-center text-foreground">
-                  <Users className="w-5 h-5 mr-3 text-primary" />
-                  Questions & Answer Keys
-                  <Badge variant="secondary" className="ml-3">
-                    {questions.length} Question{questions.length !== 1 ? 's' : ''}
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {questions.map((question, index) => (
-                    <Card key={index} className="hover-subtle">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-center mb-4">
-                          <h5 className="font-semibold text-foreground flex items-center">
-                            <span className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-sm font-bold mr-3">
-                              {index + 1}
-                            </span>
-                            Question {index + 1}
-                          </h5>
-                          {questions.length > 1 && (
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeQuestion(index)}
-                              className="text-destructive hover:text-destructive/80"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          )}
-                        </div>
-
-                        <div className="space-y-4">
-                          <div>
-                            <label className="block text-sm font-medium text-foreground mb-2">
-                              Question Text
-                            </label>
-                            <Textarea
-                              value={question.text}
-                              onChange={(e) => updateQuestion(index, 'text', e.target.value)}
-                              placeholder="Enter your question here..."
-                              rows={3}
+              {/* Institution Details Card */}
+              <Card className="glass-card hover-lift border-primary/20 dark:border-accent/20 slide-in-up" style={{ animationDelay: '0.1s' }}>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-foreground dark:text-foreground">
+                    <User className="w-5 h-5 mr-3 text-secondary dark:text-secondary" />
+                    Institution & Subject
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="facultyName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium">Faculty Name</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Dr. John Smith" 
+                              {...field}
+                              className="glass-effect text-foreground dark:text-foreground"
+                              data-testid="input-faculty"
                             />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="collegeName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium">College Name</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., MIT" 
+                              {...field}
+                              className="glass-effect text-foreground dark:text-foreground"
+                              data-testid="input-college"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="subjectName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium">Subject Name</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., Physics" 
+                              {...field}
+                              className="glass-effect text-foreground dark:text-foreground"
+                              data-testid="input-subject"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="subjectCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium">Subject Code</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g., PHY101" 
+                              {...field}
+                              className="glass-effect text-foreground dark:text-foreground"
+                              data-testid="input-subject-code"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Scheduling Card */}
+              <Card className="glass-card hover-lift border-primary/20 dark:border-accent/20 slide-in-up" style={{ animationDelay: '0.2s' }}>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-foreground dark:text-foreground">
+                    <Calendar className="w-5 h-5 mr-3 text-accent dark:text-primary" />
+                    Assignment Schedule
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="startDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium flex items-center">
+                            <Clock className="w-4 h-4 mr-2 text-primary dark:text-accent" />
+                            Start Date & Time
+                          </FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="datetime-local" 
+                              {...field}
+                              className="glass-effect text-foreground dark:text-foreground"
+                              data-testid="input-start-date"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="endDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground dark:text-foreground font-medium flex items-center">
+                            <Clock className="w-4 h-4 mr-2 text-primary dark:text-accent" />
+                            End Date & Time
+                          </FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="datetime-local" 
+                              {...field}
+                              className="glass-effect text-foreground dark:text-foreground"
+                              data-testid="input-end-date"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </CardContent> 
+              </Card>
+
+              {/* Token Requirements Preview */}
+              <Card className="glass-card hover-lift border-info/30 dark:border-info/30 bg-gradient-to-br from-info/5 to-secondary/5 dark:from-info/10 dark:to-secondary/10 slide-in-up" style={{ animationDelay: '0.3s' }}>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-foreground dark:text-foreground">
+                    <Calculator className="w-5 h-5 mr-3 text-info dark:text-info" />
+                    Student Token Requirements
+                    <Badge variant="outline" className="ml-3 glass-effect text-info dark:text-info border-info/30 dark:border-info/30">
+                      Preview
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center p-4 glass-card rounded-xl">
+                      <div className="text-sm text-muted-foreground dark:text-muted-foreground mb-1">Questions</div>
+                      <div className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent dark:from-accent dark:to-secondary" data-testid="text-question-count">
+                        {tokenInfo.questionCount}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 glass-card rounded-xl">
+                      <div className="text-sm text-muted-foreground dark:text-muted-foreground mb-1">Tokens Required</div>
+                      <div className="text-2xl font-bold text-primary dark:text-accent flex items-center justify-center" data-testid="text-tokens-preview">
+                        <Wallet className="w-5 h-5 mr-1" />
+                        {tokenInfo.tokensRequired}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 glass-card rounded-xl">
+                      <div className="text-sm text-muted-foreground dark:text-muted-foreground mb-1">Student Cost</div>
+                      <div className="text-2xl font-bold text-secondary dark:text-secondary" data-testid="text-cost-preview">
+                        {tokenInfo.formattedCost}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 glass-card rounded-xl">
+                      <div className="text-sm text-muted-foreground dark:text-muted-foreground mb-1">Calculation</div>
+                      <div className="text-xs text-muted-foreground dark:text-muted-foreground mt-3">1 token = 4 questions</div>
+                    </div>
+                  </div>
+                  <div className="mt-4 p-3 glass-effect rounded-lg">
+                    <p className="text-sm text-info dark:text-info">
+                      💡 Students will need {tokenInfo.tokensRequired} token{tokenInfo.tokensRequired !== 1 ? 's' : ''} to access this assignment ({tokenInfo.formattedCost})
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Questions Card */}
+              <Card className="glass-card hover-lift border-primary/20 dark:border-accent/20 slide-in-up" style={{ animationDelay: '0.4s' }}>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-foreground dark:text-foreground">
+                    <Users className="w-5 h-5 mr-3 text-primary dark:text-accent" />
+                    Questions & Answer Keys
+                    <Badge className="ml-3 glass-effect bg-gradient-to-r from-primary/20 to-secondary/20 dark:from-accent/20 dark:to-secondary/20 text-primary dark:text-accent border-0">
+                      {questions.length} Question{questions.length !== 1 ? 's' : ''}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {questions.map((question, index) => (
+                      <Card key={index} className="glass-card border-primary/10 dark:border-accent/10">
+                        <CardContent className="p-6">
+                          <div className="flex justify-between items-center mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-accent/20 dark:to-secondary/20 rounded-full flex items-center justify-center border border-primary/30 dark:border-accent/30">
+                                <span className="text-sm font-bold text-primary dark:text-accent">
+                                  {index + 1}
+                                </span>
+                              </div>
+                              <h5 className="font-semibold text-foreground dark:text-foreground">
+                                Question {index + 1}
+                              </h5>
+                            </div>
+                            {questions.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeQuestion(index)}
+                                className="text-destructive dark:text-destructive hover:text-destructive/80 dark:hover:text-destructive/80 hover-lift"
+                                data-testid={`button-remove-question-${index}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            )}
                           </div>
 
-                          <Separator />
+                          <div className="space-y-4">
+                            <div>
+                              <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
+                                Question Text
+                              </label>
+                              <Textarea
+                                value={question.text}
+                                onChange={(e) => updateQuestion(index, 'text', e.target.value)}
+                                placeholder="Enter your question here..."
+                                rows={3}
+                                className="glass-effect text-foreground dark:text-foreground"
+                                data-testid={`textarea-question-${index}`}
+                              />
+                            </div>
 
-                          <div>
-                            <label className="block text-sm font-medium text-foreground mb-2">
-                              Answer Key / Expected Response
-                            </label>
-                            <Textarea
-                              value={question.answerKey}
-                              onChange={(e) => updateQuestion(index, 'answerKey', e.target.value)}
-                              placeholder="Enter the expected answer/key points..."
-                              rows={2}
-                            />
+                            <Separator className="bg-border/50 dark:bg-border/30" />
+
+                            <div>
+                              <label className="block text-sm font-medium text-foreground dark:text-foreground mb-2">
+                                Answer Key / Expected Response
+                              </label>
+                              <Textarea
+                                value={question.answerKey}
+                                onChange={(e) => updateQuestion(index, 'answerKey', e.target.value)}
+                                placeholder="Enter the expected answer/key points..."
+                                rows={2}
+                                className="glass-effect text-foreground dark:text-foreground"
+                                data-testid={`textarea-answer-${index}`}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                  
-                  {/* Add Question Button - Now Below Questions */}
-                  <div className="pt-4">
+                        </CardContent>
+                      </Card>
+                    ))}
+                    
                     <Button
                       type="button"
                       onClick={addQuestion}
                       variant="outline"
-                      className="w-full"
+                      className="w-full glass-button hover-lift text-foreground dark:text-foreground"
                       size="lg"
+                      data-testid="button-add-question"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Another Question
                     </Button>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Form Actions */}
-            <Card className="hover-subtle">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-center">
-                  <div className="text-sm text-muted-foreground">
-                    <p>Ready to create your assignment?</p>
-                    <p>Students will be able to access it using the generated assignment code.</p>
-                  </div>
-                  <div className="flex space-x-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleGoBack}
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      disabled={createMutation.isPending}
-                      className="bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg px-8"
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      {createMutation.isPending ? "Creating..." : "Create Assignment"}
-                    </Button>
-                  </div>
+              {/* Form Actions */}
+              <div className="flex justify-between items-center pt-4 slide-in-up" style={{ animationDelay: '0.5s' }}>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">
+                  <p className="font-medium">Ready to create your assignment?</p>
+                  <p>Students will access it using the generated code.</p>
                 </div>
-              </CardContent>
-            </Card>
-          </form>
-        </Form>
+                <div className="flex gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleGoBack}
+                    className="glass-button text-foreground dark:text-foreground hover-lift"
+                    data-testid="button-cancel"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={createMutation.isPending}
+                    className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 dark:from-accent dark:to-secondary shadow-lg hover-lift text-white dark:text-white px-8"
+                    data-testid="button-submit"
+                  >
+                    <Save className="w-4 h-4 mr-2" />
+                    {createMutation.isPending ? "Creating..." : "Create Assignment"}
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </Form>
         </div>
       </div>
     </SaasLayout>

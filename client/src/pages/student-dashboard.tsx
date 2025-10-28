@@ -44,34 +44,36 @@ export default function StudentDashboard() {
     averageScore: submissions.length > 0 
       ? Math.round(submissions.reduce((acc: number, sub: any) => acc + sub.totalAwarded, 0) / submissions.length * 100)
       : 0,
-  };  const statsCards = [
+  };
+
+  const statsCards = [
     {
       value: walletLoading ? '...' : stats.tokenBalance,
       label: "Token Balance",
       icon: Wallet,
-      iconColor: "text-purple-600",
-      bgColor: "bg-purple-50"
+      iconColor: "text-primary dark:text-accent",
+      bgColor: "bg-primary/10 dark:bg-accent/10"
     },
     {
       value: stats.completed,
       label: "Completed",
       icon: CheckCircle,
-      iconColor: "text-green-600",
-      bgColor: "bg-green-50"
+      iconColor: "text-success dark:text-success",
+      bgColor: "bg-success/10 dark:bg-success/10"
     },
     {
       value: `${stats.averageScore}%`,
       label: "Average Score",
       icon: Star,
-      iconColor: "text-orange-600",
-      bgColor: "bg-orange-50"
+      iconColor: "text-warning dark:text-warning",
+      bgColor: "bg-warning/10 dark:bg-warning/10"
     },
     {
       value: "7",
       label: "Day Streak",
       icon: Target,
-      iconColor: "text-blue-600",
-      bgColor: "bg-blue-50"
+      iconColor: "text-secondary dark:text-secondary",
+      bgColor: "bg-secondary/10 dark:bg-secondary/10"
     }
   ];
 
@@ -81,13 +83,13 @@ export default function StudentDashboard() {
 
   return (
     <SaasLayout>
-      <div className="min-h-screen bg-theme">
+      <div className="min-h-screen bg-background dark:bg-background">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <DashboardHeader
             title="Welcome back,"
             subtitle="Ready to continue your learning journey?"
           >
-            <span className="text-theme">{user?.name}</span>
+            <span className="text-foreground dark:text-foreground">{user?.name}</span>
           </DashboardHeader>
 
           <StatsGrid stats={statsCards} />
