@@ -38,7 +38,7 @@ export function StudentSidebar({ stats }: StudentSidebarProps) {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center p-6 bg-purple-50 rounded-lg">
-            <div className="text-4xl font-bold text-theme mb-2">
+            <div className="text-4xl font-bold text-black mb-2">
               {walletLoading ? '...' : currentBalance}
             </div>
             <p className="text-sm text-theme-secondary font-medium mb-4">Available Tokens</p>
